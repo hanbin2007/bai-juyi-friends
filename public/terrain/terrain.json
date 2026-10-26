@@ -1,0 +1,18 @@
+{
+ "west": 115.83984375,
+ "east": 116.19140625,
+ "north": 29.764377375163114,
+ "south": 29.382175075145277,
+ "widthMetres": 34037,
+ "heightMetres": 42547,
+ "minElevation": -250.0,
+ "maxElevation": 1466.0,
+ "demSize": [
+  1024,
+  1280
+ ],
+ "credits": {
+  "elevation": "Terrain Tiles (AWS Open Data); SRTM and GMTED2010 terrain data courtesy of the U.S. Geological Survey",
+  "imagery": "EOxCloudless https://cloudless.eox.at by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2024), CC BY-NC-SA 4.0"
+ }
+}
