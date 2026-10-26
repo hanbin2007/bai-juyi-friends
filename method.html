@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method · Bai Juyi's Friends</title>
+<meta name="description" content="How the two rounds were run, the prompts, how each answer was checked against 白居易集箋校 and 唐人行第録, and the limits of the test.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Serif+TC:wght@400;500;600;900&display=swap">
+<link rel="stylesheet" href="assets/style.css?v=fefc645dfd">
+</head>
+<body data-page="method">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="./"><span class="seal" aria-hidden="true">樂天</span><span class="brand-text"><strong>Bai Juyi's Friends</strong><span>白居易的朋友</span></span></a>
+    <button class="icon-btn menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="./">Record <small>名錄</small></a>
+      <a href="summary.html">Summary <small>統計</small></a>
+      <a href="method.html" aria-current="page">Method <small>方法</small></a>
+      <a href="about.html">About <small>關於</small></a>
+    </nav>
+    <button class="icon-btn theme-btn" type="button" aria-label="Switch colour theme"><svg class="sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="3.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.3 4.3l1.4 1.4M14.3 14.3l1.4 1.4M4.3 15.7l1.4-1.4M14.3 5.7l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M16.5 12.5A7 7 0 0 1 7.5 3.5a7 7 0 1 0 9 9z"/></svg></button>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-head">
+    <div class="wrap">
+      <h1>How the names were tested <span class="zh" lang="zh-Hant">測試方法</span></h1>
+      <p>The same AI model answered the same 35 names twice: once from the poem title alone, and once with historical sources. Every answer was then checked by hand against the annotated edition of Bai Juyi's works.</p>
+    </div>
+  </div>
+
+  <div class="wrap layout">
+    <nav class="toc" aria-label="On this page">
+      <ol>
+        <li><a href="#rounds">The two rounds</a></li>
+        <li><a href="#steps">Steps</a></li>
+        <li><a href="#run">Model and dates</a></li>
+        <li><a href="#prompts">Prompts</a></li>
+        <li><a href="#checking">How answers were checked</a></li>
+        <li><a href="#verdicts">Verdicts</a></li>
+        <li><a href="#limits">Limits</a></li>
+      </ol>
+    </nav>
+
+    <div class="prose">
+      <section id="rounds">
+        <h2>The two rounds <span class="zh" lang="zh-Hant">兩輪</span></h2>
+        <div class="rounds">
+          <div class="round-card">
+            <h3>Round A · title only</h3>
+            <div class="zh-sub" lang="zh-Hant">僅詩題</div>
+            <p>The AI sees one poem title and the name to identify, for example <span lang="zh-Hant" class="pn">元九</span> in <span lang="zh-Hant">酬元九對新栽竹有懷見寄</span>. It names the person and gives its confidence (high, medium or low), or declines.</p>
+          </div>
+          <div class="round-card">
+            <h3>Round B · title + sources</h3>
+            <div class="zh-sub" lang="zh-Hant">詩題＋史料</div>
+            <p>The AI answers the same names again, this time with historical sources to draw on, and lists the sources its answer relies on. These are shown in each entry's details.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="steps">
+        <h2>Steps <span class="zh" lang="zh-Hant">步驟</span></h2>
+        <ol class="steps">
+          <li><strong>Choose the names</strong><span>35 forms of address of the type surname + sibling rank (<span lang="zh-Hant">姓＋行第</span>) in 27 poem titles by Bai Juyi, each with its place in <span lang="zh-Hant">箋校</span> (volume and page) noted beforehand.</span></li>
+          <li><strong>Round A</strong><span>Ask the AI to identify each name from the title alone and record the answer and stated confidence.</span></li>
+          <li><strong>Round B</strong><span>Ask again with sources, and record the answer, confidence and the sources the AI cited.</span></li>
+          <li><strong>Check by hand</strong><span>Look up each entry in <span lang="zh-Hant">《白居易集箋校》</span>, with <span lang="zh-Hant">《唐人行第録》</span> as a second reference, and note what the editor says.</span></li>
+          <li><strong>Give a verdict</strong><span>Mark each answer in each round with one of the verdicts below. The site is rebuilt from the record sheet.</span></li>
+        </ol>
+      </section>
+
+      <section id="run">
+        <h2>Model and dates <span class="zh" lang="zh-Hant">模型與日期</span></h2>
+        <table class="info">
+          <tbody>
+            <tr><th scope="row">AI model<span lang="zh-Hant">模型</span></th><td class="placeholder" data-run="model">To be added</td></tr>
+            <tr><th scope="row">Used through<span lang="zh-Hant">介面</span></th><td class="placeholder" data-run="interface">To be added</td></tr>
+            <tr><th scope="row">Round A run on<span lang="zh-Hant">僅詩題</span></th><td class="placeholder" data-run="roundADate">To be added</td></tr>
+            <tr><th scope="row">Round B run on<span lang="zh-Hant">詩題＋史料</span></th><td class="placeholder" data-run="roundBDate">To be added</td></tr>
+            <tr><th scope="row">Sources given in Round B<span lang="zh-Hant">所給史料</span></th><td class="placeholder" data-run="sourcesGiven">To be added</td></tr>
+            <tr><th scope="row">Answers checked on<span lang="zh-Hant">核對日期</span></th><td class="placeholder" data-run="checkingDates">To be added</td></tr>
+          </tbody>
+        </table>
+        <p class="ui muted" id="run-note" hidden></p>
+      </section>
+
+      <section id="prompts">
+        <h2>Prompts <span class="zh" lang="zh-Hant">提示詞</span></h2>
+        <p>The exact wording given to the AI in each round.</p>
+        <div class="prompt">
+          <div class="prompt-head"><span>Round A prompt <span class="zh" lang="zh-Hant">僅詩題</span></span><button class="copy" type="button" data-copy="prompt-a">Copy</button></div>
+          <pre id="prompt-a" class="placeholder">To be added.</pre>
+        </div>
+        <div class="prompt">
+          <div class="prompt-head"><span>Round B prompt <span class="zh" lang="zh-Hant">詩題＋史料</span></span><button class="copy" type="button" data-copy="prompt-b">Copy</button></div>
+          <pre id="prompt-b" class="placeholder">To be added.</pre>
+        </div>
+      </section>
+
+      <section id="checking">
+        <h2>How answers were checked <span class="zh" lang="zh-Hant">核對</span></h2>
+        <ul>
+          <li><strong>Main reference:</strong> Zhu Jincheng's <span lang="zh-Hant">《白居易集箋校》</span> (Bai, 2020). Its notes (<span lang="zh-Hant">箋</span>) name the person behind a form of address where the editor could establish it, or say <span lang="zh-Hant">名未詳</span> (“name unknown”).</li>
+          <li><strong>Second reference:</strong> Cen Zhongmian's <span lang="zh-Hant">《唐人行第録》</span> (Cen, 1978), a dictionary of Tang people listed by surname and sibling rank.</li>
+          <li><strong>Access:</strong> both books were read in the <span lang="zh-Hant">汇典·典籍整理文献数据库</span> database, one entry at a time and by hand. Nothing was scraped or downloaded from it.</li>
+          <li><strong>Quoting:</strong> the site quotes <span lang="zh-Hant">箋校</span> only briefly, a name or a short phrase, always with volume and page (<span lang="zh-Hant">卷·頁</span>).</li>
+        </ul>
+      </section>
+
+      <section id="verdicts">
+        <h2>Verdicts <span class="zh" lang="zh-Hant">判定</span></h2>
+        <p>Each answer gets one verdict per round. The value in brackets is what is typed in the record sheet.</p>
+        <dl class="def-list">
+          <div><dt><span class="badge" data-s="correct"><span class="ic"><svg viewBox="0 0 16 16" width="9" height="9" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Correct <span class="zh" lang="zh-Hant">正確</span></span></dt><dd>The AI names the person <span lang="zh-Hant">箋校</span> identifies. <code>correct</code></dd></div>
+          <div><dt><span class="badge" data-s="partly"><span class="ic"><svg viewBox="0 0 16 16" width="9" height="9" aria-hidden="true"><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/><circle cx="8" cy="8" r="5.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>Partly correct <span class="zh" lang="zh-Hant">部分正確</span></span></dt><dd>The answer is partly right; the entry's notes say how. <code>partly</code></dd></div>
+          <div><dt><span class="badge" data-s="wrong"><span class="ic"><svg viewBox="0 0 16 16" width="8" height="8" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>Wrong <span class="zh" lang="zh-Hant">錯誤</span></span></dt><dd>The AI names someone other than the person in <span lang="zh-Hant">箋校</span>. <code>wrong</code></dd></div>
+          <div><dt><span class="badge" data-s="declined"><span class="ic"><svg viewBox="0 0 16 16" width="8" height="8" aria-hidden="true"><path d="M3.5 8h9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>Declined <span class="zh" lang="zh-Hant">未作答</span></span></dt><dd>The AI gives no name, although <span lang="zh-Hant">箋校</span> identifies the person. <code>declined: answer exists</code></dd></div>
+          <div><dt><span class="badge" data-s="unknown"><span class="ic"><span aria-hidden="true" style="font-size:10px">?</span></span>Name unknown in 箋校 <span class="zh" lang="zh-Hant">名未詳</span></span></dt><dd>The AI gives no name, and <span lang="zh-Hant">箋校</span> does not identify the person either. <code>declined: none exists</code></dd></div>
+          <div><dt><span class="badge" data-s="untested"><span class="ic"></span>Not yet tested <span class="zh" lang="zh-Hant">未測試</span></span></dt><dd>No verdict has been recorded yet (the cell is empty).</dd></div>
+        </dl>
+      </section>
+
+      <section id="limits">
+        <h2>Limits <span class="zh" lang="zh-Hant">局限</span></h2>
+        <ul>
+          <li><strong>Small sample.</strong> 35 names from 27 poems by one poet. The counts describe this set only and are not a measure of AI accuracy in general.</li>
+          <li><strong>Memorised answers.</strong> Bai Juyi's best-known friends, such as <span lang="zh-Hant">元九</span> (Yuan Zhen) and <span lang="zh-Hant">劉二十八</span> (Liu Yuxi), are widely discussed online. A correct answer about a famous name may come from the AI having seen that scholarship, not from working it out.</li>
+          <li><strong>One model, one run.</strong> Another model, or the same model on another day, may answer differently.</li>
+          <li><strong>The reference is scholarship too.</strong> <span lang="zh-Hant">箋校</span> leaves some names unidentified and sometimes disagrees with <span lang="zh-Hant">唐人行第録</span>. Verdicts follow <span lang="zh-Hant">箋校</span>.</li>
+          <li><strong>Poem text.</strong> The poems shown in each entry come from an open digital edition of <span lang="zh-Hant">全唐詩</span> that leaves out Bai Juyi's own notes (<span lang="zh-Hant">自注</span>). They are there for reading and were not used for the verdicts.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <p><strong>Identifying Bai Juyi's Friends with AI and Historical Sources</strong> · ZHANG Hanbin · CHC1M51, The Hong Kong Polytechnic University</p>
+      <p>Data updated <span data-built></span> from the record sheet. Built with AI coding help; see <a href="about.html#ai">About</a>.</p>
+    </div>
+    <div class="foot-links"><a href="./">Record</a><a href="summary.html">Summary</a><a href="about.html">About</a><a href="data/records.json">Data (JSON)</a></div>
+  </div>
+</footer>
+<script src="assets/data.js?v=e552104749"></script>
+<script src="assets/app.js?v=7989f29b49"></script>
+</body>
+</html>
