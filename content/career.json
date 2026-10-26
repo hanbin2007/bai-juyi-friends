@@ -1,0 +1,20 @@
+{
+ "_about": "Bai Juyi's postings: the gold thread on the timeline. 'from' and 'to' are years CE (decimals for part of a year, e.g. 822.8 = autumn 822). Drafted with AI help from the standard chronology; set 'verified' to true once checked against Zhu Jincheng's chronology (白居易年譜) or 箋校.",
+ "verified": false,
+ "source": "Zhu Jincheng 朱金城, 白居易年譜 (Shanghai Guji, 1982)",
+ "stations": [
+  {"from": 800, "to": 806.3, "place": "長安", "post": "進士及第 · 校書郎", "en": "Passes the jinshi examination (800); collator in the Palace Library (803)"},
+  {"from": 806.4, "to": 807.8, "place": "盩厔", "post": "盩厔尉", "en": "Sheriff of Zhouzhi county"},
+  {"from": 807.9, "to": 811.3, "place": "長安", "post": "翰林學士 · 左拾遺", "en": "Hanlin academician and Reminder of the Left; the New Yuefu years"},
+  {"from": 811.4, "to": 814.8, "place": "下邽", "post": "丁母憂", "en": "Mourning for his mother at Weicun, Xiagui"},
+  {"from": 814.9, "to": 815.6, "place": "長安", "post": "太子左贊善大夫", "en": "Admonisher to the Heir Apparent"},
+  {"from": 815.9, "to": 818.9, "place": "江州", "post": "江州司馬", "en": "Demoted to marshal of Jiangzhou; the thatched cottage on Mount Lu"},
+  {"from": 819.2, "to": 820.4, "place": "忠州", "post": "忠州刺史", "en": "Prefect of Zhongzhou on the upper Yangtze"},
+  {"from": 820.6, "to": 822.5, "place": "長安", "post": "主客郎中知制誥 · 中書舍人", "en": "Recalled to court; drafter of edicts and Secretariat Drafter"},
+  {"from": 822.8, "to": 824.4, "place": "杭州", "post": "杭州刺史", "en": "Prefect of Hangzhou"},
+  {"from": 824.6, "to": 825.2, "place": "洛陽", "post": "太子左庶子分司", "en": "Sinecure post in the Eastern Capital"},
+  {"from": 825.4, "to": 826.8, "place": "蘇州", "post": "蘇州刺史", "en": "Prefect of Suzhou"},
+  {"from": 827.2, "to": 829.2, "place": "長安", "post": "秘書監 · 刑部侍郎", "en": "Director of the Palace Library, then Vice Minister of Justice"},
+  {"from": 829.4, "to": 846.7, "place": "洛陽", "post": "太子賓客分司 · 河南尹 · 太子少傅", "en": "Settles in Luoyang for good: Guest of the Heir Apparent, Governor of Henan (830–833), retires as Minister of Justice (842); dies 846"}
+ ]
+}

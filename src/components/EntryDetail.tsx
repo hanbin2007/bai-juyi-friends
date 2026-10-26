@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import type { Row } from "../lib/data";
+import { DATED, type Row } from "../lib/data";
 import { confLabel } from "../lib/status";
+import { eraYear, yearLabel } from "../lib/era";
 import { Badge, MarkedTitle } from "./Badge";
 
 function KV({ k, zh, v }: { k: string; zh?: string; v: ReactNode }) {
@@ -35,6 +36,10 @@ export function EntryDetail({ row, permalink = true }: { row: Row; permalink?: b
         <dl className="kv">
           <KV k="Identification" v={row.jianjiao} />
           <KV k="Where" zh="卷·頁" v={row.locate} />
+          <KV k="Year" zh="繫年" v={row.time && <>{yearLabel(row.time)}{eraYear(row.time.from) && " · " + eraYear(row.time.from)}{DATED.includes(row) && <> <Link to={"/timeline?n=" + row.n} lang="en">on the timeline</Link></>}</>} />
+          <KV k="Bai Juyi at" v={row.baiAt && <>{row.baiAt}{row.baiAtFrom === "career" && <span lang="en" className="muted"> (from his postings that year)</span>}</>} />
+          <KV k="Addressee's post" v={row.post} />
+          <KV k="Addressee at" v={row.toAt} />
           <KV k="Notes" v={row.notes} />
         </dl>
         {permalink && (

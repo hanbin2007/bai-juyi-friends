@@ -7,6 +7,7 @@ import { Summary } from "./pages/Summary";
 import { Method } from "./pages/Method";
 import { About } from "./pages/About";
 import { Entry } from "./pages/Entry";
+import { Timeline } from "./pages/Timeline";
 import { NotFound } from "./pages/NotFound";
 import "./styles.css";
 
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
       element: <Layout />,
       children: [
         { path: "/", element: <Home /> },
+        { path: "/timeline", element: <Timeline /> },
         { path: "/summary", element: <Summary /> },
         { path: "/method", element: <Method /> },
         { path: "/about", element: <About /> },

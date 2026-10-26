@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 
 const dist = "dist";
 const rows = JSON.parse(readFileSync("src/data/records.json", "utf8")).rows;
-const routes = ["summary", "method", "about", ...rows.map((r) => `entry/${r.n}`)];
+const routes = ["timeline", "summary", "method", "about", ...rows.map((r) => `entry/${r.n}`)];
 
 for (const route of routes) {
   const out = join(dist, route, "index.html");

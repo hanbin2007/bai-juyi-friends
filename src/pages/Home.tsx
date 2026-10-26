@@ -32,7 +32,7 @@ export function Home() {
               <b>{TOTAL}</b> forms of address in <b>{POEM_COUNT}</b> poems. Results recorded so far: Round A <b>{tested("a")} of {TOTAL}</b>, Round B <b>{tested("b")} of {TOTAL}</b>.
             </p>
             <p className="hero-links">
-              <a href="#record">Browse the record</a> &nbsp;·&nbsp; <Link to="/method">How it was tested</Link> &nbsp;·&nbsp; <Link to="/summary">Summary</Link>
+              <a href="#record">Browse the record</a> &nbsp;·&nbsp; <Link to="/timeline">Through time and place</Link> &nbsp;·&nbsp; <Link to="/method">How it was tested</Link> &nbsp;·&nbsp; <Link to="/summary">Summary</Link>
             </p>
           </div>
           <Network3D />

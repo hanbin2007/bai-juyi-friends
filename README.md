@@ -44,6 +44,21 @@ data outside rows 2–36, or a Summary count that does not match.
 Verdicts must be typed exactly as in the sheet's drop-down list:
 `correct`, `wrong`, `partly`, `declined: answer exists`, `declined: none exists`. An empty cell means "not yet tested".
 
+## Timeline columns (N–Q)
+
+The `/timeline` page places each name in the year its poem was written. Fill these columns of the **Record** sheet from 箋校's dating; rows left empty are listed as "not yet dated".
+
+| Col | What to type | Example |
+| --- | --- | --- |
+| N Year | a year CE; `?` when uncertain; a range | `833`, `833?`, `831-833` |
+| O Bai's place | where Bai Juyi was (leave empty to take it from his postings in `content/career.json`) | `洛陽` |
+| P Addressee's post | the addressee's office then | `給事中` |
+| Q Addressee's place | where the addressee was or was going (empty if the same place as Bai) | `常州` |
+
+Place names must be in `content/places.json` (other names for the same place go in its `aka` list, e.g. 毗陵 for 常州); the build warns about any it does not know.
+`content/career.json` holds Bai Juyi's postings (the gold thread); set `"verified": true` once checked against 朱金城《白居易年譜》.
+`Timeline-Data-Draft.md` in the EWR-Draft2 folder is an AI draft from open sources: check every value against 箋校 before copying it in.
+
 ## Method page details
 
 Paste the text into these files, then rebuild:
@@ -71,6 +86,7 @@ and keeps it in sync.
 | URL | Page |
 | --- | --- |
 | `/` | the 3D network, the Mount Lu flythrough, the 35 names and the record table (filters live in `?q=&status=&round=`) |
+| `/timeline` | the 3D chrono-spatial stream: time as depth, places on the map, Bai Juyi's postings as a gold thread; `?n=9` opens at entry 9 |
 | `/entry/9` | one form of address, for linking from the essay |
 | `/summary` | Round A vs Round B counts, the Summary tab, A→B changes, results by confidence |
 | `/method` | the two rounds, model and dates, prompts, checking, verdicts, limits |
@@ -84,6 +100,8 @@ and keeps it in sync.
 | `src/` | React + TypeScript source; `src/three/` holds the two 3D views |
 | `public/terrain/` | Mount Lu elevation (SRTM via AWS Terrain Tiles), made by `tools/fetch_terrain.py` |
 | `data/poems.json` | poem text from the open chinese-poetry 全唐詩 data (`tools/extract_poems.py`) |
+| `public/map/china.json` | coastline, rivers and lakes for the timeline (Natural Earth, public domain), made by `tools/fetch_map.py` |
+| `content/places.json`, `content/career.json` | the timeline's gazetteer and Bai Juyi's postings |
 | `.github/workflows/deploy.yml` | builds and deploys to GitHub Pages on every push to `main` |
 
 ## AI assistance

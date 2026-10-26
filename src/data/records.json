@@ -1,8 +1,8 @@
 {
  "meta": {
-  "built": "2026-10-26 16:12 HKT",
+  "built": "2026-10-27 01:55 HKT",
   "source": "Bai-Juyi-Experiment-Record-Sheet.xlsx",
-  "sha256": "895e379952c21e63e0a464f84564d869a1e902b5b6f8d2429b466e097b12830d",
+  "sha256": "fe4e5ff8608a4b96072d1194164bc9fa494fd697571533702b0b52e1dd587cd7",
   "summaryCheck": {
    "status": "uncached",
    "detail": "The Summary tab has no saved results. Open the sheet in Excel and save it once."
@@ -47,6 +47,11 @@
    "locate": "卷一·34",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "昔我十年前，與君始相識。",
     "曾將秋竹竿，比君孤且直。",
@@ -80,6 +85,11 @@
    "locate": "卷三十·2011",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "昨夜夢夢得，初覺思踟躕。",
     "忽忘來汝郡，猶疑在吳都。",
@@ -112,6 +122,11 @@
    "locate": "卷三十一·2055",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "笋老蘭長花漸稀，衰翁相對惜芳菲。",
     "殘鶯著雨慵休囀，落絮無風凝不飛。",
@@ -139,6 +154,11 @@
    "locate": "卷三十一·2068",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "靖安客舍花枝下，共脫青衫典濁醪。",
     "今日洛橋還醉別，金杯翻汙麒麟袍。",
@@ -166,6 +186,11 @@
    "locate": "卷六·363",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "昔我爲近臣，君常稀到門。",
     "今我官職冷，君君來往頻。",
@@ -205,6 +230,11 @@
    "locate": "卷三十二·2137",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "煙景冷蒼茫，秋深夜夜霜。",
     "爲思池上酌，先覺甕頭香。",
@@ -234,6 +264,11 @@
    "locate": "卷三十二·2162",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "西戶最榮君好去，左馮雖穩我慵來。",
     "秋風一筯鱸魚鱠，張翰搖頭喚不迴。"
@@ -259,6 +294,11 @@
    "locate": "卷三十四·2287",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "華筵賀客日紛紛，劒外歡娛洛下聞。",
     "朱紱寵光新照地，彤襜喜氣遠凌雲。",
@@ -286,6 +326,11 @@
    "locate": "卷三十一·2067",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "無嗟別青瑣，且喜擁朱輪。",
     "五十得三品，百千無一人。",
@@ -313,6 +358,11 @@
    "locate": "外集卷上·3814",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "肩舁仍挈榼，莫怪就君來。",
     "秋雨經三宿，無人勸一杯。"
@@ -338,6 +388,11 @@
    "locate": "卷十七·1111",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "丹霄攜手三君子，白髮垂頭一病翁。",
     "蘭省花時錦帳下，廬山雨夜草菴中。",
@@ -365,6 +420,11 @@
    "locate": "卷十七·1112",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "丹霄攜手三君子，白髮垂頭一病翁。",
     "蘭省花時錦帳下，廬山雨夜草菴中。",
@@ -392,6 +452,11 @@
    "locate": "卷十七·1113；卷十六·972",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "丹霄攜手三君子，白髮垂頭一病翁。",
     "蘭省花時錦帳下，廬山雨夜草菴中。",
@@ -419,6 +484,11 @@
    "locate": "卷十六·971",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "南去經三楚，東來過五湖。",
     "山頭看候館，水面問征途。",
@@ -542,6 +612,11 @@
    "locate": "卷十六·971",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "南去經三楚，東來過五湖。",
     "山頭看候館，水面問征途。",
@@ -665,6 +740,11 @@
    "locate": "卷十六·972",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "南去經三楚，東來過五湖。",
     "山頭看候館，水面問征途。",
@@ -788,6 +868,11 @@
    "locate": "卷十六·973",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "南去經三楚，東來過五湖。",
     "山頭看候館，水面問征途。",
@@ -911,6 +996,11 @@
    "locate": "卷十六·972",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "南去經三楚，東來過五湖。",
     "山頭看候館，水面問征途。",
@@ -1034,6 +1124,11 @@
    "locate": "卷十四·805",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "碧落留雲住，青冥放鶴還。",
     "銀臺向南路，從此到人間。"
@@ -1059,6 +1154,11 @@
    "locate": "卷十七·1072",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "綠螘新醅酒，紅泥小火壚。",
     "晚來天欲雪，能飲一杯無。"
@@ -1084,6 +1184,11 @@
    "locate": "卷三十一·2049",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "自請假來多少日，五旬光景似須臾。",
     "已判到老爲狂客，不分當春作病夫。",
@@ -1111,6 +1216,11 @@
    "locate": "卷八·456",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "嚴郎置茲樓，立名曰清輝。",
     "未及署花牓，遽徵還粉闈。",
@@ -1144,6 +1254,11 @@
    "locate": "卷三十二·2122",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "貂冠初別九重門，馬鬣新封四尺墳。",
     "薤露歌詞非白雪，旌銘官爵是浮雲。",
@@ -1171,6 +1286,11 @@
    "locate": "卷三十一·2060",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "昨日三川新罷守，今年四皓盡分司。",
     "幸陪散秩閑居日，好是登山臨水時。",
@@ -1198,6 +1318,11 @@
    "locate": "卷三十一·2060",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "昨日三川新罷守，今年四皓盡分司。",
     "幸陪散秩閑居日，好是登山臨水時。",
@@ -1225,6 +1350,11 @@
    "locate": "卷三十一·2060",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "昨日三川新罷守，今年四皓盡分司。",
     "幸陪散秩閑居日，好是登山臨水時。",
@@ -1252,6 +1382,11 @@
    "locate": "卷二十三·1580",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "孟夏愛吾廬，陶潛語不虛。",
     "花樽飄落酒，風案展開書。",
@@ -1279,6 +1414,11 @@
    "locate": "卷六·368",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "曲江有病客，尋常多掩關。",
     "又聞馬死來，不出身更閑。",
@@ -1318,6 +1458,11 @@
    "locate": "卷三十三·2227",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "病容衰慘澹，芳景晚蹉跎。",
     "無計留春得，爭能奈老何。",
@@ -1347,6 +1492,11 @@
    "locate": "卷三十一·2104",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "位下才高多怨天，劉兄道勝獨恬然。",
     "貧於揚子兩三倍，老過榮公六七年。",
@@ -1374,6 +1524,11 @@
    "locate": "卷三十·2010",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "園杏紅萼坼，庭蘭紫芽出。",
     "不覺春已深，今朝二月一。",
@@ -1405,6 +1560,11 @@
    "locate": "卷三十三·2187",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "偶因冷節會嘉賓，況是平生心所親。",
     "迎接須衿疏傅老，祗供莫笑阮家貧。",
@@ -1432,6 +1592,11 @@
    "locate": "卷十七·1102",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "身覺浮雲無所著，心同止水有何情。",
     "但知瀟灑疎朝市，不要崎嶇隱姓名。",
@@ -1459,6 +1624,11 @@
    "locate": "卷三十四·2268",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "可憐官職好文詞，五十專城未是遲。",
     "曉日鏡前無白髮，春風門外有紅旗。",
@@ -1486,12 +1656,331 @@
    "locate": "卷十三·759",
    "jianjiao": "",
    "notes": "",
+   "time": null,
+   "baiAt": "",
+   "baiAtFrom": "",
+   "post": "",
+   "toAt": "",
    "poem": [
     "自憐幽會心期阻，復媿嘉招書信頻。",
     "王事牽身去不得，滿山松雪屬他人。"
    ]
   }
  ],
+ "places": {
+  "長安": {
+   "en": "Chang'an",
+   "lon": 108.94,
+   "lat": 34.26
+  },
+  "洛陽": {
+   "en": "Luoyang",
+   "lon": 112.45,
+   "lat": 34.62
+  },
+  "下邽": {
+   "en": "Xiagui",
+   "lon": 109.48,
+   "lat": 34.69
+  },
+  "盩厔": {
+   "en": "Zhouzhi",
+   "lon": 108.22,
+   "lat": 34.16
+  },
+  "符離": {
+   "en": "Fuli",
+   "lon": 116.98,
+   "lat": 33.78
+  },
+  "江州": {
+   "en": "Jiangzhou",
+   "lon": 115.99,
+   "lat": 29.71
+  },
+  "忠州": {
+   "en": "Zhongzhou",
+   "lon": 108.04,
+   "lat": 30.3
+  },
+  "杭州": {
+   "en": "Hangzhou",
+   "lon": 120.16,
+   "lat": 30.25
+  },
+  "蘇州": {
+   "en": "Suzhou",
+   "lon": 120.62,
+   "lat": 31.3
+  },
+  "常州": {
+   "en": "Changzhou",
+   "lon": 119.95,
+   "lat": 31.78
+  },
+  "越州": {
+   "en": "Yuezhou",
+   "lon": 120.58,
+   "lat": 30.0
+  },
+  "湖州": {
+   "en": "Huzhou",
+   "lon": 120.09,
+   "lat": 30.89
+  },
+  "汝州": {
+   "en": "Ruzhou",
+   "lon": 112.84,
+   "lat": 34.17
+  },
+  "同州": {
+   "en": "Tongzhou",
+   "lon": 109.94,
+   "lat": 34.79
+  },
+  "華州": {
+   "en": "Huazhou",
+   "lon": 109.77,
+   "lat": 34.51
+  },
+  "虢州": {
+   "en": "Guozhou",
+   "lon": 110.86,
+   "lat": 34.52
+  },
+  "陝州": {
+   "en": "Shanzhou",
+   "lon": 111.2,
+   "lat": 34.77
+  },
+  "鄭州": {
+   "en": "Zhengzhou",
+   "lon": 113.65,
+   "lat": 34.75
+  },
+  "汴州": {
+   "en": "Bianzhou",
+   "lon": 114.35,
+   "lat": 34.79
+  },
+  "許州": {
+   "en": "Xuzhou",
+   "lon": 113.85,
+   "lat": 34.03
+  },
+  "蔡州": {
+   "en": "Caizhou",
+   "lon": 114.02,
+   "lat": 32.98
+  },
+  "揚州": {
+   "en": "Yangzhou",
+   "lon": 119.42,
+   "lat": 32.39
+  },
+  "潤州": {
+   "en": "Runzhou",
+   "lon": 119.45,
+   "lat": 32.2
+  },
+  "宣州": {
+   "en": "Xuanzhou",
+   "lon": 118.76,
+   "lat": 30.95
+  },
+  "和州": {
+   "en": "Hezhou",
+   "lon": 118.36,
+   "lat": 31.71
+  },
+  "江陵": {
+   "en": "Jiangling",
+   "lon": 112.24,
+   "lat": 30.33
+  },
+  "襄州": {
+   "en": "Xiangzhou",
+   "lon": 112.14,
+   "lat": 32.04
+  },
+  "鄂州": {
+   "en": "Ezhou",
+   "lon": 114.3,
+   "lat": 30.55
+  },
+  "洪州": {
+   "en": "Hongzhou",
+   "lon": 115.89,
+   "lat": 28.68
+  },
+  "潭州": {
+   "en": "Tanzhou",
+   "lon": 112.94,
+   "lat": 28.23
+  },
+  "朗州": {
+   "en": "Langzhou",
+   "lon": 111.69,
+   "lat": 29.03
+  },
+  "連州": {
+   "en": "Lianzhou",
+   "lon": 112.38,
+   "lat": 24.78
+  },
+  "夔州": {
+   "en": "Kuizhou",
+   "lon": 109.47,
+   "lat": 31.02
+  },
+  "通州": {
+   "en": "Tongzhou (Sichuan)",
+   "lon": 107.47,
+   "lat": 31.21
+  },
+  "梓州": {
+   "en": "Zizhou",
+   "lon": 105.09,
+   "lat": 31.1
+  },
+  "成都": {
+   "en": "Chengdu",
+   "lon": 104.07,
+   "lat": 30.67
+  },
+  "興元": {
+   "en": "Xingyuan",
+   "lon": 107.03,
+   "lat": 33.07
+  },
+  "鳳翔": {
+   "en": "Fengxiang",
+   "lon": 107.39,
+   "lat": 34.52
+  },
+  "太原": {
+   "en": "Taiyuan",
+   "lon": 112.55,
+   "lat": 37.87
+  },
+  "魏州": {
+   "en": "Weizhou",
+   "lon": 115.25,
+   "lat": 36.28
+  },
+  "福州": {
+   "en": "Fuzhou",
+   "lon": 119.3,
+   "lat": 26.08
+  },
+  "商州": {
+   "en": "Shangzhou",
+   "lon": 109.94,
+   "lat": 33.87
+  },
+  "澧州": {
+   "en": "Lizhou",
+   "lon": 111.76,
+   "lat": 29.63
+  }
+ },
+ "career": {
+  "verified": false,
+  "source": "Zhu Jincheng 朱金城, 白居易年譜 (Shanghai Guji, 1982)",
+  "stations": [
+   {
+    "from": 800,
+    "to": 806.3,
+    "place": "長安",
+    "post": "進士及第 · 校書郎",
+    "en": "Passes the jinshi examination (800); collator in the Palace Library (803)"
+   },
+   {
+    "from": 806.4,
+    "to": 807.8,
+    "place": "盩厔",
+    "post": "盩厔尉",
+    "en": "Sheriff of Zhouzhi county"
+   },
+   {
+    "from": 807.9,
+    "to": 811.3,
+    "place": "長安",
+    "post": "翰林學士 · 左拾遺",
+    "en": "Hanlin academician and Reminder of the Left; the New Yuefu years"
+   },
+   {
+    "from": 811.4,
+    "to": 814.8,
+    "place": "下邽",
+    "post": "丁母憂",
+    "en": "Mourning for his mother at Weicun, Xiagui"
+   },
+   {
+    "from": 814.9,
+    "to": 815.6,
+    "place": "長安",
+    "post": "太子左贊善大夫",
+    "en": "Admonisher to the Heir Apparent"
+   },
+   {
+    "from": 815.9,
+    "to": 818.9,
+    "place": "江州",
+    "post": "江州司馬",
+    "en": "Demoted to marshal of Jiangzhou; the thatched cottage on Mount Lu"
+   },
+   {
+    "from": 819.2,
+    "to": 820.4,
+    "place": "忠州",
+    "post": "忠州刺史",
+    "en": "Prefect of Zhongzhou on the upper Yangtze"
+   },
+   {
+    "from": 820.6,
+    "to": 822.5,
+    "place": "長安",
+    "post": "主客郎中知制誥 · 中書舍人",
+    "en": "Recalled to court; drafter of edicts and Secretariat Drafter"
+   },
+   {
+    "from": 822.8,
+    "to": 824.4,
+    "place": "杭州",
+    "post": "杭州刺史",
+    "en": "Prefect of Hangzhou"
+   },
+   {
+    "from": 824.6,
+    "to": 825.2,
+    "place": "洛陽",
+    "post": "太子左庶子分司",
+    "en": "Sinecure post in the Eastern Capital"
+   },
+   {
+    "from": 825.4,
+    "to": 826.8,
+    "place": "蘇州",
+    "post": "蘇州刺史",
+    "en": "Prefect of Suzhou"
+   },
+   {
+    "from": 827.2,
+    "to": 829.2,
+    "place": "長安",
+    "post": "秘書監 · 刑部侍郎",
+    "en": "Director of the Palace Library, then Vice Minister of Justice"
+   },
+   {
+    "from": 829.4,
+    "to": 846.7,
+    "place": "洛陽",
+    "post": "太子賓客分司 · 河南尹 · 太子少傅",
+    "en": "Settles in Luoyang for good: Guest of the Heir Apparent, Governor of Henan (830–833), retires as Minister of Justice (842); dies 846"
+   }
+  ]
+ },
  "method": {
   "run": {
    "model": "",

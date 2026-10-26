@@ -45,7 +45,11 @@ COLUMNS = {
     "D": "a_answer", "E": "a_confidence",
     "F": "b_answer", "G": "b_confidence", "H": "b_sources",
     "I": "locate", "J": "jianjiao", "K": "a_verdict", "L": "b_verdict", "M": "notes",
+    # Timeline columns, filled from 箋校's dating (optional; empty = not on the timeline yet).
+    "N": "year", "O": "bai_at", "P": "post", "Q": "to_at",
 }
+TIMELINE_HEADERS = {"N": "Year", "O": "Bai's place", "P": "Addressee's post", "Q": "Addressee's place"}
+LIFE = (772, 846)  # Bai Juyi's lifetime; a poem's year must fall inside it
 
 # Sheet verdict text (exactly as in the drop-down list) -> site status key.
 VERDICTS = {
@@ -208,6 +212,52 @@ def read_text(path):
     return path.read_text(encoding="utf-8").strip() if path.exists() else ""
 
 
+def read_json(path):
+    return json.loads(read_text(path) or "{}")
+
+
+def year(raw, where):
+    """Year cell -> {"raw", "from", "to", "circa"}, or None when empty.
+    Accepts 833, 833? (uncertain), c. 833 / 約833, and ranges 831-833 (also –, ~, 至)."""
+    text = clean(raw).replace("？", "?").replace("～", "~")
+    if not text:
+        return None
+    m = re.fullmatch(r"(?:約|c\.?\s*)?(\d{3,4})(?:\s*[-–—~至]\s*(\d{3,4}))?\??", text)
+    if not m:
+        error("%s: year %r is not a year such as 833, 833? or 831-833" % (where, text))
+        return None
+    lo = int(m.group(1))
+    hi = int(m.group(2)) if m.group(2) else lo
+    circa = text.startswith(("約", "c")) or text.endswith("?")
+    if not (LIFE[0] <= lo <= hi <= LIFE[1]):
+        error("%s: year %r is outside Bai Juyi's lifetime (%d-%d) or the range runs backwards"
+              % ((where, text) + LIFE))
+        return None
+    return {"raw": text, "from": lo, "to": hi, "circa": circa}
+
+
+def place(raw, where, aliases):
+    """Place cell -> the gazetteer's name for it. Unknown names are kept as typed (shown, but not on the map)."""
+    text = re.sub(r"\s+", "", clean(raw))
+    if not text:
+        return ""
+    if text in aliases:
+        return aliases[text]
+    warn("%s: place %r is not in content/places.json; add it (or an 'aka') to put it on the timeline" % (where, text))
+    return text
+
+
+def career_place(career, when):
+    """Where Bai Juyi was in the middle of `when`, from content/career.json (the nearest posting if between two).
+    Station years are decimal (822.8 = autumn 822), so the year 833 runs from 833.0 to 834.0."""
+    mid = (when["from"] + when["to"] + 1) / 2
+    stations = career.get("stations", [])
+    if not stations:
+        return ""
+    return min(stations, key=lambda s: 0 if s["from"] <= mid <= s["to"] else
+               min(abs(mid - s["from"]), abs(mid - s["to"])))["place"]
+
+
 # ---------------------------------------------------------------- build
 
 def summary_layout(summary):
@@ -247,6 +297,22 @@ def build(xlsx):
         if not clean(record.cells.get(col + "1")).startswith(start):
             error("Record!%s1 is %r, expected it to start with %r - columns may have moved"
                   % (col, record.cells.get(col + "1"), start))
+    for col, start in TIMELINE_HEADERS.items():
+        if not clean(record.cells.get(col + "1")).startswith(start):
+            warn("Record!%s1 should be the %r column for the timeline; found %r"
+                 % (col, start, record.cells.get(col + "1")))
+
+    gazetteer = {k: v for k, v in read_json(CONTENT / "places.json").items() if not k.startswith("_")}
+    aliases = {}
+    for name, p in gazetteer.items():
+        for alias in [name] + p.get("aka", []):
+            if aliases.get(alias, name) != name:
+                error("content/places.json: %r is listed for both %s and %s" % (alias, aliases[alias], name))
+            aliases[alias] = name
+    career = {k: v for k, v in read_json(CONTENT / "career.json").items() if not k.startswith("_")}
+    for s in career.get("stations", []):
+        if s.get("place") not in gazetteer:
+            error("content/career.json: place %r is not in content/places.json" % s.get("place"))
 
     found, ranges = summary_layout(summary) if summary else ({}, set())
     if summary is None:
@@ -278,6 +344,13 @@ def build(xlsx):
         if n in seen:
             error("%s repeats entry number %s" % (where, n))
         seen.add(n)
+        when = year(raw["year"], where + " col N")
+        bai_at = place(raw["bai_at"], where + " col O", aliases)
+        bai_from = "sheet" if bai_at else ""
+        if when and not bai_at:
+            bai_at, bai_from = career_place(career, when), "career"
+        if not when and (bai_at or clean(raw["post"]) or clean(raw["to_at"])):
+            warn("%s: has place or post but no year (col N), so it is not on the timeline yet" % where)
         rows.append({
             "n": n,
             "title": title,
@@ -298,6 +371,11 @@ def build(xlsx):
             "locate": clean(raw["locate"]),
             "jianjiao": clean(raw["jianjiao"]),
             "notes": clean(raw["notes"]),
+            "time": when,
+            "baiAt": bai_at,
+            "baiAtFrom": bai_from,
+            "post": clean(raw["post"]),
+            "toAt": place(raw["to_at"], where + " col Q", aliases),
             "poem": poems.get(title),
         })
         if address and address not in title:
@@ -343,6 +421,8 @@ def build(xlsx):
         },
         "counts": counts,
         "rows": rows,
+        "places": {k: {"en": v["en"], "lon": v["lon"], "lat": v["lat"]} for k, v in gazetteer.items()},
+        "career": career,
         "method": {
             "run": run_info,
             "promptA": read_text(CONTENT / "prompt-round-a.txt"),

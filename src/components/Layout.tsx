@@ -5,6 +5,7 @@ import { TooltipLayer } from "./Tooltip";
 
 const NAV = [
   { to: "/", en: "Record", zh: "名錄" },
+  { to: "/timeline", en: "Timeline", zh: "時空" },
   { to: "/summary", en: "Summary", zh: "統計" },
   { to: "/method", en: "Method", zh: "方法" },
   { to: "/about", en: "About", zh: "關於" },

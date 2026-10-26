@@ -21,13 +21,26 @@ export interface Row {
   locate: string;
   jianjiao: string;
   notes: string;
+  /** When the poem was written (record sheet col N); null until dated. */
+  time: When | null;
+  /** Where Bai Juyi was: typed in col O, or taken from his postings ("career") when col O is empty. */
+  baiAt: string;
+  baiAtFrom: "sheet" | "career" | "";
+  post: string;
+  toAt: string;
   poem: string[] | null;
 }
+
+export interface When { raw: string; from: number; to: number; circa: boolean }
+export interface Place { en: string; lon: number; lat: number }
+export interface Station { from: number; to: number; place: string; post: string; en: string }
 
 export interface SiteData {
   meta: { built: string; source: string; sha256: string; summaryCheck: { status: string; detail: string } };
   counts: Record<RoundKey, Record<string, number>>;
   rows: Row[];
+  places: Record<string, Place>;
+  career: { verified: boolean; source: string; stations: Station[] };
   method: { run: Record<string, string>; promptA: string; promptB: string };
 }
 
@@ -35,6 +48,11 @@ export const DATA = raw as unknown as SiteData;
 export const ROWS = DATA.rows;
 export const TOTAL = ROWS.length;
 export const POEM_COUNT = new Set(ROWS.map((r) => r.title)).size;
+
+export const PLACES = DATA.places;
+export const CAREER = DATA.career;
+/** Rows the timeline can draw: dated within its span (800–846), with Bai Juyi's place on the map. */
+export const DATED = ROWS.filter((r) => r.time && r.time.from >= 800 && r.time.to <= 846 && PLACES[r.baiAt]);
 
 export const rowByN = (n: string | undefined) => ROWS.find((r) => r.n === n);
 export const tested = (rnd: RoundKey) => ROWS.filter((r) => r[rnd].verdict !== "untested").length;
