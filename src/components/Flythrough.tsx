@@ -73,7 +73,7 @@ export function Flythrough() {
         </div>
         <div className="fly-progress" aria-hidden="true"><i /></div>
         <p className="fly-credit">
-          <span className="long">Elevation: SRTM terrain data courtesy of the U.S. Geological Survey, via AWS Terrain Tiles · heights ×1.5 · 100 m contours</span>
+          <span className="long">Elevation: SRTM terrain data courtesy of the U.S. Geological Survey, via AWS Terrain Tiles · heights ×1.5 · contours every 100 m · water read from the elevation data · place sources on the About page</span>
           <span className="short">Elevation: SRTM (USGS) · heights ×1.5</span>
         </p>
       </div>
