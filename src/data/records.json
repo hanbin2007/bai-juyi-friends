@@ -12,17 +12,17 @@
   "a": {
    "correct": 0,
    "wrong": 0,
+   "partly": 0,
    "declined": 0,
    "unknown": 0,
-   "partly": 0,
    "total": 0
   },
   "b": {
    "correct": 0,
    "wrong": 0,
+   "partly": 0,
    "declined": 0,
    "unknown": 0,
-   "partly": 0,
    "total": 0
   }
  },

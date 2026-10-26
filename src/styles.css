@@ -7,7 +7,7 @@
   --surface-2: #efe8da;
   --ink: #1d1a16;
   --ink-2: #463f36;
-  --muted: #776d61;
+  --muted: #6b6155;
   --rule: #ddd3c2;
   --rule-strong: #c6b9a3;
   --accent: #b03a29;
@@ -242,24 +242,32 @@ p { margin: 0 0 1em; text-wrap: pretty; }
 .k-poem { width: 6px; height: 6px; border-radius: 50%; background: var(--ink); }
 .k-name { width: 9px; height: 9px; border-radius: 50%; background: var(--s-correct); box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--s-declined); }
 .net-hint { width: 100%; text-align: center; color: var(--ink-2); }
+.link-btn { border: 0; padding: 0; background: none; color: inherit; font: inherit; text-decoration: underline; text-underline-offset: 0.2em; text-decoration-color: color-mix(in oklab, var(--accent) 60%, transparent); cursor: pointer; }
+.link-btn:hover { color: var(--accent); }
 @media (min-width: 900px) { .net-hint { width: auto; } }
 
 /* flythrough over Mount Lu */
-.fly { position: relative; height: 560vh; background: #1b1d1a; border-top: 1px solid var(--rule); }
+/* The flight is always drawn on paper, in either theme. */
+.fly { position: relative; height: 560vh; background: #efe7d6; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.fly-stage { background: linear-gradient(#e7dfcd 0%, #efe7d6 46%, #efe7d6 100%); }
+.fly-stage::after { /* paper grain */
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .32 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 .fly-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
 #fly-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1.2s ease; }
 .fly-ready #fly-canvas { opacity: 1; }
-.fly-loading { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: #d8cfbf; font-size: 14px; letter-spacing: .04em; }
+.fly-loading { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: #776d61; font-size: 14px; letter-spacing: .04em; }
 .fly-ready .fly-loading { display: none; }
 .fly-labels { position: absolute; inset: 0; pointer-events: none; }
 .fly-label {
   position: absolute; left: 0; top: 0; opacity: 0; white-space: nowrap;
   display: flex; flex-direction: column; align-items: center; margin: -46px 0 0 -40px; width: 80px;
-  color: #fffaf0; text-shadow: 0 1px 2px rgb(0 0 0 / .65), 0 0 12px rgb(0 0 0 / .35);
+  color: #1d1a16; text-shadow: 0 0 3px #efe7d6, 0 0 8px #efe7d6, 0 0 14px #efe7d6;
 }
 .fly-label b { font: 700 18px/1.1 var(--font-cjk); letter-spacing: .12em; }
-.fly-label span { font: 500 11px/1.3 var(--font-sans); opacity: .9; }
-.fly-label::after { content: ""; width: 1px; height: 14px; margin-top: 3px; background: rgb(255 250 240 / .8); }
+.fly-label span { font: 500 11px/1.3 var(--font-sans); color: #463f36; }
+.fly-label::after { content: ""; width: 1px; height: 14px; margin-top: 3px; background: #b03a29; }
 .fly-captions { position: absolute; left: var(--gutter); bottom: 64px; width: min(440px, calc(100% - 2 * var(--gutter))); }
 @media (min-width: 900px) { .fly-captions { left: calc((100vw - min(var(--wrap), 100vw)) / 2 + var(--gutter)); bottom: 88px; } }
 .fly-cap {
@@ -287,10 +295,10 @@ p { margin: 0 0 1em; text-wrap: pretty; }
 .fly-names a:hover { background: #b03a29; color: #fffaf3; }
 .fly-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgb(255 255 255 / .15); }
 .fly-progress i { display: block; height: 100%; background: #e0654e; transform-origin: 0 50%; transform: scaleX(0); }
-.fly-credit { position: absolute; right: 12px; bottom: 10px; margin: 0; max-width: calc(100% - 24px); text-align: right; font-size: 10.5px; line-height: 1.35; color: rgb(255 250 240 / .75); text-shadow: 0 1px 2px rgb(0 0 0 / .6); }
+.fly-credit { position: absolute; right: 12px; bottom: 10px; margin: 0; max-width: calc(100% - 24px); text-align: right; font-size: 10.5px; line-height: 1.35; color: #776d61; }
 .fly-credit a { color: inherit; }
-/* without WebGL: captions as a plain list over the stitched image */
-.fly-static { height: auto; background: #1b1d1a url("/terrain/satellite-2048.jpg") center / cover; }
+/* without WebGL: captions as a plain list on the paper */
+.fly-static { height: auto; }
 .fly-static .fly-stage { position: relative; height: auto; padding: 48px 0 56px; }
 .fly-static #fly-canvas, .fly-static .fly-loading, .fly-static .fly-progress { display: none; }
 .fly-static .fly-captions { position: static; display: grid; gap: 12px; margin: 0 auto; }
@@ -399,7 +407,7 @@ code { font: 0.84em/1.4 var(--font-mono); padding: 1px 6px; border-radius: 4px; 
 /* ---------------------------------------------------------------- badges */
 
 .badge {
-  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; max-width: 100%;
   padding: 3px 9px 3px 7px; border-radius: 3px;
   font: 500 12.5px/1.4 var(--font-sans); color: var(--ink);
   background: color-mix(in oklab, var(--sc) 15%, var(--surface));
@@ -494,9 +502,14 @@ tr.detail[hidden] { display: none; }
 @media (min-width: 900px) { .detail-inner { grid-template-columns: 1.1fr 1fr; gap: 32px; } }
 .detail-inner h4 { margin: 0 0 8px; font: 600 12px/1.3 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .detail-inner h4 span { font-family: var(--font-cjk); letter-spacing: 0.1em; text-transform: none; }
-.kv { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 0; font-size: 14.5px; }
+.kv { display: grid; grid-template-columns: minmax(0, max-content) minmax(0, 1fr); gap: 8px 16px; margin: 0; font-size: 14.5px; }
+.detail-inner > * { min-width: 0; }
+@media (max-width: 480px) {
+  .kv { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .kv dt { margin-top: 8px; font-size: 13px; }
+}
 .kv dt { color: var(--muted); }
-.kv dd { margin: 0; white-space: pre-wrap; }
+.kv dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .kv dd.empty { color: var(--muted); font-style: italic; }
 .poem {
   margin: 0; padding: 16px 18px; border-radius: 8px; background: var(--surface); border: 1px solid var(--rule);
@@ -586,7 +599,8 @@ tr.row.flash { animation: flash 1.6s ease; }
 .seg:only-child { border-radius: 4px; }
 .seg:hover, .seg:focus-visible { filter: brightness(1.08) saturate(1.1); box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--ink); z-index: 1; }
 .seg b { position: absolute; inset: 0; display: grid; place-items: center; font: 600 12.5px/1 var(--font-sans); color: #fff; font-variant-numeric: tabular-nums; }
-.seg[data-s="untested"] b, .seg[data-s="partly"] b { color: var(--ink); }
+.seg[data-s="untested"] b { color: var(--ink); }
+.seg[data-s="partly"] b { color: #1d1a16; } /* dark on amber in both themes */
 .stack-total { font-size: 13px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 .axis { display: grid; grid-template-columns: 116px 1fr 64px; gap: 14px; margin-top: 4px; }
 .axis-ticks { position: relative; height: 18px; border-top: 1px solid var(--rule); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }

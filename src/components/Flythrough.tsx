@@ -1,6 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { POEM_COUNT, TOTAL } from "../lib/data";
+
+interface Cap { zh: string; title: string; body: ReactNode; links?: (tab: number | undefined) => ReactNode }
+
+const NAMES = (tab: number | undefined) => (
+  <>
+    <Link to="/entry/11" lang="zh-Hant" tabIndex={tab}>牛二</Link>
+    <Link to="/entry/12" lang="zh-Hant" tabIndex={tab}>李七</Link>
+    <Link to="/entry/13" lang="zh-Hant" tabIndex={tab}>庾三十二</Link>
+  </>
+);
+
+const CAPTIONS: Cap[] = [
+  { zh: "江州", title: "Jiujiang, 815", body: <>Demoted to marshal (<span lang="zh-Hant">司馬</span>) of Jiangzhou, Bai Juyi came to this stretch of the Yangtze. Scroll to fly south over the real terrain.</> },
+  { zh: "廬山", title: "Mount Lu", body: <>The mountain rises between the Yangtze and Poyang Lake. The relief is real survey elevation data, drawn here in ink.</> },
+  { zh: "草堂", title: "The thatched cottage, 817", body: <>On the north side of the mountain, between Xianglu Peak (<span lang="zh-Hant">香爐峰</span>) and Yiai Temple (<span lang="zh-Hant">遺愛寺</span>), he built a thatched cottage. Its exact site is uncertain.</> },
+  {
+    zh: "寄", title: "Letters from the mountain",
+    body: <>There he wrote <span lang="zh-Hant">廬山草堂夜雨獨宿寄<span className="pn">牛二</span><span className="pn">李七</span><span className="pn">庾三十二</span>員外</span>, sent to three friends named only by sibling rank.</>,
+    links: NAMES,
+  },
+  { zh: "鄱陽湖", title: "Poyang Lake", body: <>Who were they? The record below follows {TOTAL} such names in {POEM_COUNT} poems.</>, links: (tab) => <a href="#names" tabIndex={tab}>See the names</a> },
+];
 
 /** Scroll-driven flight over Mount Lu. three.js and the terrain load only when the section comes near. */
 export function Flythrough() {
@@ -25,43 +47,34 @@ export function Flythrough() {
 
   return (
     <section className={"fly" + (fallback ? " fly-static" : "")} id="journey" aria-label="A flight over Mount Lu" ref={sectionRef}>
+      {/* The full narration for screen readers and keyboard users; the animated captions below repeat it visually.
+          Without WebGL the captions are shown as a plain list instead, so this copy is dropped. */}
+      {!fallback && <div className="sr-only">
+        <h2>A flight over Mount Lu</h2>
+        <ol>
+          {CAPTIONS.map((c) => (
+            <li key={c.zh}><h3><span lang="zh-Hant">{c.zh}</span> {c.title}</h3><p>{c.body}</p>{c.links && <p>{c.links(undefined)}</p>}</li>
+          ))}
+        </ol>
+      </div>}
       <div className="fly-stage">
         <canvas id="fly-canvas" aria-hidden="true" ref={canvasRef} />
         <div className="fly-labels" aria-hidden="true" />
         <p className="fly-loading" aria-hidden="true">Loading the terrain of Mount Lu…</p>
-        <div className="fly-captions">
-          <article className="fly-cap">
-            <h2><span lang="zh-Hant">江州</span> Jiujiang, 815</h2>
-            <p>Demoted to marshal (<span lang="zh-Hant">司馬</span>) of Jiangzhou, Bai Juyi came to this stretch of the Yangtze. Scroll to fly south over the real terrain.</p>
-          </article>
-          <article className="fly-cap">
-            <h2><span lang="zh-Hant">廬山</span> Mount Lu</h2>
-            <p>The mountain rises between the Yangtze and Poyang Lake. The relief here is survey elevation data; the colours are satellite imagery.</p>
-          </article>
-          <article className="fly-cap">
-            <h2><span lang="zh-Hant">草堂</span> The thatched cottage, 817</h2>
-            <p>On the north side of the mountain, between Xianglu Peak (<span lang="zh-Hant">香爐峰</span>) and Yiai Temple (<span lang="zh-Hant">遺愛寺</span>), he built a thatched cottage. Its exact site is uncertain.</p>
-          </article>
-          <article className="fly-cap">
-            <h2><span lang="zh-Hant">寄</span> Letters from the mountain</h2>
-            <p>There he wrote <span lang="zh-Hant">廬山草堂夜雨獨宿寄<span className="pn">牛二</span><span className="pn">李七</span><span className="pn">庾三十二</span>員外</span>, sent to three friends named only by sibling rank.</p>
-            <p className="fly-names">
-              <Link to="/entry/11" lang="zh-Hant">牛二</Link>
-              <Link to="/entry/12" lang="zh-Hant">李七</Link>
-              <Link to="/entry/13" lang="zh-Hant">庾三十二</Link>
-            </p>
-          </article>
-          <article className="fly-cap">
-            <h2><span lang="zh-Hant">鄱陽湖</span> Poyang Lake</h2>
-            <p>Who were they? The record below follows {TOTAL} such names in {POEM_COUNT} poems.</p>
-            <p className="fly-names"><a href="#names">See the names</a></p>
-          </article>
+        <div className="fly-captions" aria-hidden={!fallback}>
+          {CAPTIONS.map((c) => (
+            <article className="fly-cap" key={c.zh}>
+              <h2><span lang="zh-Hant">{c.zh}</span> {c.title}</h2>
+              <p>{c.body}</p>
+              {c.links && <p className="fly-names">{c.links(fallback ? undefined : -1)}</p>}
+            </article>
+          ))}
           <article className="fly-cap" />
         </div>
         <div className="fly-progress" aria-hidden="true"><i /></div>
         <p className="fly-credit">
-          <span className="long">Elevation: SRTM (USGS) via AWS Terrain Tiles, height ×1.5 · Imagery: <a href="https://cloudless.eox.at">EOxCloudless</a> by EOX IT Services GmbH, contains modified Copernicus Sentinel data 2024, CC BY-NC-SA 4.0</span>
-          <span className="short">SRTM (USGS), height ×1.5 · <a href="https://cloudless.eox.at">EOxCloudless</a> 2024, Copernicus Sentinel data, CC BY-NC-SA 4.0</span>
+          <span className="long">Elevation: SRTM terrain data courtesy of the U.S. Geological Survey, via AWS Terrain Tiles · heights ×1.5 · 100 m contours</span>
+          <span className="short">Elevation: SRTM (USGS) · heights ×1.5</span>
         </p>
       </div>
     </section>

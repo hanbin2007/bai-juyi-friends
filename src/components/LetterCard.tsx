@@ -29,11 +29,12 @@ function columns(row: Row): Piece[][] {
 }
 
 /** Eight-column letter paper with one title written in vertical columns.
- *  With `row` it shows that row; otherwise it cycles through all rows. */
+ *  With `row` it shows that row; otherwise it cycles through all rows, pausing while pointed at or focused. */
 export function LetterCard({ row, hold }: { row?: Row; hold?: Row | null }) {
   const [i, setI] = useState(0);
   const [fading, setFading] = useState(false);
-  const cycling = !row && !hold;
+  const [engaged, setEngaged] = useState(false);
+  const cycling = !row && !hold && !engaged;
 
   useEffect(() => {
     if (!cycling || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -42,7 +43,8 @@ export function LetterCard({ row, hold }: { row?: Row; hold?: Row | null }) {
       setFading(true);
       t2 = window.setTimeout(() => { setI((v) => (v + 1) % TOTAL); setFading(false); }, 450);
     }, 5200);
-    return () => { clearInterval(t); clearTimeout(t2); };
+    // stopping mid-fade must not leave the card faded out
+    return () => { clearInterval(t); clearTimeout(t2); setFading(false); };
   }, [cycling]);
 
   const shown = row || hold || ROWS[i];
@@ -51,7 +53,13 @@ export function LetterCard({ row, hold }: { row?: Row; hold?: Row | null }) {
   while (cols.length < NCOLS - 1) cols.push([]);
 
   return (
-    <div className="letter-wrap">
+    <div
+      className="letter-wrap"
+      onMouseEnter={() => setEngaged(true)}
+      onMouseLeave={() => setEngaged(false)}
+      onFocus={() => setEngaged(true)}
+      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setEngaged(false); }}
+    >
       <div className={"letter" + (fading ? " fading" : "")} aria-hidden="true">
         <div className="letter-cols">
           {cols.map((c, j) => (

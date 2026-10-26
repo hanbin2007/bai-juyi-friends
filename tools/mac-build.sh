@@ -22,6 +22,6 @@ if [ "${1:-build}" = dev ]; then
   trap 'kill $!' EXIT
   npm run dev -- --host 127.0.0.1 --port "${PORT:-5173}" --strictPort
 else
-  npm run "$1"
+  npm run "${1:-build}"
   echo "Built into $DEST/dist"
 fi

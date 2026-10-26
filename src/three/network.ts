@@ -14,11 +14,13 @@ const norm3 = (v: V3): V3 => { const l = Math.hypot(v[0], v[1], v[2]) || 1; retu
 const cross = (a: V3, b: V3): V3 => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 const lerp = (a: V3, b: V3, t: number): V3 => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
 
-/** Mounts the network into `host`; returns a cleanup function. */
-export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string) => void): () => void {
+export interface NetworkHandle { destroy: () => void; setPaused: (paused: boolean) => void }
+
+/** Mounts the network into `host`. */
+export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string) => void): NetworkHandle {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
-  if (!ctx || !rows.length) return () => {};
+  if (!ctx || !rows.length) return { destroy: () => {}, setPaused: () => {} };
   canvas.setAttribute("aria-hidden", "true");
   host.appendChild(canvas);
   host.classList.add("ready");
@@ -87,7 +89,7 @@ export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string)
   let W = 0, H = 0, DPR = 1, R = 100, K = 1;
   const CAM = 4.2;
   let yaw = 0.6, pitch = -0.22, vYaw = 0, vPitch = 0, dragging = false, lastX = 0, lastY = 0, moved = 0;
-  let hover: Node | null = null, running = false, visible = true;
+  let hover: Node | null = null, raf = 0, inView = true, paused = false;
   const born = performance.now();
 
   const resize = () => {
@@ -130,8 +132,8 @@ export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string)
   const SERIF = '"Noto Serif TC", "Songti TC", serif';
 
   const frame = (now: number) => {
-    if (!running) return;
-    const motion = !reduce.matches;
+    raf = 0;
+    const motion = !reduce.matches && !paused;
     const age = (now - born) / 1000;
     const grow = motion ? 1 - Math.pow(1 - Math.min(1, age / 1.8), 3) : 1;
     if (!dragging) {
@@ -223,7 +225,8 @@ export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string)
       }
     });
     ctx.globalAlpha = 1;
-    requestAnimationFrame(frame);
+    // keep animating while something moves; a still view redraws only on interaction
+    if (motion || dragging || Math.abs(vYaw) > 1e-4 || Math.abs(vPitch) > 1e-4 || Math.abs(pitch + 0.22) > 1e-3) start();
   };
 
   /* ------------------------------------------------------------ interaction */
@@ -262,7 +265,7 @@ export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string)
   const local = (e: PointerEvent) => { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
 
   const down = (e: PointerEvent) => {
-    dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY;
+    dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY; start();
     if (e.pointerType === "mouse") canvas.setPointerCapture(e.pointerId);
   };
   const move = (e: PointerEvent) => {
@@ -276,7 +279,7 @@ export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string)
       return;
     }
     const [x, y] = local(e), n = pick(x, y);
-    if (n !== hover) { hover = n; canvas.style.cursor = n && n.kind === "name" ? "pointer" : "grab"; }
+    if (n !== hover) { hover = n; canvas.style.cursor = n && n.kind === "name" ? "pointer" : "grab"; start(); }
     showTip(hover);
   };
   const up = (e: PointerEvent) => {
@@ -289,31 +292,37 @@ export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string)
     }
   };
   const cancel = () => { dragging = false; };
-  const leave = (e: PointerEvent) => { if (e.pointerType === "mouse") { hover = null; showTip(null); } };
+  const leave = (e: PointerEvent) => { if (e.pointerType === "mouse") { hover = null; showTip(null); start(); } };
   canvas.addEventListener("pointerdown", down);
   canvas.addEventListener("pointermove", move);
   canvas.addEventListener("pointerup", up);
   canvas.addEventListener("pointercancel", cancel);
   canvas.addEventListener("pointerleave", leave);
 
-  /* ------------------------------------------------------------ lifecycle */
-  const start = () => { if (!running && visible && !document.hidden) { running = true; requestAnimationFrame(frame); } };
-  const stop = () => { running = false; };
+  /* ------------------------------------------------------------ lifecycle: one animation frame in flight at most */
+  function start() { if (!raf && inView && !document.hidden) raf = requestAnimationFrame(frame); }
+  const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
+  const redraw = () => { resize(); start(); };
   resize();
-  const ro = new ResizeObserver(resize);
+  const ro = new ResizeObserver(redraw);
   ro.observe(host);
-  const io = new IntersectionObserver((en) => { visible = en[0].isIntersecting; if (visible) start(); else stop(); });
+  const io = new IntersectionObserver((en) => { inView = en[0].isIntersecting; if (inView) start(); else stop(); });
   io.observe(host);
   const vis = () => { if (document.hidden) stop(); else start(); };
   document.addEventListener("visibilitychange", vis);
+  const themeRedraw = new MutationObserver(() => start());
+  themeRedraw.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   start();
 
-  return () => {
-    stop();
-    ro.disconnect(); io.disconnect(); mo.disconnect();
-    mq.removeEventListener("change", readColours);
-    document.removeEventListener("visibilitychange", vis);
-    canvas.remove(); tip.remove();
-    host.classList.remove("ready");
+  return {
+    setPaused: (p) => { paused = p; start(); },
+    destroy: () => {
+      stop();
+      ro.disconnect(); io.disconnect(); mo.disconnect(); themeRedraw.disconnect();
+      mq.removeEventListener("change", readColours);
+      document.removeEventListener("visibilitychange", vis);
+      canvas.remove(); tip.remove();
+      host.classList.remove("ready");
+    },
   };
 }

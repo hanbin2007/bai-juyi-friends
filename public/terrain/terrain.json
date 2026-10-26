@@ -12,7 +12,6 @@
   1280
  ],
  "credits": {
-  "elevation": "Terrain Tiles (AWS Open Data); SRTM and GMTED2010 terrain data courtesy of the U.S. Geological Survey",
-  "imagery": "EOxCloudless https://cloudless.eox.at by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2024), CC BY-NC-SA 4.0"
+  "elevation": "Terrain Tiles (AWS Open Data); SRTM and GMTED2010 terrain data courtesy of the U.S. Geological Survey"
  }
 }

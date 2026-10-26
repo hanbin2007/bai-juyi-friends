@@ -1,6 +1,5 @@
-/* Scroll-driven flight over Mount Lu: real elevation (SRTM) draped with Sentinel-2 imagery. */
+/* Scroll-driven flight over Mount Lu. The relief is real (SRTM elevation); it is drawn as ink on paper. */
 import * as THREE from "three";
-import { Sky } from "three/examples/jsm/objects/Sky.js";
 
 interface TerrainMeta {
   west: number; east: number; north: number; south: number;
@@ -10,15 +9,88 @@ interface TerrainMeta {
 const loadImage = (src: string) =>
   new Promise<HTMLImageElement>((res, rej) => { const im = new Image(); im.decoding = "async"; im.onload = () => res(im); im.onerror = rej; im.src = src; });
 
+// Colours as raw sRGB so the shader output matches the page's paper exactly.
+const rgb = (hex: number) => new THREE.Vector3(((hex >> 16) & 255) / 255, ((hex >> 8) & 255) / 255, (hex & 255) / 255);
+const PAPER = 0xefe7d6, INK = 0x1d2324, MIST = 0xf4eee2, WATER = 0xe4e2d6;
+
+const vertexShader = /* glsl */ `
+  varying vec3 vWorld;
+  varying vec3 vNormal;
+  void main() {
+    vec4 w = modelMatrix * vec4(position, 1.0);
+    vWorld = w.xyz;
+    vNormal = normalize(mat3(modelMatrix) * normal);
+    gl_Position = projectionMatrix * viewMatrix * w;
+  }
+`;
+
+const fragmentShader = /* glsl */ `
+  uniform vec3 uPaper, uInk, uMist, uWater, uSun;
+  uniform float uMetresPerY, uFog, uMistTop;
+  varying vec3 vWorld;
+  varying vec3 vNormal;
+
+  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float noise(vec2 p) {
+    vec2 i = floor(p), f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
+  }
+  float fbm(vec2 p) { float v = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { v += a * noise(p); p *= 2.03; a *= 0.5; } return v; }
+
+  void main() {
+    vec3 n = normalize(vNormal);
+    vec3 toCam = cameraPosition - vWorld;
+    float dist = length(toCam);
+    vec3 v = toCam / dist;
+    float h = vWorld.y * uMetresPerY;              // metres above sea level
+    float slope = 1.0 - clamp(n.y, 0.0, 1.0);
+
+    // ink tone: shadowed, steep and high ground takes more ink
+    float lit = clamp(dot(n, uSun), 0.0, 1.0);
+    float tone = (1.0 - lit) * 0.8 + slope * 0.75 + smoothstep(80.0, 1100.0, h) * 0.4;
+    // texture strokes (皴) run down the slope; a dry-brush grain breaks up the wash
+    vec2 down = normalize(n.xz + 1e-4);
+    vec2 across = vec2(-down.y, down.x);
+    float cun = fbm(vec2(dot(vWorld.xz, across) * 0.09, dot(vWorld.xz, down) * 0.012));
+    float grain = fbm(vWorld.xz * 0.05);
+    float ink = smoothstep(0.30, 0.9, tone + (cun - 0.5) * 0.5 * slope * 2.0 + (grain - 0.5) * 0.35);
+
+    // ridge outlines where a slope turns away from the viewer (not on flat ground seen edge-on)
+    float rim = 1.0 - abs(dot(n, v));
+    ink = max(ink, smoothstep(0.72, 0.97, rim) * smoothstep(0.12, 0.45, slope) * 0.85);
+
+    // faint contours every 100 m, a little stronger every 500 m
+    float c = h / 100.0;
+    float line = 1.0 - min(abs(fract(c - 0.5) - 0.5) / max(fwidth(c), 1e-4), 1.0);
+    float c5 = h / 500.0;
+    float line5 = 1.0 - min(abs(fract(c5 - 0.5) - 0.5) / max(fwidth(c5), 1e-4), 1.0);
+    float contour = max(line * 0.16, line5 * 0.32) * step(30.0, h) * (1.0 - smoothstep(600.0, 2600.0, dist));
+
+    // the plain and the water stay mostly paper
+    float low = 1.0 - smoothstep(18.0, 70.0, h);
+    vec3 ground = mix(uPaper, uWater, low * (1.0 - slope));
+    ink *= mix(1.0, 0.18, low);
+
+    vec3 col = mix(ground, uInk, clamp(pow(ink, 1.2) * 0.84 + contour, 0.0, 1.0));
+
+    // valley mist, and distant ridges fading into the paper as in a landscape scroll
+    float mist = (1.0 - smoothstep(uMistTop * 0.3, uMistTop, h)) * (0.2 + 0.4 * fbm(vWorld.xz * 0.004));
+    col = mix(col, uMist, mist * (1.0 - low * 0.6));
+    float fog = 1.0 - exp(-pow(dist * uFog, 1.6));
+    col = mix(col, uPaper, clamp(fog, 0.0, 1.0));
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
 /** Builds the scene inside `section` (which must contain #fly-canvas, .fly-labels, .fly-cap, .fly-progress i).
  *  Resolves to a cleanup function. */
 export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasElement): Promise<() => void> {
   const small = Math.min(innerWidth, innerHeight) < 700 || matchMedia("(pointer: coarse)").matches;
   const base = import.meta.env.BASE_URL + "terrain/";
-  const [meta, demImg, satImg] = await Promise.all([
+  const [meta, demImg] = await Promise.all([
     fetch(base + "terrain.json").then((r) => r.json() as Promise<TerrainMeta>),
     loadImage(base + "height.png"),
-    loadImage(base + (small ? "satellite-2048.jpg" : "satellite-4096.jpg")),
   ]);
 
   /* ------------------------------------------------------------ elevation */
@@ -50,81 +122,45 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
     return new THREE.Vector3(x, altMetres == null ? groundY(x, z) : (altMetres * EXAG) / UNIT, z);
   };
 
-  /* ------------------------------------------------------------ renderer, sky, light */
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: "high-performance" });
+  /* ------------------------------------------------------------ renderer */
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, small ? 1.5 : 2));
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.55;
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setClearColor(0x000000, 0); // the paper and sky come from the page behind the canvas
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, 1, 5, 60000);
+  const sun = new THREE.Vector3().setFromSphericalCoords(1, THREE.MathUtils.degToRad(90 - 32), THREE.MathUtils.degToRad(-128));
 
-  // physically based sky, late-afternoon sun from the south-west
-  const sky = new Sky();
-  sky.scale.setScalar(200000);
-  const su = sky.material.uniforms;
-  su.turbidity.value = 7; su.rayleigh.value = 1.6; su.mieCoefficient.value = 0.006; su.mieDirectionalG.value = 0.86;
-  const sun = new THREE.Vector3().setFromSphericalCoords(1, THREE.MathUtils.degToRad(90 - 11), THREE.MathUtils.degToRad(-128));
-  su.sunPosition.value.copy(sun);
-  scene.add(sky);
+  // A shader that fails to compile must reject, so the page falls back to the plain captions.
+  let shaderFailed = false;
+  renderer.debug.onShaderError = () => { shaderFailed = true; };
 
-  // image-based light from the same sky
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  const skyScene = new THREE.Scene();
-  const sky2 = new Sky();
-  sky2.scale.setScalar(1000);
-  Object.keys(su).forEach((k) => { sky2.material.uniforms[k].value = su[k].value; });
-  skyScene.add(sky2);
-  const envRT = pmrem.fromScene(skyScene);
-  scene.environment = envRT.texture;
-
-  scene.fog = new THREE.FogExp2(0xcdd2cf, small ? 0.00026 : 0.00023);
-
-  const sunLight = new THREE.DirectionalLight(0xffe2bf, 2.6);
-  sunLight.position.copy(sun).multiplyScalar(6000);
-  sunLight.castShadow = true;
-  sunLight.shadow.mapSize.set(small ? 2048 : 4096, small ? 2048 : 4096);
-  const sc = sunLight.shadow.camera;
-  sc.left = -W * 0.62; sc.right = W * 0.62; sc.top = H * 0.62; sc.bottom = -H * 0.62; sc.near = 100; sc.far = 16000;
-  sunLight.shadow.bias = -0.0004; sunLight.shadow.normalBias = 1.2;
-  scene.add(sunLight);
-  scene.add(new THREE.HemisphereLight(0xcfd8e6, 0x4a3f2c, 0.35));
+  const inkMat = new THREE.ShaderMaterial({
+    vertexShader, fragmentShader,
+    extensions: { derivatives: true }, // fwidth() on WebGL1; built in on WebGL2
+    uniforms: {
+      uPaper: { value: rgb(PAPER) }, uInk: { value: rgb(INK) }, uMist: { value: rgb(MIST) }, uWater: { value: rgb(WATER) },
+      uSun: { value: sun }, uMetresPerY: { value: UNIT / EXAG },
+      uFog: { value: small ? 0.0002 : 0.00017 }, uMistTop: { value: 260 },
+    },
+  });
 
   /* ------------------------------------------------------------ terrain */
-  const segX = small ? 320 : Math.min(dw - 1, 900), segY = Math.round(segX * (H / W));
+  const segX = small ? 320 : Math.min(dw - 1, 680), segY = Math.round(segX * (H / W));
   const geo = new THREE.PlaneGeometry(W, H, segX, segY);
   geo.rotateX(-Math.PI / 2);
   const pos = geo.attributes.position;
   for (let i = 0; i < pos.count; i++) pos.setY(i, groundY(pos.getX(i), pos.getZ(i)));
   geo.computeVertexNormals();
+  scene.add(new THREE.Mesh(geo, inkMat));
 
-  const sat = new THREE.Texture(satImg);
-  sat.colorSpace = THREE.SRGBColorSpace;
-  sat.anisotropy = renderer.capabilities.getMaxAnisotropy();
-  sat.minFilter = THREE.LinearMipmapLinearFilter;
-  sat.needsUpdate = true;
+  // paper beyond the data, drawn with the same ink so the edge disappears
+  const apronGeo = new THREE.PlaneGeometry(W * 12, H * 12);
+  apronGeo.rotateX(-Math.PI / 2);
+  apronGeo.translate(0, -0.5, 0);
+  scene.add(new THREE.Mesh(apronGeo, inkMat));
 
-  const terrainMat = new THREE.MeshStandardMaterial({ map: sat, roughness: 0.93, metalness: 0, envMapIntensity: 0.6 });
-  const terrain = new THREE.Mesh(geo, terrainMat);
-  terrain.castShadow = true; terrain.receiveShadow = true;
-  scene.add(terrain);
-
-  // ground beyond the data takes the imagery's average colour, so the edge melts into the haze
-  const avg = document.createElement("canvas");
-  avg.width = avg.height = 1;
-  const actx = avg.getContext("2d")!;
-  actx.drawImage(satImg, 0, 0, 1, 1);
-  const [ar, ag, ab] = actx.getImageData(0, 0, 1, 1).data;
-  const apronColour = new THREE.Color().setRGB(ar / 255, ag / 255, ab / 255, THREE.SRGBColorSpace).lerp((scene.fog as THREE.FogExp2).color, 0.35);
-  const apronGeo = new THREE.PlaneGeometry(W * 12, H * 12), apronMat = new THREE.MeshBasicMaterial({ color: apronColour });
-  const apron = new THREE.Mesh(apronGeo, apronMat);
-  apron.rotation.x = -Math.PI / 2; apron.position.y = -1;
-  scene.add(apron);
-
-  /* ------------------------------------------------------------ mist (Mount Lu is known for its cloud) */
+  /* ------------------------------------------------------------ drifting mist */
   const mistCanvas = document.createElement("canvas");
   mistCanvas.width = mistCanvas.height = 256;
   const g = mistCanvas.getContext("2d")!;
@@ -133,7 +169,7 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
   for (let k = 0; k < 40; k++) {
     const x = 128 + (rand() - 0.5) * 128, y = 128 + (rand() - 0.5) * 64, r = 256 * (0.12 + rand() * 0.2);
     const gr = g.createRadialGradient(x, y, 0, x, y, r);
-    gr.addColorStop(0, "rgba(255,255,255,0.16)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+    gr.addColorStop(0, "rgba(244,238,226,0.2)"); gr.addColorStop(1, "rgba(244,238,226,0)");
     g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
   }
   const mistTex = new THREE.CanvasTexture(mistCanvas);
@@ -141,12 +177,11 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
   const mist = new THREE.Group();
   for (let k = 0; k < (small ? 90 : 160); k++) {
     const p = at(29.43 + rand() * 0.24, 115.88 + rand() * 0.2);
-    // thin wisps over the high ground only, so the ridges stay readable
-    if ((p.y * UNIT) / EXAG < 420) continue;
-    const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: mistTex, color: 0xfff6ea, transparent: true, depthWrite: false, opacity: 0.18 + rand() * 0.3 }));
-    const size = 180 + rand() * 380;
-    m.scale.set(size, size * 0.42, 1);
-    m.position.set(p.x, p.y + 30 + rand() * 90, p.z);
+    if ((p.y * UNIT) / EXAG < 380) continue;
+    const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: mistTex, transparent: true, depthWrite: false, opacity: 0.2 + rand() * 0.3, fog: false }));
+    const size = 220 + rand() * 420;
+    m.scale.set(size, size * 0.38, 1);
+    m.position.set(p.x, p.y + 20 + rand() * 80, p.z);
     mist.add(m);
   }
   scene.add(mist);
@@ -160,7 +195,8 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
   const places = [
     { zh: "江州", en: "Jiujiang", p: at(29.705, 115.99) },
     { zh: "長江", en: "Yangtze", p: at(29.748, 116.07) },
-    { zh: "東林寺", en: "Donglin Temple", p: at(29.6045, 115.9556) },
+    // modern temple site, from the DILA place authority (PL000000018801)
+    { zh: "東林寺", en: "Donglin Temple", p: at(29.601618, 115.944301) },
     { zh: "廬山", en: "Mount Lu · " + Math.round(summit.h) + " m", p: new THREE.Vector3((summit.u - 0.5) * W, (summit.h * EXAG) / UNIT, (summit.v - 0.5) * H) },
     { zh: "鄱陽湖", en: "Poyang Lake", p: at(29.46, 116.15) },
   ].map((pl) => {
@@ -196,7 +232,8 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
     return Math.min(1, Math.max(0, -r.top / (r.height - innerHeight || 1)));
   };
 
-  let t = progress(), visible = true, raf = 0, alive = true;
+  let t = progress(), inView = true, raf = 0, alive = true;
+  const visible = () => inView && !document.hidden;
   const camPos = new THREE.Vector3(), look = new THREE.Vector3(), v = new THREE.Vector3();
 
   const resize = () => {
@@ -220,6 +257,8 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
     lookCurve.getPoint(t, look);
     if (!still) camPos.x += Math.sin(now / 4200) * 6;
     camPos.y = Math.max(camPos.y, groundY(camPos.x, camPos.z) + 25);
+    // tall phone screens: tilt down so the land, not the sky, fills the frame
+    if (camera.aspect < 0.8) look.y -= (camPos.y - look.y) * 0.45 + 60;
     camera.position.copy(camPos);
     camera.lookAt(look);
     mist.children.forEach((m, i) => { ((m as THREE.Sprite).material as THREE.SpriteMaterial).rotation = Math.sin(now / 9000 + i) * 0.04; });
@@ -243,13 +282,21 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
       if (on) pl.el.style.transform = `translate(${((v.x * 0.5 + 0.5) * w).toFixed(1)}px,${((-v.y * 0.5 + 0.5) * h).toFixed(1)}px)`;
     });
 
-    if (visible && (Math.abs(target - t) > 0.0002 || !still)) raf = requestAnimationFrame(frame);
+    if (visible() && (Math.abs(target - t) > 0.0002 || !still)) raf = requestAnimationFrame(frame);
   };
-  const kick = () => { if (!raf && visible && alive) raf = requestAnimationFrame(frame); };
+  const kick = () => { if (!raf && visible() && alive) raf = requestAnimationFrame(frame); };
 
-  const io = new IntersectionObserver((en) => { visible = en[0].isIntersecting; kick(); });
+  // Compile now so a broken shader is caught before the canvas is shown.
+  renderer.compile(scene, camera);
+  if (shaderFailed) {
+    geo.dispose(); apronGeo.dispose(); inkMat.dispose(); mistTex.dispose(); renderer.dispose();
+    places.forEach((pl) => pl.el.remove());
+    throw new Error("terrain shader did not compile");
+  }
+
+  const io = new IntersectionObserver((en) => { inView = en[0].isIntersecting; kick(); });
   io.observe(section);
-  const vis = () => { visible = !document.hidden; kick(); };
+  const vis = () => kick();
   addEventListener("resize", resize);
   addEventListener("scroll", kick, { passive: true });
   document.addEventListener("visibilitychange", vis);
@@ -264,11 +311,8 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
     removeEventListener("scroll", kick);
     document.removeEventListener("visibilitychange", vis);
     places.forEach((pl) => pl.el.remove());
-    geo.dispose(); terrainMat.dispose(); sat.dispose(); apronGeo.dispose(); apronMat.dispose();
+    geo.dispose(); apronGeo.dispose(); inkMat.dispose();
     mistTex.dispose(); mist.children.forEach((m) => ((m as THREE.Sprite).material as THREE.Material).dispose());
-    envRT.dispose(); pmrem.dispose();
-    sky.geometry.dispose(); (sky.material as THREE.Material).dispose();
-    sky2.geometry.dispose(); (sky2.material as THREE.Material).dispose();
     renderer.dispose();
     section.classList.remove("fly-ready");
   };

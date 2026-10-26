@@ -46,7 +46,7 @@ export function About() {
           <section id="ai">
             <h2>AI assistance <span className="zh" lang="zh-Hant">AI 協助說明</span></h2>
             <div className="callout">
-              <p>The code for this website (page layout, styles, the 3D views and the script that turns the record sheet into the site's data) was written with help from an AI coding assistant, Claude Code (Anthropic). The course teacher allowed AI help for the project, and it is declared in the Honour Declaration.</p>
+              <p>The code for this website (page layout, styles, the 3D views and the script that turns the record sheet into the site's data) was written with help from an AI coding assistant, Claude Code (Anthropic). The course teacher allowed AI help for the project; it will be declared in the Honour Declaration submitted with the final paper.</p>
               <p>The test results, the readings of <Zh>箋校</Zh> and <Zh>唐人行第録</Zh>, and the verdicts are the student's own. The AI being tested is a separate model, named on the <Link to="/method#run">Method</Link> page. The site's <a href="https://github.com/hanbin2007/bai-juyi-friends">git history</a> records which changes were AI-assisted.</p>
             </div>
           </section>
@@ -56,8 +56,7 @@ export function About() {
             <ul>
               <li><strong>Record sheet:</strong> every result on this site comes from <a href={base + "data/Bai-Juyi-Experiment-Record-Sheet.xlsx"}>the experiment record sheet</a> (also as <a href={base + "data/records.json"}>JSON</a>). Last rebuilt {DATA.meta.built}; file fingerprint <code>{DATA.meta.sha256.slice(0, 12)}</code>.</li>
               <li><strong>Poem text:</strong> the open <a href="https://github.com/chinese-poetry/chinese-poetry">chinese-poetry</a> edition of <Zh>全唐詩</Zh> (MIT licence), shown for reading only.</li>
-              <li><strong>Mount Lu terrain:</strong> elevation from <a href="https://registry.opendata.aws/terrain-tiles/">Terrain Tiles</a> on AWS Open Data; SRTM and GMTED2010 terrain data courtesy of the U.S. Geological Survey. Heights are shown ×1.5.</li>
-              <li><strong>Satellite imagery:</strong> <a href="https://cloudless.eox.at">EOxCloudless</a> by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2024), used under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>. The stitched images in <code>public/terrain/</code> are shared under the same licence.</li>
+              <li><strong>Mount Lu terrain:</strong> elevation from <a href="https://registry.opendata.aws/terrain-tiles/">Terrain Tiles</a> on AWS Open Data; SRTM and GMTED2010 terrain data courtesy of the U.S. Geological Survey. Heights are shown ×1.5 and drawn in an ink style; colours and mist are not data.</li>
               <li><strong>Software:</strong> <a href="https://threejs.org">three.js</a>, <a href="https://react.dev">React</a> and <a href="https://reactrouter.com">React Router</a> (MIT licence), built with <a href="https://vite.dev">Vite</a>.</li>
               <li><strong>Fonts:</strong> Inter, Newsreader and Noto Serif TC, under the SIL Open Font License, served by Google Fonts.</li>
             </ul>

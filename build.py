@@ -4,7 +4,7 @@
 Usage:
     python3 build.py                 # read ../Bai-Juyi-Experiment-Record-Sheet.xlsx
     python3 build.py --xlsx PATH     # read another copy of the sheet
-    python3 build.py --publish       # rebuild, check the site builds, then git commit and push
+    python3 build.py --publish       # rebuild, check the site builds, then commit the data and push
 
 Writes src/data/records.json (bundled into the site) and public/data/records.json
 (downloadable), and keeps a copy of the sheet in public/data/ so the git history
@@ -32,6 +32,8 @@ REPO_XLSX = PUBLIC_DATA / SHEET_NAME
 OUT_JSON = ROOT / "src" / "data" / "records.json"
 POEMS = ROOT / "data" / "poems.json"
 CONTENT = ROOT / "content"
+# What --publish commits: the data, never other work in progress.
+PUBLISH_PATHS = ["src/data/records.json", "public/data", "content", "data/poems.json"]
 
 M = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 R = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
@@ -45,7 +47,7 @@ COLUMNS = {
     "I": "locate", "J": "jianjiao", "K": "a_verdict", "L": "b_verdict", "M": "notes",
 }
 
-# Sheet verdict text -> site status key.
+# Sheet verdict text (exactly as in the drop-down list) -> site status key.
 VERDICTS = {
     "correct": "correct",
     "wrong": "wrong",
@@ -53,6 +55,7 @@ VERDICTS = {
     "declined: answer exists": "declined",
     "declined: none exists": "unknown",
 }
+SHEET_TEXT = {v: k for k, v in VERDICTS.items()}
 
 # Summary tab row label -> status key.
 SUMMARY_ROWS = {
@@ -67,6 +70,7 @@ SUMMARY_ROWS = {
 CONFIDENCE = {"high": "high", "medium": "medium", "low": "low", "高": "high", "中": "medium", "低": "low"}
 
 warnings = []
+errors = []   # problems that stop --publish
 
 
 def warn(msg):
@@ -74,7 +78,19 @@ def warn(msg):
     print("  ! " + msg)
 
 
+def error(msg):
+    errors.append(msg)
+    print("  X " + msg)
+
+
 # ---------------------------------------------------------------- xlsx reader
+
+class Sheet:
+    def __init__(self):
+        self.cells = {}       # "A1" -> cached value (None when empty)
+        self.formulas = {}    # "A1" -> formula text
+        self.occupied = set() # refs Excel's COUNTA would count (any value, including "" from a formula)
+
 
 def _text(node):
     """Text of a shared/inline string, skipping phonetic runs."""
@@ -89,8 +105,8 @@ def _text(node):
     return "".join(parts)
 
 
-def read_xlsx(path):
-    """Return {sheet name: {"A1": value, ...}} with cached values for formulas."""
+def read_workbook(path):
+    """Return {sheet name: Sheet} with cached values for formulas."""
     with zipfile.ZipFile(path) as z:
         names = z.namelist()
         shared = []
@@ -106,17 +122,19 @@ def read_xlsx(path):
 
         sheets = {}
         workbook = ET.fromstring(z.read("xl/workbook.xml"))
-        for sheet in workbook.find(M + "sheets"):
-            cells = {}
-            root = ET.fromstring(z.read(rels[sheet.get(R + "id")]))
+        for el in workbook.find(M + "sheets"):
+            sheet = Sheet()
+            root = ET.fromstring(z.read(rels[el.get(R + "id")]))
             for c in root.iter(M + "c"):
-                kind = c.get("t")
-                v = c.find(M + "v")
+                ref, kind = c.get("r"), c.get("t")
+                v, f = c.find(M + "v"), c.find(M + "f")
+                if f is not None and f.text:
+                    sheet.formulas[ref] = f.text
                 if kind == "inlineStr":
                     node = c.find(M + "is")
                     value = _text(node) if node is not None else None
                 elif v is None or v.text is None:
-                    value = None
+                    value = "" if (f is not None and kind == "str") else None
                 elif kind == "s":
                     value = shared[int(v.text)]
                 elif kind in ("str", "e"):
@@ -126,9 +144,16 @@ def read_xlsx(path):
                 else:
                     num = float(v.text)
                     value = int(num) if num.is_integer() else num
-                cells[c.get("r")] = value
-            sheets[sheet.get("name")] = cells
+                sheet.cells[ref] = value
+                if value is not None or f is not None:
+                    sheet.occupied.add(ref)
+            sheets[el.get("name")] = sheet
         return sheets
+
+
+def read_xlsx(path):
+    """Return {sheet name: {"A1": value, ...}} (used by tools/extract_poems.py)."""
+    return {name: s.cells for name, s in read_workbook(path).items()}
 
 
 # ---------------------------------------------------------------- helpers
@@ -142,13 +167,20 @@ def clean(value):
 
 
 def verdict(raw, where):
-    text = re.sub(r"\s+", " ", clean(raw).replace("：", ":")).lower()
-    text = re.sub(r"\s*:\s*", ": ", text)
-    if not text:
+    """Site status for a verdict cell. Anything Excel's COUNTIF would not match exactly is an error,
+    because the sheet's Summary tab would then count it differently."""
+    if raw is None or (isinstance(raw, str) and raw.strip() == ""):
+        if isinstance(raw, str) and raw != "":
+            error("%s: verdict cell holds only spaces; clear it (the Summary tab counts it as checked)" % where)
         return "untested"
-    if text in VERDICTS:
-        return VERDICTS[text]
-    warn("%s: unrecognised verdict %r (shown as 'other')" % (where, raw))
+    text = str(raw)
+    if text.lower() in VERDICTS:
+        return VERDICTS[text.lower()]
+    loose = re.sub(r"\s*:\s*", ": ", re.sub(r"\s+", " ", text.replace("：", ":").strip())).lower()
+    if loose in VERDICTS:
+        error("%s: verdict typed as %r; use exactly %r so the Summary tab counts it" % (where, text, loose))
+        return VERDICTS[loose]
+    error("%s: unrecognised verdict %r" % (where, text))
     return "other"
 
 
@@ -162,39 +194,94 @@ def confidence(raw, where):
     return clean(raw)
 
 
+def countif(sheet, col, rows, criterion):
+    """Excel COUNTIF for a plain text criterion: whole-cell, case-insensitive match."""
+    return sum(1 for r in rows if isinstance(sheet.cells.get(col + str(r)), str)
+               and sheet.cells[col + str(r)].lower() == criterion)
+
+
+def counta(sheet, col, rows):
+    return sum(1 for r in rows if col + str(r) in sheet.occupied)
+
+
 def read_text(path):
     return path.read_text(encoding="utf-8").strip() if path.exists() else ""
 
 
 # ---------------------------------------------------------------- build
 
+def summary_layout(summary):
+    """Find each measure's row on the Summary tab and the Record rows its formulas cover."""
+    found, ranges = {}, set()
+    for ref, value in summary.cells.items():
+        if ref[0] == "A" and ref[1:].isdigit() and clean(value).lower() in SUMMARY_ROWS:
+            found[SUMMARY_ROWS[clean(value).lower()]] = ref[1:]
+    for key, n in found.items():
+        for col, rec_col in (("B", "K"), ("C", "L")):
+            f = summary.formulas.get(col + n, "")
+            m = re.search(r"Record!\$?([A-Z])\$?(\d+):\$?([A-Z])\$?(\d+)", f)
+            if not m:
+                warn("Summary!%s%s has no formula over the Record sheet" % (col, n))
+                continue
+            if m.group(1) != rec_col or m.group(3) != rec_col:
+                error("Summary!%s%s counts column %s, expected %s" % (col, n, m.group(1), rec_col))
+            ranges.add((int(m.group(2)), int(m.group(4))))
+            if key != "total" and ('"%s"' % SHEET_TEXT[key]) not in f.lower():
+                error("Summary!%s%s does not count %r" % (col, n, SHEET_TEXT[key]))
+    missing = [k for k in SUMMARY_ROWS.values() if k not in found]
+    if missing:
+        error("Summary tab is missing the measure(s): %s" % ", ".join(missing))
+    return found, ranges
+
+
 def build(xlsx):
     print("Reading %s" % xlsx)
-    sheets = read_xlsx(xlsx)
-    if "Record" not in sheets:
+    book = read_workbook(xlsx)
+    if "Record" not in book:
         sys.exit("No sheet named 'Record' in %s" % xlsx)
-    record = sheets["Record"]
+    record = book["Record"]
+    summary = book.get("Summary")
 
     expected = {"B": "Poem title", "C": "Form of address", "I": "Where to look", "K": "A verdict", "L": "B verdict"}
     for col, start in expected.items():
-        if not clean(record.get(col + "1")).startswith(start):
-            warn("Record!%s1 is %r, expected it to start with %r - columns may have moved"
-                 % (col, record.get(col + "1"), start))
+        if not clean(record.cells.get(col + "1")).startswith(start):
+            error("Record!%s1 is %r, expected it to start with %r - columns may have moved"
+                  % (col, record.cells.get(col + "1"), start))
+
+    found, ranges = summary_layout(summary) if summary else ({}, set())
+    if summary is None:
+        error("No sheet named 'Summary' in %s" % xlsx)
+    if len(ranges) > 1:
+        error("Summary formulas cover different row ranges: %s" % sorted(ranges))
+    first, last = min(ranges) if ranges else (2, 36)
+    rng = range(first, last + 1)
 
     poems = json.loads(POEMS.read_text(encoding="utf-8")) if POEMS.exists() else {}
+    used = [int(re.sub(r"\D", "", ref)) for ref in record.occupied if re.sub(r"\D", "", ref)]
+    max_row = max(used + [last])
 
-    rows = []
-    last = max(int(re.sub(r"\D", "", ref)) for ref in record)
-    for r in range(2, last + 1):
-        raw = {key: record.get(col + str(r)) for col, key in COLUMNS.items()}
-        if not clean(raw["title"]) and not clean(raw["address"]):
+    rows, seen = [], set()
+    for r in range(2, max_row + 1):
+        raw = {key: record.cells.get(col + str(r)) for col, key in COLUMNS.items()}
+        filled = [col for col in COLUMNS if col + str(r) in record.occupied]
+        if not filled:
+            if r in rng:
+                error("Record row %d is empty but lies inside the Summary range %d-%d" % (r, first, last))
             continue
         where = "Record row %d" % r
-        title = clean(raw["title"])
+        if r not in rng:
+            error("%s has data but lies outside the Summary formulas' range %d-%d" % (where, first, last))
+        title, address = clean(raw["title"]), clean(raw["address"])
+        if not title or not address:
+            error("%s is missing its %s" % (where, "poem title" if not title else "form of address"))
+        n = clean(raw["n"]) or str(r - 1)
+        if n in seen:
+            error("%s repeats entry number %s" % (where, n))
+        seen.add(n)
         rows.append({
-            "n": clean(raw["n"]) or str(len(rows) + 1),
+            "n": n,
             "title": title,
-            "address": clean(raw["address"]),
+            "address": address,
             "a": {
                 "answer": clean(raw["a_answer"]),
                 "confidence": confidence(raw["a_confidence"], where + " col E"),
@@ -213,46 +300,35 @@ def build(xlsx):
             "notes": clean(raw["notes"]),
             "poem": poems.get(title),
         })
-        if rows[-1]["address"] and rows[-1]["address"] not in title:
-            warn("%s: form of address %r does not occur in the title" % (where, rows[-1]["address"]))
+        if address and address not in title:
+            warn("%s: form of address %r does not occur in the title" % (where, address))
         if title and title not in poems:
             warn("%s: no poem text for %r (run tools/extract_poems.py)" % (where, title))
+    if len(rows) != 35:
+        warn("%d records found; the project has 35" % len(rows))
 
-    # Counts computed here, then compared with the Summary tab's cached values.
-    keys = ["correct", "wrong", "declined", "unknown", "partly", "total"]
+    # Counted exactly as the Summary tab's formulas do (COUNTIF / COUNTA over the same range).
     counts = {}
-    for rnd in ("a", "b"):
-        c = {k: 0 for k in keys}
-        for row in rows:
-            v = row[rnd]["verdict"]
-            if v in c:
-                c[v] += 1
-            if row[rnd]["verdictRaw"]:
-                c["total"] += 1
+    for rnd, col in (("a", "K"), ("b", "L")):
+        c = {key: countif(record, col, rng, text) for text, key in VERDICTS.items()}
+        c["total"] = counta(record, col, rng)
         counts[rnd] = c
 
-    check = {"status": "missing", "detail": "No Summary sheet found."}
-    summary = sheets.get("Summary")
-    if summary is not None:
-        sheet_counts = {"a": {}, "b": {}}
-        for ref, value in summary.items():
-            if ref[0] == "A" and clean(value).lower() in SUMMARY_ROWS:
-                key = SUMMARY_ROWS[clean(value).lower()]
-                n = ref[1:]
-                sheet_counts["a"][key] = summary.get("B" + n)
-                sheet_counts["b"][key] = summary.get("C" + n)
-        cached = [v for rnd in sheet_counts.values() for v in rnd.values()]
-        if not cached or any(v is None for v in cached):
+    if summary is None or len(found) < len(SUMMARY_ROWS):
+        check = {"status": "missing", "detail": "The Summary tab is missing or incomplete."}
+    else:
+        cached = {(rnd, k): summary.cells.get(col + n) for k, n in found.items() for rnd, col in (("a", "B"), ("b", "C"))}
+        if any(v is None or v == "" for v in cached.values()):
             check = {"status": "uncached",
                      "detail": "The Summary tab has no saved results. Open the sheet in Excel and save it once."}
+            warn(check["detail"])
         else:
             diffs = ["%s %s: site %s, sheet %s" % (rnd.upper(), k, counts[rnd][k], v)
-                     for rnd in ("a", "b") for k, v in sheet_counts[rnd].items()
-                     if clean(v) != str(counts[rnd][k])]
+                     for (rnd, k), v in sorted(cached.items()) if clean(v) != str(counts[rnd][k])]
             if diffs:
                 check = {"status": "mismatch", "detail": "; ".join(diffs)}
                 for d in diffs:
-                    warn("Summary tab mismatch - " + d)
+                    error("Summary tab mismatch - " + d)
             else:
                 check = {"status": "match", "detail": "All counts match the Summary tab."}
 
@@ -293,32 +369,57 @@ def build(xlsx):
     tested = lambda rnd: sum(1 for row in rows if row[rnd]["verdict"] != "untested")
     print("  %d rows; Round A tested %d, Round B tested %d" % (len(rows), tested("a"), tested("b")))
     print("  Summary tab check: %s - %s" % (check["status"], check["detail"]))
-    print("Wrote src/data/records.json and public/data/" + (" with %d warning(s)" % len(warnings) if warnings else ""))
+    print("Wrote src/data/records.json and public/data/"
+          + (" with %d error(s)" % len(errors) if errors else "")
+          + (" and %d warning(s)" % len(warnings) if warnings else ""))
+
+
+# ---------------------------------------------------------------- publish
+
+def git(*args, check=True, capture=False):
+    return subprocess.run(["git"] + list(args), cwd=ROOT, check=check, text=True,
+                          capture_output=capture)
 
 
 def publish():
-    def git(*args, check=True):
-        return subprocess.run(["git"] + list(args), cwd=ROOT, check=check)
+    if errors:
+        sys.exit("Not published: fix the %d error(s) above first." % len(errors))
+    if git("remote", "get-url", "origin", check=False, capture=True).returncode != 0:
+        sys.exit("Not published: this repository has no GitHub remote yet. See 'Put the site online' in README.md.")
+
     if shutil.which("npm") or Path("/opt/homebrew/bin/npm").exists():
         # Same build GitHub Actions will run; stop here rather than push a broken site.
         print("Checking that the site builds...")
         subprocess.run(["sh", str(ROOT / "tools" / "mac-build.sh"), "build"], check=True)
     else:
         print("npm not found; skipping the local build check (GitHub Actions will still build).")
-    git("add", "-A")
-    if git("diff", "--cached", "--quiet", check=False).returncode == 0:
-        print("Nothing changed; nothing to publish.")
+
+    git("add", "--", *PUBLISH_PATHS)
+    if git("diff", "--cached", "--quiet", check=False).returncode != 0:
+        git("commit", "-m", "Update results from the record sheet (%s)" % datetime.date.today().isoformat())
+    else:
+        print("The data has not changed since the last commit.")
+
+    other = [line for line in git("status", "--porcelain", capture=True).stdout.splitlines() if line.strip()]
+    if other:
+        print("Left out of this publish (commit them yourself if they should go online):")
+        for line in other:
+            print("   " + line)
+
+    # Push whatever is not on GitHub yet, including a commit from an earlier run whose push failed.
+    has_upstream = git("rev-parse", "--abbrev-ref", "@{u}", check=False, capture=True).returncode == 0
+    ahead = int(git("rev-list", "--count", "@{u}..HEAD", capture=True).stdout.strip()) if has_upstream else 1
+    if not ahead:
+        print("GitHub is already up to date.")
         return
-    stamp = datetime.date.today().isoformat()
-    git("commit", "-m", "Update results from the record sheet (%s)" % stamp)
-    git("push")
+    git("push", *([] if has_upstream else ["-u", "origin", "HEAD"]))
     print("Pushed. GitHub Actions now builds and deploys; the live site updates in about two minutes.")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--xlsx", type=Path, help="path to the record sheet (default: %s)" % DEFAULT_XLSX)
-    parser.add_argument("--publish", action="store_true", help="git commit and push after building")
+    parser.add_argument("--publish", action="store_true", help="commit the data and push after building")
     args = parser.parse_args()
     xlsx = args.xlsx or (DEFAULT_XLSX if DEFAULT_XLSX.exists() else REPO_XLSX)
     if not xlsx.exists():
@@ -326,6 +427,8 @@ def main():
     build(xlsx)
     if args.publish:
         publish()
+    elif errors:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

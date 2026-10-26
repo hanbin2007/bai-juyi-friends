@@ -41,7 +41,7 @@ export function Method() {
   return (
     <>
       <PageHead title="How the names were tested" zh="測試方法">
-        The same AI model answered the same {TOTAL} names twice: once from the poem title alone, and once with historical sources. Every answer was then checked by hand against the annotated edition of Bai Juyi's works.
+        The same AI model answers the same {TOTAL} names twice: once from the poem title alone, and once with historical sources. Every answer is checked by hand against the annotated edition of Bai Juyi's works. Results appear on the site as each round is recorded.
       </PageHead>
       <div className="wrap layout">
         <Toc items={TOC} />
@@ -100,7 +100,7 @@ export function Method() {
             <ul>
               <li><strong>Main reference:</strong> Zhu Jincheng's <Zh>《白居易集箋校》</Zh> (Bai, 2020). Its notes (<Zh>箋</Zh>) name the person behind a form of address where the editor could establish it, or say <Zh>名未詳</Zh> (“name unknown”).</li>
               <li><strong>Second reference:</strong> Cen Zhongmian's <Zh>《唐人行第録》</Zh> (Cen, 1978), a dictionary of Tang people listed by surname and sibling rank.</li>
-              <li><strong>Access:</strong> both books were read in the <Zh>汇典·典籍整理文献数据库</Zh> database, one entry at a time and by hand. Nothing was scraped or downloaded from it.</li>
+              <li><strong>Access:</strong> both books are read in the <Zh>汇典·典籍整理文献数据库</Zh> database, one entry at a time and by hand. Nothing is scraped or downloaded from it.</li>
               <li><strong>Quoting:</strong> the site quotes <Zh>箋校</Zh> only briefly, a name or a short phrase, always with volume and page (<Zh>卷·頁</Zh>).</li>
             </ul>
           </section>
