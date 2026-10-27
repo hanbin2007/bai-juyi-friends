@@ -108,16 +108,24 @@ function Stage() {
         <p className="tl-year" aria-hidden="true" ref={yearRef}>{Y0 + 1}</p>
         <div className="tl-caps" aria-hidden="true" ref={capsRef}>
           <article className="tl-cap" data-from={Y0} data-to={stations[0]?.from ?? 800}>
+            <p className="tl-cap-kicker">How to read it</p>
             <h2>Scroll to travel through time</h2>
             <p>The gold thread is Bai Juyi. Each name appears in the year of its poem, with a red thread to where the friend was.</p>
+            <p className="tl-cue">Scroll down <span aria-hidden="true">↓</span></p>
           </article>
           {stations.map((s, i) => (
             <article className="tl-cap" key={i} data-from={i ? s.from : stations[0].from} data-to={stations[i + 1]?.from ?? Y1}>
-              <h2><span lang="zh-Hant">{s.place}</span> {PLACES[s.place]?.en}, {Math.floor(s.from)}–{Math.floor(s.to)}</h2>
-              <p><span lang="zh-Hant">{s.post}</span> · {s.en}</p>
+              <p className="tl-cap-kicker">
+                Posting {i + 1} of {stations.length} · {Math.floor(s.from)}–{Math.floor(s.to)}
+                <span className="tl-steps">{stations.map((_, j) => <i key={j} className={j === i ? "on" : j < i ? "past" : ""} />)}</span>
+              </p>
+              <h2><span lang="zh-Hant">{s.place}</span> {PLACES[s.place]?.en}</h2>
+              <p className="tl-cap-post" lang="zh-Hant">{s.post}</p>
+              <p>{s.en}</p>
             </article>
           ))}
           <article className="tl-cap" data-overview="1" data-from="0" data-to="0">
+            <p className="tl-cap-kicker">Overview</p>
             <h2>The whole span at once</h2>
             <p>All of 800–846 from the side, earliest first. Dashed red links join the same form of address in different titles when <span lang="zh-Hant">箋校</span> names different people; solid links mean the same person.</p>
           </article>

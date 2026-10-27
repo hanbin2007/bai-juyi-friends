@@ -311,16 +311,29 @@ p { margin: 0 0 1em; text-wrap: pretty; }
   text-shadow: 0 0 12px var(--bg), 0 0 4px var(--bg);
 }
 @media (min-width: 900px) { .tl-year, .tl-caps { left: calc((100vw - min(var(--wrap), 100vw)) / 2 + var(--gutter)); } }
-.tl-caps { position: absolute; left: var(--gutter); bottom: 64px; width: min(420px, calc(100% - 2 * var(--gutter))); pointer-events: none; }
+.tl-caps { position: absolute; left: var(--gutter); bottom: 60px; width: min(540px, calc(100% - 2 * var(--gutter))); pointer-events: none; }
 .tl-cap {
-  position: absolute; left: 0; bottom: 0; width: 100%; padding: 14px 16px; border-radius: var(--radius);
-  background: color-mix(in oklab, var(--surface) 88%, transparent); border: 1px solid var(--rule); border-left: 3px solid var(--gold);
-  box-shadow: var(--shadow); opacity: 0; transform: translateY(10px); transition: opacity .35s ease, transform .35s ease; visibility: hidden;
+  position: absolute; left: 0; bottom: 0; width: 100%; padding: 18px 22px 20px; border-radius: var(--radius);
+  background: color-mix(in oklab, var(--surface) 94%, transparent); backdrop-filter: blur(6px);
+  border: 1px solid var(--rule); border-left: 4px solid var(--gold);
+  box-shadow: var(--shadow); opacity: 0; transform: translateY(12px); transition: opacity .35s ease, transform .35s ease; visibility: hidden;
 }
 .tl-cap.on { opacity: 1; transform: none; visibility: visible; }
-.tl-cap h2 { font-size: 1.2rem; margin: 0 0 4px; }
-.tl-cap h2 [lang] { margin-right: 4px; color: var(--accent); }
-.tl-cap p { margin: 0; font: 400 15px/1.55 var(--font-serif); color: var(--ink-2); }
+.tl-cap h2 { font-size: clamp(1.35rem, 2.4vw, 1.75rem); line-height: 1.25; margin: 0 0 6px; }
+.tl-cap h2 [lang] { margin-right: 6px; color: var(--accent); }
+.tl-cap p { margin: 0; font: 400 17px/1.55 var(--font-serif); color: var(--ink-2); }
+.tl-cap .tl-cap-kicker {
+  display: flex; align-items: center; gap: 12px; margin: 0 0 8px;
+  font: 600 12px/1.4 var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--gold);
+}
+.tl-cap .tl-cap-post { margin: 0 0 4px; font: 600 17px/1.5 var(--font-cjk); letter-spacing: .04em; color: var(--ink); }
+.tl-steps { display: inline-flex; gap: 3px; margin-left: auto; }
+.tl-steps i { width: 9px; height: 3px; border-radius: 2px; background: var(--rule-strong); }
+.tl-steps i.past { background: color-mix(in oklab, var(--gold) 45%, transparent); }
+.tl-steps i.on { width: 18px; background: var(--gold); }
+.tl-cap .tl-cue { margin-top: 10px; font: 600 13px/1.4 var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--gold); }
+.tl-cue span { display: inline-block; margin-left: 4px; animation: tl-cue 1.6s ease-in-out infinite; }
+@keyframes tl-cue { 0%, 100% { transform: none; } 50% { transform: translateY(4px); } }
 .tl-key {
   position: absolute; right: var(--gutter); bottom: 18px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 14px;
   margin: 0; padding: 0; list-style: none; font-size: 12px; color: var(--muted); max-width: calc(100% - 2 * var(--gutter)); pointer-events: none;
@@ -332,12 +345,16 @@ p { margin: 0 0 1em; text-wrap: pretty; }
 .tl-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--rule); }
 .tl-progress i { display: block; height: 100%; background: var(--gold); transform-origin: 0 50%; transform: scaleX(0); }
 @media (max-width: 520px) {
-  .tl-caps { bottom: 58px; }
-  .tl-cap { padding: 10px 12px; }
-  .tl-cap p { font-size: 14px; }
+  .tl-caps { bottom: 54px; }
+  .tl-cap { padding: 12px 14px 14px; }
+  .tl-cap h2 { font-size: 1.2rem; margin-bottom: 4px; }
+  .tl-cap p, .tl-cap .tl-cap-post { font-size: 15px; }
+  .tl-cap .tl-cap-kicker { margin-bottom: 6px; font-size: 11px; }
+  .tl-steps i { width: 6px; }
+  .tl-steps i.on { width: 12px; }
   .tl-key { justify-content: flex-start; left: var(--gutter); right: auto; bottom: 12px; font-size: 11px; }
 }
-@media (prefers-reduced-motion: reduce) { .tl-cap { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .tl-cap { transition: none; } .tl-cue span { animation: none; } }
 .tl-groups { display: grid; gap: 18px; }
 .tl-group caption { caption-side: top; text-align: left; padding: 12px 12px 8px; font: 600 1.1rem/1.4 var(--font-cjk); }
 .tl-group th, .tl-group td { text-align: left !important; vertical-align: top; }
