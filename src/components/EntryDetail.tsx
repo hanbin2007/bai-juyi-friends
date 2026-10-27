@@ -36,7 +36,7 @@ export function EntryDetail({ row, permalink = true }: { row: Row; permalink?: b
         <dl className="kv">
           <KV k="Identification" v={row.jianjiao} />
           <KV k="Where" zh="卷·頁" v={row.locate} />
-          <KV k="Year" zh="繫年" v={row.time && <>{yearLabel(row.time)}{eraYear(row.time.from) && " · " + eraYear(row.time.from)}{DATED.includes(row) && <> <Link to={"/timeline?n=" + row.n} lang="en">on the timeline</Link></>}</>} />
+          <KV k="Year" zh="繫年" v={row.time && <>{yearLabel(row.time)}{eraYear(row.time.from) && " · " + eraYear(row.time.from)}{DATED.includes(row) && <> <Link to={"/?n=" + row.n} lang="en">on the timeline</Link></>}</>} />
           <KV k="Bai Juyi at" v={row.baiAt && <>{row.baiAt}{row.baiAtFrom === "career" && <span lang="en" className="muted"> (from his postings that year)</span>}</>} />
           <KV k="Addressee's post" v={row.post} />
           <KV k="Addressee at" v={row.toAt} />

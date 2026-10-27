@@ -4,8 +4,8 @@ import { DATA } from "../lib/data";
 import { TooltipLayer } from "./Tooltip";
 
 const NAV = [
-  { to: "/", en: "Record", zh: "名錄" },
-  { to: "/timeline", en: "Timeline", zh: "時空" },
+  { to: "/", en: "Timeline", zh: "時空" },
+  { to: "/record", en: "Record", zh: "名錄" },
   { to: "/summary", en: "Summary", zh: "統計" },
   { to: "/method", en: "Method", zh: "方法" },
   { to: "/about", en: "About", zh: "關於" },
@@ -38,10 +38,12 @@ export function Layout() {
 
   useEffect(() => setOpen(false), [location.pathname]);
 
-  // Old links of the form #r12 now open /entry/12; other hashes scroll to their section.
+  // Old links of the form #r12 now open /entry/12, and the record's sections moved from / to /record;
+  // other hashes scroll to their section.
   useEffect(() => {
     const m = /^#r(\d+)$/.exec(location.hash);
     if (m) { navigate("/entry/" + m[1], { replace: true }); return; }
+    if (location.pathname === "/" && /^#(record|names|journey)$/.test(location.hash)) { navigate("/record" + location.search + location.hash, { replace: true }); return; }
     if (!location.hash) return;
     const t = setTimeout(() => document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView(), 30);
     return () => clearTimeout(t);

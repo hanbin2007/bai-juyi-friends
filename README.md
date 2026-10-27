@@ -46,7 +46,7 @@ Verdicts must be typed exactly as in the sheet's drop-down list:
 
 ## Timeline columns (N–Q)
 
-The `/timeline` page places each name in the year its poem was written. Fill these columns of the **Record** sheet from 箋校's dating; rows left empty are listed as "not yet dated".
+The timeline (the home page) places each name in the year its poem was written. Fill these columns of the **Record** sheet from 箋校's dating; rows left empty are listed as "not yet dated".
 
 | Col | What to type | Example |
 | --- | --- | --- |
@@ -85,8 +85,9 @@ and keeps it in sync.
 
 | URL | Page |
 | --- | --- |
-| `/` | the 3D network, the Mount Lu flythrough, the 35 names and the record table (filters live in `?q=&status=&round=`) |
-| `/timeline` | the 3D chrono-spatial stream: time as depth, places on the map, Bai Juyi's postings as a gold thread; `?n=9` opens at entry 9 |
+| `/` | the 3D chrono-spatial timeline: time as depth, places on the map, Bai Juyi's postings as a gold thread. Explore freely (wheel = time, drag = turn, right-drag or two fingers = move, Ctrl+wheel or pinch = zoom; keys: ↑↓ time, ←→ turn, +/− zoom, Space play, O overview, [ ] step through names). Selecting a name opens its details in a side panel; `?n=9` opens at entry 9. Below: the project and the names that occur more than once |
+| `/record` | the 3D network, the Mount Lu flythrough, the 35 names and the record table (filters live in `?q=&status=&round=`) |
+| `/timeline` | old address of the timeline; redirects to `/`, keeping `?n=` |
 | `/entry/9` | one form of address, for linking from the essay |
 | `/summary` | Round A vs Round B counts, the Summary tab, A→B changes, results by confidence |
 | `/method` | the two rounds, model and dates, prompts, checking, verdicts, limits |

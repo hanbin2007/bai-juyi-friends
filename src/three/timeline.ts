@@ -1,14 +1,16 @@
-/* The chrono-spatial stream (/timeline). Depth is time, 800–846; across the screen, places sit where they lie
+/* The chrono-spatial stream (the home page). Depth is time, 800–846; across the screen, places sit where they lie
    on the map. Every year is a sheet of silk with the coast and rivers in ink, every reign era a stronger one.
-   Bai Juyi's postings are a gold thread that brightens around the year in view; each dated name hangs in the
+   Bai Juyi's postings are a gold thread that brightens around the present year; each dated name hangs in the
    year of its poem, with a red thread (and a travelling spark) to where the addressee was. Characters from the
-   poems drift in the air. Scrolling flies along the thread; at the end the camera swings to the side and
-   time is squeezed so the whole span fits. Text is HTML laid over the canvas, so it stays sharp. */
+   poems drift in the air. Text is HTML laid over the canvas, so it stays sharp.
+   The camera orbits a target in the present year. By default the target follows Bai Juyi's thread; the wheel
+   moves through time, a drag turns the view, a right-drag (or two fingers) moves it, and pinching zooms. Zooming
+   out squeezes time, so that at the far end the whole span fits on the screen. */
 import * as THREE from "three";
 import type { Place, Row, Station, Verdict } from "../lib/data";
 import { ERAS, eraYear, yearLabel } from "../lib/era";
 import { STATUS } from "../lib/status";
-import { FLY_END, Y0, Y1 } from "../lib/timelineScale";
+import { T0, T1, Y0, Y1 } from "../lib/timelineScale";
 
 type V3 = [number, number, number];
 interface MapLine { n: string; p: [number, number][] }
@@ -40,11 +42,25 @@ export interface TimelineOptions {
   rows: Row[];                          // dated rows whose place is on the map
   places: Record<string, Place>;
   stations: Station[];
-  onOpen: (n: string) => void;
-  onYear: (year: number, overview: number) => void;
+  onSelect: (n: string | null) => void; // a name was chosen in the scene, or the empty scene was clicked
+  onFrame: (year: number, zoomOut: number) => void;   // every frame: the present year, and 0–1 how far out the view is
+  onView: (v: ViewState) => void;       // when following or playing changes
+  onInteract: () => void;               // the first touch of any control
 }
-/** pin: hold one entry in focus; snap: jump to the scroll position without the glide (after a deep link) */
-export interface TimelineHandle { destroy: () => void; pin: (n: string | null) => void; snap: () => void }
+export interface ViewState { following: boolean; playing: boolean }
+export interface TimelineHandle {
+  destroy: () => void;
+  /** Hold one entry in focus and fly to it (at once with `instant`). */
+  select: (n: string | null, instant?: boolean) => void;
+  setYear: (year: number, instant?: boolean) => void;
+  /** Relative moves, for the keyboard and buttons: years, radians, and a zoom factor (below 1 is closer). */
+  move: (d: { year?: number; yaw?: number; pitch?: number; zoom?: number }) => void;
+  play: (on: boolean) => void;
+  follow: () => void;
+  overview: () => void;
+  /** Pixels covered on the left (welcome card), right (side panel) and bottom (time bar, sheet): the view centres in the rest. */
+  setInset: (left: number, right: number, bottom: number) => void;
+}
 
 /* ------------------------------------------------------------ shaders */
 const threadVertex = /* glsl */ `
@@ -260,6 +276,12 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   crossGeo.setAttribute("position", new THREE.Float32BufferAttribute(crossPts, 3));
   const crossMat = keep(new THREE.PointsMaterial({ size: 0.09, map: dotTex, transparent: true, depthWrite: false, opacity: 0.8 }));
   world.add(new THREE.Points(crossGeo, crossMat));
+  // a gold frame around the sheet of the present year, so the present stays findable from any angle
+  const nowMat = keep(new THREE.LineBasicMaterial({ transparent: true, depthWrite: false }));
+  const nowGeo = keep(new THREE.BufferGeometry().setFromPoints([[-1, -1], [1, -1], [1, 1], [-1, 1]]
+    .map(([sx, sy]) => new THREE.Vector3(SHEET.x + sx * (SHEET.w / 2 + 0.12), SHEET.y + sy * (SHEET.h / 2 + 0.12), 0))));
+  const nowFrame = new THREE.LineLoop(nowGeo, nowMat);
+  world.add(nowFrame);
 
   /* ------------------------------------------------------------ Bai Juyi's thread */
   const threadAt = (y: number): V3 => {
@@ -394,7 +416,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     // the name, as a link laid over the canvas
     const label = document.createElement("a");
     label.className = "tl-name";
-    label.href = base + "entry/" + r.n;
+    label.href = base + "?n=" + r.n;
     label.tabIndex = -1;
     label.lang = "zh-Hant";
     label.textContent = r.address;
@@ -491,7 +513,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     });
     glowMat.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
     glowMat.uniforms.uOpacity.value = dark ? 0.16 : 0.14;
-    goldMat.color = gold;
+    goldMat.color = gold; nowMat.color = gold;
     poemMat.color = col("ink"); stalkMat.color = col("accent");
     nodes.forEach((n) => {
       const sm = n.sprite.material;
@@ -513,77 +535,111 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   };
 
   /* ------------------------------------------------------------ camera */
+  // The camera orbits a target point T in the present year: yaw turns it around T (0 = behind, looking ahead
+  // in time), pitch lifts it, dist pulls it back. Every control moves a goal; the camera eases toward it.
   const centre = new THREE.Vector3(SHEET.x, SHEET.y, wz((Y0 + Y1) / 2));
-  const portrait = () => camera.aspect < 0.85;
+  // from the stage's own shape: the view offset changes camera.aspect while a panel is open
+  const portrait = () => W() / H() < 0.85;
+  const defDist = () => (portrait() ? 12 : 8.6);
+  const DEF_PITCH = 0.18, PITCH_MIN = -1.35, PITCH_MAX = 1.4;
   // seen from the east and above, time runs left to right; on a tall screen the camera looks up from the
   // south instead, so east stays on the right, the map spreads across and time runs top to bottom
-  // (from the past side, +z: from -z the camera's right would point west)
-  const overviewDir = () => (portrait() ? new THREE.Vector3(0.1, -0.95, 0.1) : new THREE.Vector3(0.7, 0.62, 0.2)).normalize();
-  const overviewUp = () => portrait() ? new THREE.Vector3(0, 0, 1) : new THREE.Vector3(0, 1, 0);
-  const overviewSquash = () => portrait() ? 0.19 : 0.3;
-  const back = () => portrait() ? 11.5 : 8;   // how far the camera trails the year in view
-  let zs = 1, overviewDist = 60;
-  const squash = (p: THREE.Vector3) => new THREE.Vector3(p.x, p.y, centre.z + (p.z - centre.z) * zs);
+  const overviewAngle = () => (portrait() ? { yaw: 0.08, pitch: -1.22 } : { yaw: 1.29, pitch: 0.7 });
+  const overviewSquash = () => (portrait() ? 0.19 : 0.3);
+  let overviewDist = 60;
+  const maxDist = () => overviewDist * 1.35;
+  const smooth = (a: number, b: number, x: number) => ease(clamp((x - a) / (b - a), 0, 1));
+  // zooming out squeezes time, so the far end of the zoom shows the whole span
+  const squashFor = (dist: number) => 1 - (1 - overviewSquash()) * smooth(12, overviewDist, dist);
+  const zoomOutFor = (dist: number) => smooth(16, overviewDist * 0.75, dist);
+  let zs = 1;
   const setSquash = (s: number) => {
     zs = s;
     world.scale.z = s;
     world.position.z = centre.z * (1 - s);
     world.updateMatrixWorld();
   };
-  const aim = (pos: THREE.Vector3, look: THREE.Vector3, upv: THREE.Vector3) => {
-    camera.position.copy(pos); camera.up.copy(upv); camera.lookAt(look); camera.updateMatrixWorld();
+  const squash = (p: THREE.Vector3) => new THREE.Vector3(p.x, p.y, centre.z + (p.z - centre.z) * zs);
+
+  interface View { year: number; x: number; y: number; yaw: number; pitch: number; dist: number }
+  const goal: View = { year: T0, x: 0, y: 0, yaw: 0, pitch: DEF_PITCH, dist: 8.6 };
+  const cur: View = { ...goal };
+  let following = true, playing = false;
+  // how quickly the camera catches its goal (ms): quick under a dragging hand, slower for a flight
+  const TAU_DRAG = 70, TAU_WHEEL = 190, TAU_FLY = 480;
+  let tau = TAU_FLY;
+  const inset = { l: 0, r: 0, b: 0 }, insetGoal = { l: 0, r: 0, b: 0 };
+  const clampDist = (d: number) => clamp(d, 2.4, maxDist());
+  const followXY = (year: number) => {
+    // a little ahead of the year, so the view turns into a move before the thread does
+    const f = follow(clamp(year + 1.2, Y0, Y1));
+    return [f[0] * 0.6, f[1] * 0.6] as const;
   };
-  // distance at which the whole box fits the screen, found by projecting its corners
+  const wrap = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
+  const view = () => o.onView({ following, playing });
+  const fly = () => { tau = still.matches ? 1 : TAU_FLY; kick(); };
+
+  // the target's place on the screen: square up the view to the part the panel and time bar leave free
+  const fullH = () => (camera.view?.enabled ? camera.view.fullHeight : H());
+  const placeCamera = () => {
+    setSquash(squashFor(cur.dist));
+    const T = new THREE.Vector3(cur.x, cur.y, centre.z + (wz(cur.year) - centre.z) * zs);
+    const cp = Math.cos(cur.pitch);
+    camera.position.set(T.x + cur.dist * Math.sin(cur.yaw) * cp, T.y + cur.dist * Math.sin(cur.pitch), T.z + cur.dist * Math.cos(cur.yaw) * cp);
+    camera.up.set(0, 1, 0);
+    camera.lookAt(T);
+    const zo = zoomOutFor(cur.dist);
+    const fog = scene.fog as THREE.Fog;
+    fog.near = cur.dist - 1.5 + zo * 400; fog.far = cur.dist * 1.2 + 20 + zo * 900;
+    camera.near = clamp(cur.dist * 0.26, 0.08, 2.2) + zo * 6; camera.far = 600 + zo * 400;
+    const w = W(), h = H(), l = Math.round(inset.l), r = Math.round(inset.r), b = Math.round(inset.b);
+    if (l > 0 || r > 0 || b > 0) { camera.aspect = (w + l + r) / (h + b); camera.setViewOffset(w + l + r, h + b, r, b, w, h); }
+    else { camera.aspect = w / h; camera.clearViewOffset(); }
+    camera.updateProjectionMatrix();
+    camera.updateMatrixWorld();
+    [threadMat, glowMat].forEach((m) => {
+      m.uniforms.uPresent.value = wz(cur.year);
+      m.uniforms.uNear.value = camera.near + 0.3;
+    });
+    nowFrame.position.z = wz(cur.year);
+    nowMat.opacity = (dark ? 0.32 : 0.42) + zo * 0.45;
+    return zo;
+  };
+  // distance at which the whole box fits the part of the screen the panel and bars leave free, from the overview
+  // angle, found by projecting its corners with a camera that sees only that part
   const fitOverview = () => {
     const corners: THREE.Vector3[] = [];
     for (const x of [SHEET.x - SHEET.w / 2, SHEET.x + SHEET.w / 2]) for (const y of [SHEET.y - SHEET.h / 2, SHEET.y + SHEET.h / 2])
       for (const z of [wz(Y0), wz(Y1)]) corners.push(new THREE.Vector3(x, y, z));
+    const saved = zs, { yaw, pitch } = overviewAngle();
     setSquash(overviewSquash());
-    camera.clearViewOffset(); camera.updateProjectionMatrix();
+    const fw = Math.max(1, W() - insetGoal.l - insetGoal.r), fh = Math.max(1, H() - insetGoal.b), fov = camera.fov;
+    camera.clearViewOffset(); camera.aspect = fw / fh;
+    camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan((fh / (H() + insetGoal.b)) * Math.tan(THREE.MathUtils.degToRad(fov) / 2)));
+    camera.updateProjectionMatrix();
+    const dir = new THREE.Vector3(Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch));
     let d = 60;
     for (let it = 0; it < 5; it++) {
-      aim(centre.clone().addScaledVector(overviewDir(), d), centre, overviewUp());
+      camera.position.copy(centre).addScaledVector(dir, d); camera.up.set(0, 1, 0); camera.lookAt(centre); camera.updateMatrixWorld();
       let mx = 0, my = 0;
       corners.forEach((c) => { const p = squash(c).project(camera); mx = Math.max(mx, Math.abs(p.x)); my = Math.max(my, Math.abs(p.y)); });
-      d *= Math.max(mx / (portrait() ? 0.8 : 0.9), my / (portrait() ? 0.56 : 0.6));
+      d *= Math.max(mx / (portrait() ? 0.8 : 0.86), my / (portrait() ? 0.62 : 0.66));
     }
     overviewDist = d;
-    setSquash(1);
-  };
-  const parallax = new THREE.Vector2(), parallaxTarget = new THREE.Vector2();
-  const placeCamera = (t: number, now: number) => {
-    const fly = clamp(t / FLY_END, 0, 1), year = Y0 + fly * (Y1 - Y0);
-    const f = follow(year), ahead = follow(clamp(year + 2.5, Y0, Y1));
-    const u = ease(clamp((t - FLY_END) / (1 - FLY_END - 0.04), 0, 1));
-    setSquash(1 + (overviewSquash() - 1) * u);
-    // the camera trails the year in view by a few years' depth, so that year's sheet fills the screen
-    const sway = still.matches ? 0 : Math.sin(now / 5200) * 0.12;
-    const flyPos = squash(new THREE.Vector3(f[0] * 0.6 + parallax.x * 0.45 + sway, f[1] * 0.6 + 1.5 + parallax.y * 0.3, wz(year) + back()));
-    const flyLook = squash(new THREE.Vector3(ahead[0] * 0.6, ahead[1] * 0.6 - 0.1, wz(year) - 6));
-    const ovPos = centre.clone().addScaledVector(overviewDir(), overviewDist);
-    aim(flyPos.lerp(ovPos, u), flyLook.lerp(centre, u), new THREE.Vector3(0, 1, 0).lerp(overviewUp(), u).normalize());
-    const fog = scene.fog as THREE.Fog;
-    fog.near = back() - 1 + u * 400; fog.far = back() + 22 + u * 900;
-    camera.near = 2.2 + u * 6; camera.far = 600 + u * 400;
-    // in the side view, lift the picture clear of the caption along the bottom
-    const w = host.clientWidth, h = host.clientHeight;
-    if (u > 0) camera.setViewOffset(w, h, 0, u * h * (portrait() ? 0.07 : 0.06), w, h); else camera.clearViewOffset();
-    camera.updateProjectionMatrix();
-    [threadMat, glowMat].forEach((m) => {
-      m.uniforms.uPresent.value = u > 0.5 ? -999 : wz(year);
-      m.uniforms.uNear.value = camera.near + 0.3;
-    });
-    return { year, u };
+    camera.fov = fov; camera.updateProjectionMatrix();
+    setSquash(saved);
   };
 
   const resize = () => {
     const w = host.clientWidth, h = host.clientHeight;
+    if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.fov = w / h < 0.8 ? 64 : 50;
     camera.updateProjectionMatrix();
     charMat.uniforms.uScale.value = (h * renderer.getPixelRatio()) / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2));
     fitOverview();
+    goal.dist = clampDist(goal.dist);
     kick();
   };
 
@@ -596,7 +652,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     const dist = v.distanceTo(camera.position);
     v.project(camera);
     if (v.z > 1 || v.z < -1) return null;
-    const ppu = H() / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * dist);
+    const ppu = fullH() / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * dist);
     return { x: (v.x * 0.5 + 0.5) * W(), y: (-v.y * 0.5 + 0.5) * H(), dist, ppu };
   };
   const fogAlpha = (dist: number) => {
@@ -610,7 +666,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(-50%,-50%) scale(${s.toFixed(3)})`;
   };
 
-  /* ------------------------------------------------------------ focus, tooltip, picking */
+  /* ------------------------------------------------------------ focus and the hover note */
   let hover: NameNode | null = null, pinned: NameNode | null = null;
   const fillTip = (n: NameNode) => {
     tip.replaceChildren();
@@ -623,12 +679,9 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     const r = n.row, pl = (name: string) => name + (o.places[name] ? " " + o.places[name].en : "");
     line(r.address + "  No. " + r.n, "strong", true);
     line(r.title, undefined, true);
-    line(yearLabel(r.time!) + " · " + eraYear(r.time!.from) + " · Bai Juyi at " + pl(r.baiAt) + (r.baiAtFrom === "career" ? " (from his postings)" : ""));
-    if (r.post || r.toAt) line("Addressee: " + [r.post, r.toAt && pl(r.toAt)].filter(Boolean).join(" · "));
-    if (r.jianjiao) line("箋校: " + r.jianjiao, undefined, true);
+    line(yearLabel(r.time!) + " · " + eraYear(r.time!.from) + " · Bai Juyi at " + pl(r.baiAt));
     line("Round A: " + STATUS[r.a.verdict].en + " · Round B: " + STATUS[r.b.verdict].en);
-    if (n.group) line("Same name in " + n.group.length + " titles: " + n.group.map((m) => "No. " + m.row.n + " (" + yearLabel(m.row.time!) + ")").join(", "));
-    line(matchMedia("(pointer: coarse)").matches ? "Tap again to open the entry" : "Select to open the entry", "em");
+    line("Select for the details", "em");
     tip.lastChild?.remove();
   };
   let tipFor: NameNode | null = null;
@@ -636,7 +689,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     if (!n) { tip.classList.remove("show"); tipFor = null; return; }
     if (tipFor !== n) { fillTip(n); tipFor = n; }
     tip.classList.add("show");
-    const tx = clamp(x + 18, 8, W() - tip.offsetWidth - 8), ty = clamp(y - tip.offsetHeight - 18, 8, H() - tip.offsetHeight - 8);
+    const tx = clamp(x + 18, 8, W() - inset.r - tip.offsetWidth - 8), ty = clamp(y - tip.offsetHeight - 18, 8, H() - tip.offsetHeight - 8);
     tip.style.transform = `translate(${tx}px,${ty}px)`;
   };
   const applyFocus = () => {
@@ -648,43 +701,125 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
       if (n.spark) n.spark.material.opacity = on ? 1 : 0.15;
       n.label.classList.toggle("dim", !on);
       n.label.classList.toggle("focus", n === f);
+      n.label.classList.toggle("picked", n === pinned);
       n.label.classList.toggle("kin", !!f && on && n !== f);
     });
     links.forEach((l) => { (l.line.material as THREE.LineBasicMaterial).opacity = f ? (l.nodes.some((n) => set.has(n)) ? 1 : 0.12) : 0.55; });
     kick();
   };
-  let lastPointer = "mouse";
   nodes.forEach((n) => {
-    n.label.addEventListener("pointerenter", (e) => { lastPointer = e.pointerType; if (e.pointerType === "mouse") { hover = n; applyFocus(); } });
+    n.label.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse" && !pointers.size) { hover = n; applyFocus(); } });
     n.label.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse" && hover === n) { hover = null; applyFocus(); } });
-    n.label.addEventListener("pointerdown", (e) => { lastPointer = e.pointerType; });
     n.label.addEventListener("click", (e) => {
+      // a plain click opens the panel; a click with a modifier keeps the link's own behaviour (new tab)
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
       e.preventDefault();
-      // mouse: open at once; touch: the first tap shows the details, a second tap opens the entry
-      if (lastPointer === "mouse" || pinned === n) { o.onOpen(n.row.n); return; }
-      pinned = n; applyFocus();
+      hover = null;
+      o.onInteract();
+      o.onSelect(n.row.n);
     });
   });
-  const clearPin = (e: PointerEvent) => { if (!(e.target as HTMLElement).closest(".tl-name") && pinned) { pinned = null; applyFocus(); } };
-  host.addEventListener("pointerdown", clearPin);
+
+  /* ------------------------------------------------------------ input: turn, move, zoom, travel */
+  const pointers = new Map<number, { x: number; y: number }>();
+  let gesture: "orbit" | "pan" | "pinch" | null = null, downT = 0, travelled = 0;
+  const pinch0 = { d: 1, dist: 1, mx: 0, my: 0 };
+  const stopPlaying = () => { if (playing) { playing = false; view(); } };
+  // move the target across the screen, at the scale of the target's distance; moving it along the time
+  // axis moves the present
+  const pan = (dx: number, dy: number) => {
+    const per = (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * cur.dist) / fullH();
+    const right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0);
+    const up = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 1);
+    const d = right.multiplyScalar(-dx * per).addScaledVector(up, dy * per);
+    if (following) { following = false; view(); }
+    goal.x = clamp(goal.x + d.x, SHEET.x - SHEET.w, SHEET.x + SHEET.w);
+    goal.y = clamp(goal.y + d.y, SHEET.y - SHEET.h, SHEET.y + SHEET.h);
+    goal.year = clamp(goal.year - d.z / (KZ * zs), T0, T1);
+  };
+  const startPinch = () => {
+    const [a, b] = [...pointers.values()];
+    gesture = "pinch"; travelled = 99;
+    Object.assign(pinch0, { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, dist: goal.dist, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 });
+  };
+  const onDown = (e: PointerEvent) => {
+    if ((e.target as HTMLElement).closest(".tl-name")) return;
+    if (e.pointerType === "mouse" && e.button > 2) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    try { host.setPointerCapture(e.pointerId); } catch { /* the pointer is already gone */ }
+    if (pointers.size === 1) {
+      gesture = e.button === 1 || e.button === 2 || e.shiftKey || e.ctrlKey || e.metaKey ? "pan" : "orbit";
+      downT = performance.now(); travelled = 0;
+    } else if (pointers.size === 2) startPinch();
+    hover = null; placeTip(null);
+    host.classList.add("dragging");
+    o.onInteract();
+  };
   const onMove = (e: PointerEvent) => {
-    if (e.pointerType !== "mouse" || still.matches) return;
-    const r = host.getBoundingClientRect();
-    parallaxTarget.set(((e.clientX - r.left) / r.width - 0.5) * 2, -((e.clientY - r.top) / r.height - 0.5) * 2);
+    const p = pointers.get(e.pointerId);
+    if (!p) return;
+    const dx = e.clientX - p.x, dy = e.clientY - p.y;
+    p.x = e.clientX; p.y = e.clientY;
+    travelled += Math.abs(dx) + Math.abs(dy);
+    tau = still.matches ? 1 : TAU_DRAG;
+    if (gesture === "orbit") {
+      goal.yaw -= dx * 0.0055;
+      goal.pitch = clamp(goal.pitch + dy * 0.0045, PITCH_MIN, PITCH_MAX);
+    } else if (gesture === "pan") pan(dx, dy);
+    else if (gesture === "pinch" && pointers.size >= 2) {
+      const [a, b] = [...pointers.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y) || 1, mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      goal.dist = clampDist((pinch0.dist * pinch0.d) / d);
+      pan(mx - pinch0.mx, my - pinch0.my);
+      pinch0.mx = mx; pinch0.my = my;
+    }
     kick();
   };
-  host.addEventListener("pointermove", onMove);
+  const onUp = (e: PointerEvent) => {
+    if (!pointers.delete(e.pointerId)) return;
+    if (pointers.size === 1 && gesture === "pinch") gesture = "orbit";   // the finger left carries on turning
+    if (pointers.size) return;
+    host.classList.remove("dragging");
+    // a click on the empty scene lets go of the name in focus
+    if (e.type === "pointerup" && gesture !== "pinch" && travelled < 6 && performance.now() - downT < 500 && pinned) o.onSelect(null);
+    gesture = null;
+  };
+  const noMenu = (e: Event) => e.preventDefault();
+  // The wheel moves through time (Ctrl or a trackpad pinch zooms). A turn of the wheel that starts while the
+  // stage is not squarely in view, or at either end of time going outward, scrolls the page instead.
+  let lastWheel = 0, wheelOwn = false;
+  const onWheel = (e: WheelEvent) => {
+    const now = performance.now(), fresh = now - lastWheel > 260;
+    lastWheel = now;
+    const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? H() : 1;
+    const dy = e.deltaY * unit, dx = e.deltaX * unit;
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      goal.dist = clampDist(goal.dist * Math.exp(dy * 0.01));
+      tau = still.matches ? 1 : TAU_WHEEL; o.onInteract(); kick();
+      return;
+    }
+    if (fresh) {
+      const outward = (dy > 0 && goal.year >= T1 - 1e-3) || (dy < 0 && goal.year <= T0 + 1e-3);
+      wheelOwn = section.getBoundingClientRect().top > -8 && !outward;
+    }
+    if (!wheelOwn) return;
+    e.preventDefault();
+    stopPlaying();
+    goal.year = clamp(goal.year + dy * 0.0075, T0, T1);
+    if (Math.abs(dx) > Math.abs(dy)) goal.yaw -= dx * 0.003;
+    tau = still.matches ? 1 : TAU_WHEEL; o.onInteract(); kick();
+  };
 
   /* ------------------------------------------------------------ frame */
-  const progress = () => {
-    const r = section.getBoundingClientRect();
-    return clamp(-r.top / (r.height - innerHeight || 1), 0, 1);
-  };
-  let t = progress(), raf = 0, inView = true, alive = true, lastNow = 0;
+  let raf = 0, inView = true, alive = true, lastNow = 0;
   const visible = () => inView && !document.hidden;
   const boxes: [number, number, number, number][] = [];
   const hit = (x: number, y: number, w: number, h: number) =>
     boxes.some(([bx, by, bw, bh]) => Math.abs(bx - x) < (w + bw) / 2 && Math.abs(by - y) < (h + bh) / 2);
+  const settled = () => Math.abs(goal.year - cur.year) < 1e-4 && Math.abs(goal.x - cur.x) < 1e-4 && Math.abs(goal.y - cur.y) < 1e-4
+    && Math.abs(wrap(goal.yaw - cur.yaw)) < 1e-4 && Math.abs(goal.pitch - cur.pitch) < 1e-4 && Math.abs(goal.dist - cur.dist) < 1e-4
+    && Math.abs(insetGoal.l - inset.l) < 0.5 && Math.abs(insetGoal.r - inset.r) < 0.5 && Math.abs(insetGoal.b - inset.b) < 0.5;
 
   const frame = (now: number) => {
     raf = 0;
@@ -692,13 +827,25 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     // glide by elapsed time, not per frame, so the speed is the same at 60 or 120 Hz and through a dropped frame
     const dt = lastNow ? Math.min(now - lastNow, 100) : 1000 / 60;
     lastNow = now;
-    const target = progress();
-    t += (target - t) * (still.matches ? 1 : 1 - Math.exp(-dt / 180));
-    if (Math.abs(target - t) < 0.0002) t = target;
-    if (still.matches) { parallaxTarget.set(0, 0); parallax.set(0, 0); }
-    else parallax.lerp(parallaxTarget, 1 - Math.exp(-dt / 270));
-    const { year, u } = placeCamera(t, now);
-    o.onYear(year, u);
+    if (playing) {
+      goal.year = Math.min(T1, goal.year + dt * 0.00085);   // about a year a second
+      if (goal.year >= T1) { playing = false; view(); }
+    }
+    if (following) [goal.x, goal.y] = followXY(goal.year);
+    const k = 1 - Math.exp(-dt / tau);
+    cur.year += (goal.year - cur.year) * k;
+    cur.x += (goal.x - cur.x) * k;
+    cur.y += (goal.y - cur.y) * k;
+    cur.yaw += wrap(goal.yaw - cur.yaw) * k;
+    cur.pitch += (goal.pitch - cur.pitch) * k;
+    cur.dist += (goal.dist - cur.dist) * k;
+    const ki = still.matches ? 1 : 1 - Math.exp(-dt / 260);
+    inset.l += (insetGoal.l - inset.l) * ki;
+    inset.r += (insetGoal.r - inset.r) * ki;
+    inset.b += (insetGoal.b - inset.b) * ki;
+    if (settled()) { Object.assign(cur, goal); Object.assign(inset, insetGoal); }
+    const zo = placeCamera();
+    o.onFrame(cur.year, zo);
     const secs = now / 1000;
     charMat.uniforms.uTime.value = still.matches ? 0 : secs;
     nodes.forEach((n) => {
@@ -723,7 +870,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
       .sort((a, b) => Number(b.n === f) - Number(a.n === f) || (a.s?.dist ?? 1e9) - (b.s?.dist ?? 1e9))
       .forEach(({ n, s }) => {
         if (!s) { place(n.label, 0, 0, 0); return; }
-        const a = u > 0.5 ? 1 : fogAlpha(s.dist);
+        const a = fogAlpha(s.dist);
         const scale = clamp(s.ppu / 70, 0.62, 1.25);
         const y0 = s.y - 0.16 * s.ppu - 14 * scale;
         const w = n.row.address.length * 18 * scale + 16, h = 28 * scale, step = h + 4;
@@ -742,23 +889,22 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
         if (shown >= 0.03) n.label.style.pointerEvents = shown > 0.25 ? "auto" : "none";
         n.label.style.zIndex = String(1000 - Math.round(s.dist));
         if (a > 0.3 && room) boxes.push([s.x, y0 + target, w, h]);
-        // the details follow their name, and only while it is in view
-        if (n === f && a > 0.25) { placeTip(n, s.x, y); tipShown = true; }
+        // the hover note follows its name, and only while it is in view
+        if (n === hover && a > 0.25) { placeTip(n, s.x, y); tipShown = true; }
       });
     if (!tipShown) placeTip(null);
-    const labelZ = u > 0.5 ? wz(Y0) : clamp(camera.position.z - world.position.z - 7, wz(Y1), wz(Y0));
+    const labelZ = zo > 0.5 ? wz(T0) : wz(cur.year);
     rails.forEach((r) => {
       const s = screen(new THREE.Vector3(r.xy[0], r.xy[1], labelZ));
       if (!s) { place(r.el!, 0, 0, 0); return; }
-      const a = (u > 0.5 ? 0.9 : fogAlpha(s.dist)) * (r.major ? 1 : 0.8), w = r.name.length * 15 + 40;
-      // keep clear of the key along the bottom edge
-      if (a < 0.05 || s.y > H() - 44 || hit(s.x, s.y, w, 34)) { place(r.el!, 0, 0, 0); return; }
+      const a = fogAlpha(s.dist) * (zo > 0.5 ? 0.9 : 1) * (r.major ? 1 : 0.8), w = r.name.length * 15 + 40;
+      if (a < 0.05 || hit(s.x, s.y, w, 34)) { place(r.el!, 0, 0, 0); return; }
       boxes.push([s.x, s.y, w, 34]);
       place(r.el!, s.x, s.y + 12, a);
     });
     stationLabels.forEach((l) => {
       const s = screen(l.pos);
-      const a = s && u < 0.5 ? fogAlpha(s.dist) * clamp((14 - s.dist) / 4, 0, 1) : 0;
+      const a = s && zo < 0.5 ? fogAlpha(s.dist) * clamp((14 - s.dist) / 4, 0, 1) : 0;
       if (!s || a < 0.05 || hit(s.x + 40, s.y, 80, 30)) { place(l.el, 0, 0, 0); return; }
       boxes.push([s.x + 40, s.y, 80, 30]);
       place(l.el, s.x + 46, s.y, a);
@@ -766,8 +912,8 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     let lastEraY = -1e9;
     eraLabels.forEach((l) => {
       const s = screen(l.pos);
-      const a = s ? (u > 0.5 ? 0.7 : fogAlpha(s.dist)) : 0;
-      const column = u > 0.5 && portrait();
+      const a = s ? fogAlpha(s.dist) * (zo > 0.5 ? 0.7 : 1) : 0;
+      const column = zo > 0.5 && portrait();
       l.el.classList.toggle("flat", column);
       if (!s) { place(l.el, 0, 0, 0); return; }
       // side view on a tall screen: the eras stand in a column down the left edge, level with their sheets
@@ -778,7 +924,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
       } else place(l.el, s.x, s.y, a, clamp(s.ppu / 60, 0.45, 1.4));
     });
 
-    const moving = !still.matches || Math.abs(target - t) > 0.0002 || parallax.distanceTo(parallaxTarget) > 0.001;
+    const moving = !still.matches || playing || !settled();
     if (visible() && moving) raf = requestAnimationFrame(frame);
     else lastNow = 0;   // a paused loop restarts with one ordinary frame, not one long jump
   };
@@ -788,39 +934,102 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   host.append(canvas, labels, tip);
   paint();
   resize();
+  [goal.x, goal.y] = followXY(goal.year);
+  goal.dist = defDist();
+  Object.assign(cur, goal);
+  placeCamera();
   renderer.compile(scene, camera);
   const ro = new ResizeObserver(resize);
   ro.observe(host);
   const io = new IntersectionObserver((en) => { inView = en[0].isIntersecting; kick(); });
   io.observe(section);
-  const onScroll = () => kick();
-  addEventListener("scroll", onScroll, { passive: true });
-  document.addEventListener("visibilitychange", onScroll);
+  const onVisibility = () => kick();
+  document.addEventListener("visibilitychange", onVisibility);
   const mo = new MutationObserver(paint);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   const mq = matchMedia("(prefers-color-scheme: dark)");
   mq.addEventListener("change", paint);
+  host.addEventListener("pointerdown", onDown);
+  host.addEventListener("pointermove", onMove);
+  host.addEventListener("pointerup", onUp);
+  host.addEventListener("pointercancel", onUp);
+  host.addEventListener("contextmenu", noMenu);
+  host.addEventListener("wheel", onWheel, { passive: false });
   host.classList.add("ready");
   kick();
 
   return {
-    pin: (n) => { pinned = nodes.find((m) => m.row.n === n) || null; hover = null; applyFocus(); },
-    snap: () => { t = progress(); kick(); },
+    select: (n, instant) => {
+      pinned = nodes.find((m) => m.row.n === n) || null;
+      hover = null;
+      applyFocus();
+      if (!pinned) return;
+      // fly to the name: centred, a little closer, seen from behind if the view was far out
+      stopPlaying();
+      if (following) { following = false; view(); }
+      const far = zoomOutFor(goal.dist) > 0.3;
+      goal.year = clamp(mid(pinned.row), T0, T1);
+      goal.x = pinned.at.x; goal.y = pinned.at.y - 0.25;
+      goal.dist = far ? defDist() * 0.8 : clamp(goal.dist, 5, defDist() * 0.9);
+      if (far) { goal.yaw = 0; goal.pitch = DEF_PITCH; }
+      if (instant) { Object.assign(cur, goal); kick(); } else fly();
+    },
+    setYear: (year, instant) => {
+      goal.year = clamp(year, T0, T1);
+      if (instant) { tau = TAU_DRAG; kick(); } else fly();
+    },
+    move: (d) => {
+      if (d.year) { stopPlaying(); goal.year = clamp(goal.year + d.year, T0, T1); }
+      if (d.yaw) goal.yaw += d.yaw;
+      if (d.pitch) goal.pitch = clamp(goal.pitch + d.pitch, PITCH_MIN, PITCH_MAX);
+      if (d.zoom) goal.dist = clampDist(goal.dist * d.zoom);
+      tau = still.matches ? 1 : TAU_WHEEL; kick();
+    },
+    play: (on) => {
+      if (on && goal.year >= T1 - 0.05) goal.year = T0;   // from the start again
+      if (on && !following) { following = true; goal.yaw = 0; goal.pitch = DEF_PITCH; goal.dist = defDist(); }
+      playing = on; view(); fly();
+    },
+    follow: () => {
+      following = true;
+      goal.yaw = 0; goal.pitch = DEF_PITCH; goal.dist = defDist();
+      view(); fly();
+    },
+    overview: () => {
+      stopPlaying();
+      following = false; view();
+      const a = overviewAngle();
+      goal.year = (Y0 + Y1) / 2; goal.x = centre.x; goal.y = centre.y;
+      goal.yaw = a.yaw; goal.pitch = a.pitch; goal.dist = overviewDist;
+      fly();
+    },
+    setInset: (l, r, b) => {
+      if (insetGoal.l === l && insetGoal.r === r && insetGoal.b === b) return;
+      // the overview's distance depends on the free space; keep a view that is at the overview there
+      const atOverview = Math.abs(goal.dist - overviewDist) < 1e-6;
+      Object.assign(insetGoal, { l, r, b });
+      fitOverview();
+      if (atOverview) goal.dist = overviewDist; else goal.dist = clampDist(goal.dist);
+      kick();
+    },
     destroy: () => {
       alive = false;
       cancelAnimationFrame(raf);
       ro.disconnect(); io.disconnect(); mo.disconnect();
       mq.removeEventListener("change", paint);
-      removeEventListener("scroll", onScroll);
-      document.removeEventListener("visibilitychange", onScroll);
-      host.removeEventListener("pointerdown", clearPin);
+      document.removeEventListener("visibilitychange", onVisibility);
+      host.removeEventListener("pointerdown", onDown);
       host.removeEventListener("pointermove", onMove);
+      host.removeEventListener("pointerup", onUp);
+      host.removeEventListener("pointercancel", onUp);
+      host.removeEventListener("contextmenu", noMenu);
+      host.removeEventListener("wheel", onWheel);
       nodes.forEach((n) => n.sprite.material.map?.dispose());
       disposables.forEach((d) => d.dispose());
       faint.dispose();
       renderer.dispose();
       canvas.remove(); labels.remove(); tip.remove();
-      host.classList.remove("ready");
+      host.classList.remove("ready", "dragging");
     },
   };
 }

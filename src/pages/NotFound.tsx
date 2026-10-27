@@ -7,7 +7,7 @@ export function NotFound() {
     <div className="page-head">
       <div className="wrap">
         <h1>Page not found <span className="zh" lang="zh-Hant">查無此頁</span></h1>
-        <p>There is nothing at this address. <Link to="/">Go to the record</Link>.</p>
+        <p>There is nothing at this address. <Link to="/">Go to the timeline</Link> or <Link to="/record">the record</Link>.</p>
       </div>
     </div>
   );
