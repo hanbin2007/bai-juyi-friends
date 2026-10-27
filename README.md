@@ -107,4 +107,4 @@ and keeps it in sync.
 ## AI assistance
 
 The site's code was written with help from Claude Code (Anthropic), as the course teacher allowed for the project.
-Commits made with AI help carry a `Co-Authored-By: Claude` line. On the student's instruction, Claude Code also ran Rounds A and B (GPT-6.1-terra through the Codex CLI) and read 箋校 for columns J and N–Q. The scripts, prompts, raw answers and event logs are in `EWR-Draft2/test-runs/`, outside this repo. The verdicts are the student's own.
+Commits made with AI help carry a `Co-Authored-By: Claude` line. On the student's instruction, Claude Code also ran Rounds A and B (GPT-6.1-terra through the Codex CLI) and read 箋校 for columns J and N–Q. The scripts, prompts, raw answers and event logs are in `EWR-Draft2/test-runs/`, outside this repo. Claude Code also gave the verdicts (columns K and L), by the rule in `EWR-Draft2/test-runs/fill_verdicts.py`.

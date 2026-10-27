@@ -1,29 +1,29 @@
 {
  "meta": {
-  "built": "2026-10-27 12:25 HKT",
+  "built": "2026-10-27 14:28 HKT",
   "source": "Bai-Juyi-Experiment-Record-Sheet.xlsx",
-  "sha256": "e747f853e1ef78a4a0c4a0201798da24914d09e39fa6dd5e771f0864d21ac11e",
+  "sha256": "7ba835491dca58439d525cb01827c3f356b6c19989fdaee08a1f0ad833244fd1",
   "summaryCheck": {
-   "status": "uncached",
-   "detail": "The Summary tab has no saved results. Open the sheet in Excel and save it once."
+   "status": "match",
+   "detail": "All counts match the Summary tab."
   }
  },
  "counts": {
   "a": {
-   "correct": 0,
-   "wrong": 0,
+   "correct": 14,
+   "wrong": 8,
    "partly": 0,
-   "declined": 0,
-   "unknown": 0,
-   "total": 0
+   "declined": 11,
+   "unknown": 2,
+   "total": 35
   },
   "b": {
-   "correct": 0,
-   "wrong": 0,
+   "correct": 20,
+   "wrong": 4,
    "partly": 0,
-   "declined": 0,
-   "unknown": 0,
-   "total": 0
+   "declined": 8,
+   "unknown": 3,
+   "total": 35
   }
  },
  "rows": [
@@ -34,15 +34,15 @@
    "a": {
     "answer": "元稹",
     "confidence": "high",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "元稹",
     "confidence": "high",
     "sources": "史料一記元稹與白居易交好，江州、通州期間詩歌往還；這是白居易對元九的常見稱呼。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷一·34",
    "jianjiao": "元稹",
@@ -77,15 +77,15 @@
    "a": {
     "answer": "劉禹錫",
     "confidence": "high",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "劉禹錫",
     "confidence": "high",
     "sources": "全詩稱「夢得」；劉禹錫字夢得，亦見史料三。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷三十·2011",
    "jianjiao": "劉禹錫",
@@ -119,15 +119,15 @@
    "a": {
     "answer": "李紳",
     "confidence": "high",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "李紳",
     "confidence": "medium",
     "sources": "已有知識：李紳行二十，曾任侍郎；史料三記他與白居易有詩文往來。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷三十一·2055",
    "jianjiao": "李紳",
@@ -156,15 +156,15 @@
    "a": {
     "answer": "李紳",
     "confidence": "high",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "李紳",
     "confidence": "high",
     "sources": "已有知識：李紳行二十，曾赴浙東任職；詩題的官職和去處與之相合。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷三十一·2068",
    "jianjiao": "李紳",
@@ -193,15 +193,15 @@
    "a": {
     "answer": "張籍",
     "confidence": "high",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "張籍",
     "confidence": "high",
     "sources": "已有知識：張籍行十八，與韓愈交好；全詩稱他所游「獨言韓舍人」。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷六·363",
    "jianjiao": "張籍",
@@ -242,15 +242,15 @@
    "a": {
     "answer": "皇甫湜",
     "confidence": "high",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "b": {
     "answer": "皇甫曙",
     "confidence": "medium",
     "sources": "已有知識：皇甫曙行十；史料三記他與白居易有詩文往來。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷三十二·2137",
    "jianjiao": "皇甫曙",
@@ -281,15 +281,15 @@
    "a": {
     "answer": "楊汝士",
     "confidence": "low",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "詩題及全詩不足以確定此楊六的姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "locate": "卷三十二·2162",
    "jianjiao": "楊汝士",
@@ -316,15 +316,15 @@
    "a": {
     "answer": "楊汝士",
     "confidence": "medium",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "楊虞卿",
     "confidence": "high",
     "sources": "詩題稱其弟為漢公、魯士；已有知識及史料三所列楊氏人物可與楊虞卿相合。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "locate": "卷三十四·2287",
    "jianjiao": "楊汝士",
@@ -353,15 +353,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "詩題的官職和赴任地點不足以確定姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "locate": "卷三十一·2067",
    "jianjiao": "楊虞卿",
@@ -390,15 +390,15 @@
    "a": {
     "answer": "崔玄亮",
     "confidence": "medium",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "詩題和全詩不足以確定這位崔十八的姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "unknown",
+    "verdictRaw": "declined: none exists"
    },
    "locate": "外集卷上·3814",
    "jianjiao": "（箋校未注受贈人）",
@@ -425,15 +425,15 @@
    "a": {
     "answer": "牛僧孺",
     "confidence": "medium",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "牛僧孺",
     "confidence": "medium",
     "sources": "已有知識：牛僧孺行二；史料一、三均記他與白居易有交往。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷十七·1111",
    "jianjiao": "牛僧孺",
@@ -462,15 +462,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "李宗閔",
     "confidence": "low",
     "sources": "已有知識及詩題所示的員外郎身分可供推測；史料三記李宗閔與白居易有詩文往來。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷十七·1112",
    "jianjiao": "李宗閔",
@@ -499,15 +499,15 @@
    "a": {
     "answer": "庾承宣",
     "confidence": "low",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "b": {
     "answer": "庾敬休",
     "confidence": "low",
     "sources": "史料三記庾敬休是白居易的朋友；據已有知識推測為詩題中的庾三十二。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷十七·1113；卷十六·972",
    "jianjiao": "庾敬休",
@@ -536,15 +536,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "崔羣",
     "confidence": "medium",
     "sources": "已有知識：崔羣行二十二，曾任果州刺史；史料一記他與白居易同在翰林。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "locate": "卷十六·971",
    "jianjiao": "崔韶",
@@ -669,15 +669,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "韋處厚",
     "confidence": "medium",
     "sources": "已有知識：韋處厚曾在開州任職；史料三記白居易為他作祭文，並有詩文往來。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷十六·971",
    "jianjiao": "韋處厚",
@@ -802,15 +802,15 @@
    "a": {
     "answer": "杜元穎",
     "confidence": "low",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "杜元穎",
     "confidence": "medium",
     "sources": "已有知識：杜元穎行十四；史料三記他是白居易的同年友。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷十六·972",
    "jianjiao": "杜元穎",
@@ -935,15 +935,15 @@
    "a": {
     "answer": "竇鞏",
     "confidence": "medium",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "竇鞏",
     "confidence": "medium",
     "sources": "已有知識：竇鞏行七；史料一記他與元稹酬唱，史料三記他與白居易有詩文往來。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷十六·973",
    "jianjiao": "竇鞏",
@@ -1068,15 +1068,15 @@
    "a": {
     "answer": "李紳",
     "confidence": "high",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "李紳",
     "confidence": "high",
     "sources": "已有知識：李紳行二十，曾任助教；史料一亦稱「李二十新歌行」。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷十六·972",
    "jianjiao": "李紳",
@@ -1201,15 +1201,15 @@
    "a": {
     "answer": "獨孤郁",
     "confidence": "medium",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "獨孤郁",
     "confidence": "high",
     "sources": "已有知識：獨孤郁行二十七，曾在翰林任職；史料三記其與白居易有詩文往來。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷十四·805",
    "jianjiao": "獨孤郁",
@@ -1236,15 +1236,15 @@
    "a": {
     "answer": "劉禹銅",
     "confidence": "medium",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "b": {
     "answer": "劉禹銅",
     "confidence": "low",
     "sources": "已有知識中有將詩題的劉十九認作劉禹銅的說法；僅憑詩文本身不能確定。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "locate": "卷十七·1072",
    "jianjiao": "嵩陽處士，名未詳（箋：非劉軻）",
@@ -1271,15 +1271,15 @@
    "a": {
     "answer": "舒元輿",
     "confidence": "medium",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "舒元輿",
     "confidence": "medium",
     "sources": "已有知識：舒元輿行三；史料三記其與白居易有詩文往來。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷三十一·2049",
    "jianjiao": "舒元輿",
@@ -1308,15 +1308,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "嚴休復",
     "confidence": "medium",
     "sources": "已有知識：嚴休復曾在白居易之前任蘇州刺史；史料三記其與白居易有詩文往來。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷八·456",
    "jianjiao": "嚴休復",
@@ -1351,15 +1351,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "崔玄亮",
     "confidence": "high",
     "sources": "已有知識：崔玄亮字晦叔，行二十四，曾任常侍；史料一亦記白居易與崔晦叔交往。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "locate": "卷三十二·2122",
    "jianjiao": "崔咸",
@@ -1388,15 +1388,15 @@
    "a": {
     "answer": "皇甫曙",
     "confidence": "medium",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "詩題及全詩不足以確定這位皇甫六的姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "locate": "卷三十一·2060",
    "jianjiao": "皇甫鏞",
@@ -1425,15 +1425,15 @@
    "a": {
     "answer": "張仲素",
     "confidence": "low",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "b": {
     "answer": "張仲方",
     "confidence": "medium",
     "sources": "已有知識：張仲方行十五，曾為分司東都的賓客；史料三記他與白居易同僚並有詩文往來。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷三十一·2060",
    "jianjiao": "張仲方",
@@ -1462,15 +1462,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "詩題及全詩不足以確定這位李二十三的姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "locate": "卷三十一·2060",
    "jianjiao": "李紳（箋作〔李二十賓客〕，題當讀「李二十／三賓客」）",
@@ -1499,15 +1499,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "詩題和全詩不足以確定這位皇甫七的姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "locate": "卷二十三·1580",
    "jianjiao": "皇甫湜",
@@ -1536,15 +1536,15 @@
    "a": {
     "answer": "吳武陵",
     "confidence": "medium",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "b": {
     "answer": "吳丹",
     "confidence": "medium",
     "sources": "已有知識：吳丹與白居易同年登進士第；全詩末句稱「進士有同年」，史料三亦記兩人交往。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷六·368",
    "jianjiao": "吳丹",
@@ -1585,15 +1585,15 @@
    "a": {
     "answer": "沈傳師",
     "confidence": "low",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "wrong",
+    "verdictRaw": "wrong"
    },
    "b": {
     "answer": "沈述師",
     "confidence": "low",
     "sources": "據已有知識推測沈四著作為沈述師；史料三記他與白居易有詩文往來。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷三十三·2227",
    "jianjiao": "沈述師（箋疑「四」為「十四」之奪文）",
@@ -1624,15 +1624,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "unknown",
+    "verdictRaw": "declined: none exists"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "詩題及全詩的官職、年齡線索不足以確定姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "unknown",
+    "verdictRaw": "declined: none exists"
    },
    "locate": "卷三十一·2104",
    "jianjiao": "名未詳",
@@ -1661,15 +1661,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "詩題及全詩不足以確定這位韋七的姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "locate": "卷三十·2010",
    "jianjiao": "韋縝",
@@ -1702,15 +1702,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "unknown",
+    "verdictRaw": "declined: none exists"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "全詩稱三人是同年，但不足以確定李六的姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "unknown",
+    "verdictRaw": "declined: none exists"
    },
    "locate": "卷三十三·2187",
    "jianjiao": "白居易同年，名未出（箋：與江州途中詩之李六郎中非一人）",
@@ -1739,15 +1739,15 @@
    "a": {
     "answer": "楊巨源",
     "confidence": "medium",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "b": {
     "answer": "楊巨源",
     "confidence": "medium",
     "sources": "已有知識：楊巨源行十二，曾任國子博士；史料三記其收到白居易詩文。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "correct",
+    "verdictRaw": "correct"
    },
    "locate": "卷十七·1102",
    "jianjiao": "楊巨源",
@@ -1776,15 +1776,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "詩題及全詩的蘄春任職和年齡線索不足以確定姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "locate": "卷三十四·2268",
    "jianjiao": "李播",
@@ -1813,15 +1813,15 @@
    "a": {
     "answer": "不知",
     "confidence": "",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "b": {
     "answer": "不知",
     "confidence": "",
     "sources": "詩題和全詩不足以確定這位王十八的姓名。",
-    "verdict": "untested",
-    "verdictRaw": ""
+    "verdict": "declined",
+    "verdictRaw": "declined: answer exists"
    },
    "locate": "卷十三·759",
    "jianjiao": "王質夫",
@@ -2183,8 +2183,8 @@
    "roundADate": "27 Oct 2026, 12:24 HKT",
    "roundBDate": "27 Oct 2026, 12:24 HKT",
    "sourcesGiven": "Each poem's full text (chinese-poetry 全唐詩, without Bai's own notes); 舊唐書 卷一百六十六 (元稹、白居易傳, Wikisource); CBDB: Bai Juyi's 27 postings and his full list of 389 social associations. No 箋校 content.",
-   "checkingDates": "27 Oct 2026 (箋校 entries read; verdicts not yet recorded)",
-   "note": "Both rounds were run, and 箋校 was read, by Claude Code (Anthropic) on the student's instruction. The answers are recorded exactly as the model gave them. An earlier run that day was discarded unused: its prompts gave 元稹, the answer to entry 1, as the example of an answer."
+   "checkingDates": "27 Oct 2026 (箋校 entries read and verdicts given)",
+   "note": "Both rounds were run, 箋校 was read and the verdicts were given by Claude Code (Anthropic) on the student's instruction. The answers are recorded exactly as the model gave them. An earlier run that day was discarded unused: its prompts gave 元稹, the answer to entry 1, as the example of an answer."
   },
   "promptA": "以下是白居易詩題中出現的三十五處「姓＋行第」稱謂（例如「元九」）。請判斷每個稱謂在該詩題中所指的人物是誰。同一首詩可能出現幾個稱謂，各自作答。\n\n要求：\n1. 只根據詩題本身和你已有的知識作答。不要使用任何工具、檢索或外部資料。\n2. 答案寫人物的姓名。若無法確定是誰，答「不知」。\n3. 為每條答案標出信心：高、中、低。答「不知」的，信心留空。\n4. 只輸出一個 JSON 陣列，不要任何其他文字。格式：\n[{\"n\": \"1\", \"answer\": \"姓名或不知\", \"confidence\": \"高\"}]\n\n題目：\n1. 詩題：酬元九對新栽竹有懷見寄　稱謂：元九\n2. 詩題：夢劉二十八因詩問之　稱謂：劉二十八\n3. 詩題：酬李二十侍郎　稱謂：李二十\n4. 詩題：醉送李二十常侍赴鎮浙東　稱謂：李二十\n5. 詩題：酬張十八訪宿見贈　稱謂：張十八\n6. 詩題：荅皇甫十郎中秋深酒熟見憶　稱謂：皇甫十\n7. 詩題：寄楊六侍郎　稱謂：楊六\n8. 詩題：和楊六尚書喜兩弟漢公轉吳興魯士賜章服命賓開宴用慶恩榮賦長句見示　稱謂：楊六\n9. 詩題：送楊八給事赴常州　稱謂：楊八\n10. 詩題：雨中訪崔十八　稱謂：崔十八\n11. 詩題：廬山草堂夜雨獨宿寄牛二李七庾三十二員外　稱謂：牛二\n12. 詩題：廬山草堂夜雨獨宿寄牛二李七庾三十二員外　稱謂：李七\n13. 詩題：廬山草堂夜雨獨宿寄牛二李七庾三十二員外　稱謂：庾三十二\n14. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：崔二十二\n15. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：韋大\n16. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：杜十四\n17. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：竇七\n18. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：李二十\n19. 詩題：翰林中送獨孤二十七起居罷職出院　稱謂：獨孤二十七\n20. 詩題：問劉十九　稱謂：劉十九\n21. 詩題：酬舒三員外見贈長句　稱謂：舒三\n22. 詩題：嚴十八郎中在郡日改制東南樓因名清輝未立標牓徵歸郎署予既到郡性愛樓居宴遊其間頗有幽致聊成十韻兼戲寄嚴　稱謂：嚴十八\n23. 詩題：哭崔二十四常侍　稱謂：崔二十四\n24. 詩題：贈皇甫六張十五李二十三賓客　稱謂：皇甫六\n25. 詩題：贈皇甫六張十五李二十三賓客　稱謂：張十五\n26. 詩題：贈皇甫六張十五李二十三賓客　稱謂：李二十三\n27. 詩題：寄皇甫七　稱謂：皇甫七\n28. 詩題：酬吳七見寄　稱謂：吳七\n29. 詩題：晚春欲攜酒尋沈四著作先以六韻寄之　稱謂：沈四\n30. 詩題：送劉五司馬赴任硤州兼寄崔使君　稱謂：劉五\n31. 詩題：二月一日作贈韋七庶子　稱謂：韋七\n32. 詩題：酬鄭二司錄與李六郎中寒食日相過同宴見贈　稱謂：李六\n33. 詩題：荅元八郎中楊十二博士　稱謂：楊十二\n34. 詩題：送蘄春李十九使君赴郡　稱謂：李十九\n35. 詩題：酬王十八李大見招遊山　稱謂：王十八",
   "promptB": "以下是白居易詩題中出現的三十五處「姓＋行第」稱謂（例如「元九」）。請判斷每個稱謂在該詩題中所指的人物是誰。同一首詩可能出現幾個稱謂，各自作答。\n\n這一次，每條除了詩題，還附上全詩（開源 chinese-poetry 全唐詩本，不含白居易自注），文末另附三份史料。\n\n要求：\n1. 根據詩題、全詩、所附史料和你已有的知識作答。不要使用任何工具、檢索或其他外部資料。\n2. 答案寫人物的姓名。若無法確定是誰，答「不知」。\n3. 為每條答案標出信心：高、中、低。答「不知」的，信心留空。\n4. 簡要寫出你的依據（例如「史料三某條」「全詩某句」「史料一某段」「已有知識」），一兩句即可。\n5. 只輸出一個 JSON 陣列，不要任何其他文字。格式：\n[{\"n\": \"1\", \"answer\": \"姓名或不知\", \"confidence\": \"高\", \"sources\": \"依據\"}]\n\n題目：\n1. 詩題：酬元九對新栽竹有懷見寄　稱謂：元九\n   全詩：昔我十年前，與君始相識。曾將秋竹竿，比君孤且直。中心一以合，外事紛無極。共保秋竹心，風霜侵不得。始嫌梧桐樹，秋至先改色。不愛楊柳枝，春來輭無力。憐君別我後，見竹長相憶。長欲在眼前，故栽庭戶側。分首今何處，君南我在北。吟我贈君詩，對之心惻惻。\n2. 詩題：夢劉二十八因詩問之　稱謂：劉二十八\n   全詩：昨夜夢夢得，初覺思踟躕。忽忘來汝郡，猶疑在吳都。吳都三千里，汝郡二百餘。非夢亦不見，近與遠何殊。尚能齊近遠，焉用論榮枯。但問寢與食，近日兩何如。病後能吟否，春來曾醉無。樓臺與風景，汝又何如蘇。相思一相報，勿復慵爲書。\n3. 詩題：酬李二十侍郎　稱謂：李二十\n   全詩：笋老蘭長花漸稀，衰翁相對惜芳菲。殘鶯著雨慵休囀，落絮無風凝不飛。行掇木芽供野食，坐牽蘿蔓挂朝衣。十年分手今同醉，醉未如泥莫道歸。\n……（共 35 條）\n\n史料一：《舊唐書》卷一百六十六（元稹、白居易傳），維基文庫本。\n元稹\n[編輯]\n\n……\n\n史料二：CBDB（中國歷代人物傳記資料庫）白居易（人物 ID 32227）任官記錄。格式：年份　官職　地點\n810–811　府戸曹参軍　京兆府\n830–833　府尹　河南府\n807–811　翰林學士　長安\n……\n\n史料三：CBDB 白居易社會關係記錄（共 389 條）。格式：對方姓名｜關係｜相關作品題目｜年份（缺者從略）\n楊虞卿｜友｜與楊虞卿書\n崔玄亮｜友\n元稹｜友\n……"

@@ -3,7 +3,7 @@ import type { Verdict } from "./data";
 export const STATUS: Record<Verdict, { en: string; zh: string; short: string; tip: string }> = {
   correct: { en: "Correct", zh: "正確", short: "Correct", tip: "The AI named the person 箋校 identifies." },
   partly: { en: "Partly correct", zh: "部分正確", short: "Partly", tip: "The answer is partly right (see notes)." },
-  wrong: { en: "Wrong", zh: "錯誤", short: "Wrong", tip: "The AI named someone else." },
+  wrong: { en: "Wrong", zh: "錯誤", short: "Wrong", tip: "The AI named someone else, or named someone where 箋校 says the name is unknown." },
   declined: { en: "Declined", zh: "未作答", short: "Declined", tip: "The AI gave no name, but 箋校 identifies the person." },
   unknown: { en: "Name unknown in 箋校", zh: "名未詳", short: "Name unknown", tip: "The AI gave no name, and 箋校 does not identify the person either." },
   untested: { en: "No verdict yet", zh: "未判定", short: "No verdict", tip: "No verdict recorded yet." },
