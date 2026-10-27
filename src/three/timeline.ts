@@ -298,11 +298,24 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     world.add(m);
     return m;
   });
-  // the camera follows a smoothed thread so it glides rather than jerks between postings
+  // the camera follows a smoothed thread so it glides rather than jerks between postings. The thread is
+  // sampled finely and blurred once here: a coarse blur of a sudden move is a staircase, which shakes on scroll
+  const FS = 0.05, F0 = Y0 - 4, followPts: [number, number][] = [];
+  {
+    const raw: V3[] = [];
+    for (let y = F0; y <= Y1 + 4 + 1e-9; y += FS) raw.push(threadAt(clamp(y, Y0, Y1)));
+    const sigma = 1.3 / FS, R = Math.ceil(sigma * 3);
+    const wts = Array.from({ length: 2 * R + 1 }, (_, k) => Math.exp(-((k - R) ** 2) / (2 * sigma * sigma)));
+    raw.forEach((_, i) => {
+      let x = 0, yy = 0, w = 0;
+      for (let k = -R; k <= R; k++) { const p = raw[clamp(i + k, 0, raw.length - 1)], g = wts[k + R]; x += p[0] * g; yy += p[1] * g; w += g; }
+      followPts.push([x / w, yy / w]);
+    });
+  }
   const follow = (y: number): V3 => {
-    let x = 0, yy = 0;
-    for (let k = -6; k <= 6; k++) { const p = threadAt(clamp(y + k * 0.4, Y0, Y1)); x += p[0]; yy += p[1]; }
-    return [x / 13, yy / 13, wz(y)];
+    const f = (clamp(y, F0, Y1 + 4) - F0) / FS, i = Math.min(Math.floor(f), followPts.length - 2), a = f - i;
+    const [px, py] = followPts[i], [qx, qy] = followPts[i + 1];
+    return [px + (qx - px) * a, py + (qy - py) * a, wz(y)];
   };
 
   /* ------------------------------------------------------------ names */
@@ -653,7 +666,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     const r = section.getBoundingClientRect();
     return clamp(-r.top / (r.height - innerHeight || 1), 0, 1);
   };
-  let t = progress(), raf = 0, inView = true, alive = true;
+  let t = progress(), raf = 0, inView = true, alive = true, lastNow = 0;
   const visible = () => inView && !document.hidden;
   const boxes: [number, number, number, number][] = [];
   const hit = (x: number, y: number, w: number, h: number) =>
@@ -662,11 +675,14 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   const frame = (now: number) => {
     raf = 0;
     if (!alive) return;
+    // glide by elapsed time, not per frame, so the speed is the same at 60 or 120 Hz and through a dropped frame
+    const dt = lastNow ? Math.min(now - lastNow, 100) : 1000 / 60;
+    lastNow = now;
     const target = progress();
-    t += (target - t) * (still.matches ? 1 : 0.09);
+    t += (target - t) * (still.matches ? 1 : 1 - Math.exp(-dt / 180));
     if (Math.abs(target - t) < 0.0002) t = target;
     if (still.matches) { parallaxTarget.set(0, 0); parallax.set(0, 0); }
-    else parallax.lerp(parallaxTarget, 0.06);
+    else parallax.lerp(parallaxTarget, 1 - Math.exp(-dt / 270));
     const { year, u } = placeCamera(t, now);
     o.onYear(year, u);
     const secs = now / 1000;
@@ -733,6 +749,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
 
     const moving = !still.matches || Math.abs(target - t) > 0.0002 || parallax.distanceTo(parallaxTarget) > 0.001;
     if (visible() && moving) raf = requestAnimationFrame(frame);
+    else lastNow = 0;   // a paused loop restarts with one ordinary frame, not one long jump
   };
   function kick() { if (!raf && visible() && alive) raf = requestAnimationFrame(frame); }
 
