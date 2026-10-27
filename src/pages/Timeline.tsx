@@ -150,7 +150,9 @@ export function Timeline() {
         across the screen, places sit roughly where they lie on the map. The gold thread follows Bai Juyi's postings.
       </PageHead>
       <div className="wrap tl-status">
-        <p><b>{DATED.length}</b> of <b>{TOTAL}</b> names dated so far, from the dating in <Zh>箋校</Zh>. The rest are listed below the timeline until they are dated.</p>
+        {DATED.length === TOTAL
+          ? <p>All <b>{TOTAL}</b> names are placed, using the dating in <Zh>箋校</Zh>.</p>
+          : <p><b>{DATED.length}</b> of <b>{TOTAL}</b> names dated so far, from the dating in <Zh>箋校</Zh>. The rest are listed below the timeline until they are dated.</p>}
         {!CAREER.verified && <p className="muted">Bai Juyi's postings follow the standard chronology (<Zh>{CAREER.source}</Zh>) and are still being checked.</p>}
         <p><a href="#same-name">Skip to the names that occur more than once</a></p>
       </div>

@@ -33,6 +33,7 @@ interface NameNode {
   row: Row; at: THREE.Vector3; from: THREE.Vector3; curve: THREE.QuadraticBezierCurve3 | null;
   group: NameNode[] | null; sprite: THREE.Sprite; letter: THREE.Mesh | null; spark: THREE.Sprite | null;
   label: HTMLAnchorElement; phase: number;
+  dy: number; shown: number;   // the label's eased nudge (px) and visibility, to keep it clear of nearer names
 }
 
 export interface TimelineOptions {
@@ -346,17 +347,30 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   const base = import.meta.env.BASE_URL;
 
   const nodes: NameNode[] = [];
+  // names that land on the same place in the same year share a spot: a letter's destination, or
+  // Bai Juyi's own place (where a name always steps off the thread)
+  const away = (r: Row) => r.toAt && r.toAt !== r.baiAt ? r.toAt : "";
+  const spotOf = (r: Row) => (away(r) || r.baiAt) + "@" + Math.round(mid(r) * 2);
+  const spotSize = new Map<string, number>();
+  o.rows.forEach((r) => spotSize.set(spotOf(r), (spotSize.get(spotOf(r)) || 0) + 1));
   const crowd = new Map<string, number>();
   [...o.rows].sort((a, b) => mid(a) - mid(b) || Number(a.n) - Number(b.n)).forEach((r, idx) => {
-    const [bx, by] = P(r.baiAt)!, z = wz(mid(r)), to = r.toAt && r.toAt !== r.baiAt ? P(r.toAt) : null;
+    const [bx, by] = P(r.baiAt)!, z = wz(mid(r)), to = away(r) ? P(r.toAt) : null;
     const from = new THREE.Vector3(bx, by, z);
-    // names that land on the same place in the same year fan out around it; a name at Bai Juyi's
-    // own place always steps off the thread
     const [ax, ay] = to || [bx, by];
-    const key = (to ? r.toAt : r.baiAt) + "@" + Math.round(mid(r) * 2);
-    const i = crowd.get(key) || 0; crowd.set(key, i + 1);
-    const ring = to ? i : i + 1, a = Math.PI / 2 - (ring - 1) * 1.3;
-    const at = ring ? new THREE.Vector3(ax + Math.cos(a) * 0.6, ay + Math.sin(a) * 0.6, z + i * 0.1) : new THREE.Vector3(ax, ay, z);
+    const key = spotOf(r), i = crowd.get(key) || 0;
+    crowd.set(key, i + 1);
+    // slot 0 is the place itself (only a letter arriving may sit there). One name off the place stands
+    // just above it; several stand in two columns above it, spaced for the labels, which are wide
+    const slot = to ? i : i + 1, others = spotSize.get(key)! - (to ? 1 : 0);
+    let dx = 0, dy = 0;
+    if (slot && others === 1) dy = 0.6;
+    else if (slot) {
+      const k = slot - 1, row = Math.floor(k / 2), last = k === others - 1 && others % 2 === 1;
+      dx = last ? 0 : k % 2 ? 0.62 : -0.62;
+      dy = 0.5 + row * 0.42;
+    }
+    const at = new THREE.Vector3(ax + dx, ay + dy, z + i * 0.1);
 
     const dot = new THREE.Mesh(dotGeo, poemMat);
     dot.position.copy(from);
@@ -385,7 +399,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     label.lang = "zh-Hant";
     label.textContent = r.address;
     labels.appendChild(label);
-    nodes.push({ row: r, at, from, curve, group: null, sprite, letter, spark, label, phase: (idx * 0.37) % 1 });
+    nodes.push({ row: r, at, from, curve, group: null, sprite, letter, spark, label, phase: (idx * 0.37) % 1, dy: 0, shown: 1 });
   });
   const byAddress = new Map<string, NameNode[]>();
   nodes.forEach((n) => byAddress.set(n.row.address, [...(byAddress.get(n.row.address) || []), n]));
@@ -702,18 +716,35 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     boxes.length = 0;
     const f = hover || pinned;
     let tipShown = false;
-    nodes.map((n) => ({ n, s: screen(n.at) })).sort((a, b) => (b.s?.dist ?? 0) - (a.s?.dist ?? 0)).forEach(({ n, s }) => {
-      if (!s) { place(n.label, 0, 0, 0); return; }
-      const a = u > 0.5 ? 1 : fogAlpha(s.dist);
-      const scale = clamp(s.ppu / 70, 0.62, 1.25);
-      const y = s.y - 0.16 * s.ppu - 14 * scale;
-      place(n.label, s.x, y, a * (n.label.classList.contains("dim") ? 0.35 : 1), scale);
-      if (a >= 0.03) n.label.style.pointerEvents = a > 0.25 ? "auto" : "none";
-      n.label.style.zIndex = String(1000 - Math.round(s.dist));
-      if (a > 0.3) boxes.push([s.x, y, n.row.address.length * 18 * scale + 16, 28 * scale]);
-      // the details follow their name, and only while it is in view
-      if (n === f && a > 0.25) { placeTip(n, s.x, y); tipShown = true; }
-    });
+    // nearer names (and the one in focus) claim their space first; a farther label that would cover one
+    // slides a row up or down, or fades out when there is no room, easing so that nothing jumps
+    const glide = still.matches ? 1 : 1 - Math.exp(-dt / 90);
+    nodes.map((n) => ({ n, s: screen(n.at) }))
+      .sort((a, b) => Number(b.n === f) - Number(a.n === f) || (a.s?.dist ?? 1e9) - (b.s?.dist ?? 1e9))
+      .forEach(({ n, s }) => {
+        if (!s) { place(n.label, 0, 0, 0); return; }
+        const a = u > 0.5 ? 1 : fogAlpha(s.dist);
+        const scale = clamp(s.ppu / 70, 0.62, 1.25);
+        const y0 = s.y - 0.16 * s.ppu - 14 * scale;
+        const w = n.row.address.length * 18 * scale + 16, h = 28 * scale, step = h + 4;
+        let target = n.dy, room = true;
+        if (a > 0.3) {
+          // keep the current nudge while it is still clear, so labels do not swap places back and forth
+          const tries = [n.dy, 0, -step, step, -2 * step, 2 * step];
+          const free = tries.find((d) => !hit(s.x, y0 + d, w, h));
+          room = free !== undefined || n === f;
+          target = free ?? 0;
+        }
+        n.dy += (target - n.dy) * glide;
+        n.shown += ((room ? 1 : 0) - n.shown) * glide;
+        const y = y0 + n.dy, shown = a * n.shown;
+        place(n.label, s.x, y, shown * (n.label.classList.contains("dim") ? 0.35 : 1), scale);
+        if (shown >= 0.03) n.label.style.pointerEvents = shown > 0.25 ? "auto" : "none";
+        n.label.style.zIndex = String(1000 - Math.round(s.dist));
+        if (a > 0.3 && room) boxes.push([s.x, y0 + target, w, h]);
+        // the details follow their name, and only while it is in view
+        if (n === f && a > 0.25) { placeTip(n, s.x, y); tipShown = true; }
+      });
     if (!tipShown) placeTip(null);
     const labelZ = u > 0.5 ? wz(Y0) : clamp(camera.position.z - world.position.z - 7, wz(Y1), wz(Y0));
     rails.forEach((r) => {
