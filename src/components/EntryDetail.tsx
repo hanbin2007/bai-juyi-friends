@@ -57,7 +57,7 @@ export function EntryDetail({ row, permalink = true }: { row: Row; permalink?: b
               {row.poem.map((line, i) => <span className="pline" key={i}>{line}</span>)}
             </figure>
             <p className="poem-note">
-              Text from the open <a href="https://github.com/chinese-poetry/chinese-poetry" rel="noopener">chinese-poetry</a> edition of 全唐詩, for reading only. It leaves out Bai Juyi's own notes (自注) and may differ from 箋校.
+              Text from the open <a href="https://github.com/chinese-poetry/chinese-poetry" rel="noopener">chinese-poetry</a> edition of 全唐詩, the same text the AI was given in Round B. It leaves out Bai Juyi's own notes (自注) and may differ from 箋校.
             </p>
           </>
         ) : (

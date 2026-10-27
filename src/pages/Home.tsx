@@ -29,7 +29,7 @@ export function Home() {
               with every answer checked against Zhu Jincheng's <span lang="zh-Hant">《白居易集箋校》</span>.
             </p>
             <p className="facts">
-              <b>{TOTAL}</b> forms of address in <b>{POEM_COUNT}</b> poems. Results recorded so far: Round A <b>{tested("a")} of {TOTAL}</b>, Round B <b>{tested("b")} of {TOTAL}</b>.
+              <b>{TOTAL}</b> forms of address in <b>{POEM_COUNT}</b> poems. Verdicts recorded so far: Round A <b>{tested("a")} of {TOTAL}</b>, Round B <b>{tested("b")} of {TOTAL}</b>.
             </p>
             <p className="hero-links">
               <a href="#record">Browse the record</a> &nbsp;·&nbsp; <Link to="/timeline">Through time and place</Link> &nbsp;·&nbsp; <Link to="/method">How it was tested</Link> &nbsp;·&nbsp; <Link to="/summary">Summary</Link>

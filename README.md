@@ -42,7 +42,7 @@ differently from the drop-down list (extra spaces, a full-width colon), a row mi
 data outside rows 2–36, or a Summary count that does not match.
 
 Verdicts must be typed exactly as in the sheet's drop-down list:
-`correct`, `wrong`, `partly`, `declined: answer exists`, `declined: none exists`. An empty cell means "not yet tested".
+`correct`, `wrong`, `partly`, `declined: answer exists`, `declined: none exists`. An empty cell means "no verdict yet".
 
 ## Timeline columns (N–Q)
 
@@ -57,7 +57,7 @@ The `/timeline` page places each name in the year its poem was written. Fill the
 
 Place names must be in `content/places.json` (other names for the same place go in its `aka` list, e.g. 毗陵 for 常州); the build warns about any it does not know.
 `content/career.json` holds Bai Juyi's postings (the gold thread); set `"verified": true` once checked against 朱金城《白居易年譜》.
-`Timeline-Data-Draft.md` in the EWR-Draft2 folder is an AI draft from open sources: check every value against 箋校 before copying it in.
+Columns N–Q now hold 箋校's dating, read entry by entry (log: `EWR-Draft2/test-runs/Jianjiao-Lookups.tsv`). The older `Timeline-Data-Draft.md` was an open-source AI draft and is superseded.
 
 ## Method page details
 
@@ -107,4 +107,4 @@ and keeps it in sync.
 ## AI assistance
 
 The site's code was written with help from Claude Code (Anthropic), as the course teacher allowed for the project.
-Commits made with AI help carry a `Co-Authored-By: Claude` line. The test results, readings of 箋校 and verdicts are the student's own.
+Commits made with AI help carry a `Co-Authored-By: Claude` line. On the student's instruction, Claude Code also ran Rounds A and B (GPT-6.1-terra through the Codex CLI) and read 箋校 for columns J and N–Q. The scripts, prompts, raw answers and event logs are in `EWR-Draft2/test-runs/`, outside this repo. The verdicts are the student's own.

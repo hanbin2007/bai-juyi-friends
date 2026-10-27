@@ -1,9 +1,9 @@
 {
-  "model": "",
-  "interface": "",
-  "roundADate": "",
-  "roundBDate": "",
-  "sourcesGiven": "",
-  "checkingDates": "",
-  "note": ""
+  "model": "GPT-6.1-terra (OpenAI)",
+  "interface": "Codex CLI 0.159.2 (codex exec), reasoning effort xhigh. Each round was one fresh session with no memory and no project files. The event logs show the model used no tools.",
+  "roundADate": "27 Oct 2026, 12:24 HKT",
+  "roundBDate": "27 Oct 2026, 12:24 HKT",
+  "sourcesGiven": "Each poem's full text (chinese-poetry 全唐詩, without Bai's own notes); 舊唐書 卷一百六十六 (元稹、白居易傳, Wikisource); CBDB: Bai Juyi's 27 postings and his full list of 389 social associations. No 箋校 content.",
+  "checkingDates": "27 Oct 2026 (箋校 entries read; verdicts not yet recorded)",
+  "note": "Both rounds were run, and 箋校 was read, by Claude Code (Anthropic) on the student's instruction. The answers are recorded exactly as the model gave them. An earlier run that day was discarded unused: its prompts gave 元稹, the answer to entry 1, as the example of an answer."
 }

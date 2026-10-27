@@ -42,5 +42,9 @@
  "魏州": {"en": "Weizhou", "lon": 115.25, "lat": 36.28, "aka": ["魏博"]},
  "福州": {"en": "Fuzhou", "lon": 119.30, "lat": 26.08, "aka": []},
  "商州": {"en": "Shangzhou", "lon": 109.94, "lat": 33.87, "aka": []},
- "澧州": {"en": "Lizhou", "lon": 111.76, "lat": 29.63, "aka": []}
+ "澧州": {"en": "Lizhou", "lon": 111.76, "lat": 29.63, "aka": []},
+ "果州": {"en": "Guozhou (Sichuan)", "lon": 106.08, "lat": 30.80, "aka": ["南充"]},
+ "開州": {"en": "Kaizhou", "lon": 108.40, "lat": 31.16, "aka": ["盛山"]},
+ "峽州": {"en": "Xiazhou", "lon": 111.29, "lat": 30.69, "aka": ["硤州", "夷陵"]},
+ "蘄州": {"en": "Qizhou", "lon": 115.33, "lat": 30.23, "aka": ["蘄春"]}
 }

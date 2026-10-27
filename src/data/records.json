@@ -1,8 +1,8 @@
 {
  "meta": {
-  "built": "2026-10-27 01:55 HKT",
+  "built": "2026-10-27 12:25 HKT",
   "source": "Bai-Juyi-Experiment-Record-Sheet.xlsx",
-  "sha256": "fe4e5ff8608a4b96072d1194164bc9fa494fd697571533702b0b52e1dd587cd7",
+  "sha256": "e747f853e1ef78a4a0c4a0201798da24914d09e39fa6dd5e771f0864d21ac11e",
   "summaryCheck": {
    "status": "uncached",
    "detail": "The Summary tab has no saved results. Open the sheet in Excel and save it once."
@@ -32,26 +32,31 @@
    "title": "酬元九對新栽竹有懷見寄",
    "address": "元九",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "元稹",
+    "confidence": "high",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "元稹",
+    "confidence": "high",
+    "sources": "史料一記元稹與白居易交好，江州、通州期間詩歌往還；這是白居易對元九的常見稱呼。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷一·34",
-   "jianjiao": "",
+   "jianjiao": "元稹",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "810",
+    "from": 810,
+    "to": 810,
+    "circa": false
+   },
+   "baiAt": "長安",
+   "baiAtFrom": "sheet",
+   "post": "江陵府士曹參軍",
+   "toAt": "江陵",
    "poem": [
     "昔我十年前，與君始相識。",
     "曾將秋竹竿，比君孤且直。",
@@ -70,26 +75,31 @@
    "title": "夢劉二十八因詩問之",
    "address": "劉二十八",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "劉禹錫",
+    "confidence": "high",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "劉禹錫",
+    "confidence": "high",
+    "sources": "全詩稱「夢得」；劉禹錫字夢得，亦見史料三。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十·2011",
-   "jianjiao": "",
+   "jianjiao": "劉禹錫",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "835",
+    "from": 835,
+    "to": 835,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "汝州刺史",
+   "toAt": "汝州",
    "poem": [
     "昨夜夢夢得，初覺思踟躕。",
     "忽忘來汝郡，猶疑在吳都。",
@@ -107,25 +117,30 @@
    "title": "酬李二十侍郎",
    "address": "李二十",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "李紳",
+    "confidence": "high",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "李紳",
+    "confidence": "medium",
+    "sources": "已有知識：李紳行二十，曾任侍郎；史料三記他與白居易有詩文往來。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十一·2055",
-   "jianjiao": "",
+   "jianjiao": "李紳",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "833",
+    "from": 833,
+    "to": 833,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "太子賓客分司東都",
    "toAt": "",
    "poem": [
     "笋老蘭長花漸稀，衰翁相對惜芳菲。",
@@ -139,26 +154,31 @@
    "title": "醉送李二十常侍赴鎮浙東",
    "address": "李二十",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "李紳",
+    "confidence": "high",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "李紳",
+    "confidence": "high",
+    "sources": "已有知識：李紳行二十，曾赴浙東任職；詩題的官職和去處與之相合。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十一·2068",
-   "jianjiao": "",
+   "jianjiao": "李紳",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "833",
+    "from": 833,
+    "to": 833,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "浙東觀察使（檢校左散騎常侍、越州刺史）",
+   "toAt": "越州",
    "poem": [
     "靖安客舍花枝下，共脫青衫典濁醪。",
     "今日洛橋還醉別，金杯翻汙麒麟袍。",
@@ -171,24 +191,29 @@
    "title": "酬張十八訪宿見贈",
    "address": "張十八",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "張籍",
+    "confidence": "high",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "張籍",
+    "confidence": "high",
+    "sources": "已有知識：張籍行十八，與韓愈交好；全詩稱他所游「獨言韓舍人」。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷六·363",
-   "jianjiao": "",
+   "jianjiao": "張籍",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
+   "time": {
+    "raw": "814",
+    "from": 814,
+    "to": 814,
+    "circa": false
+   },
+   "baiAt": "長安",
+   "baiAtFrom": "sheet",
    "post": "",
    "toAt": "",
    "poem": [
@@ -215,25 +240,30 @@
    "title": "荅皇甫十郎中秋深酒熟見憶",
    "address": "皇甫十",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "皇甫湜",
+    "confidence": "high",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "皇甫曙",
+    "confidence": "medium",
+    "sources": "已有知識：皇甫曙行十；史料三記他與白居易有詩文往來。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十二·2137",
-   "jianjiao": "",
+   "jianjiao": "皇甫曙",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "834",
+    "from": 834,
+    "to": 834,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "郎中",
    "toAt": "",
    "poem": [
     "煙景冷蒼茫，秋深夜夜霜。",
@@ -249,26 +279,31 @@
    "title": "寄楊六侍郎",
    "address": "楊六",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "楊汝士",
+    "confidence": "low",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "詩題及全詩不足以確定此楊六的姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十二·2162",
-   "jianjiao": "",
+   "jianjiao": "楊汝士",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "835",
+    "from": 835,
+    "to": 835,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "戶部侍郎",
+   "toAt": "長安",
    "poem": [
     "西戶最榮君好去，左馮雖穩我慵來。",
     "秋風一筯鱸魚鱠，張翰搖頭喚不迴。"
@@ -279,26 +314,31 @@
    "title": "和楊六尚書喜兩弟漢公轉吳興魯士賜章服命賓開宴用慶恩榮賦長句見示",
    "address": "楊六",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "楊汝士",
+    "confidence": "medium",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "楊虞卿",
+    "confidence": "high",
+    "sources": "詩題稱其弟為漢公、魯士；已有知識及史料三所列楊氏人物可與楊虞卿相合。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十四·2287",
-   "jianjiao": "",
+   "jianjiao": "楊汝士",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "838",
+    "from": 838,
+    "to": 838,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "劍南東川節度使（檢校禮部尚書）",
+   "toAt": "梓州",
    "poem": [
     "華筵賀客日紛紛，劒外歡娛洛下聞。",
     "朱紱寵光新照地，彤襜喜氣遠凌雲。",
@@ -311,26 +351,31 @@
    "title": "送楊八給事赴常州",
    "address": "楊八",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "詩題的官職和赴任地點不足以確定姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十一·2067",
-   "jianjiao": "",
+   "jianjiao": "楊虞卿",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "833",
+    "from": 833,
+    "to": 833,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "給事中 → 常州刺史",
+   "toAt": "常州",
    "poem": [
     "無嗟別青瑣，且喜擁朱輪。",
     "五十得三品，百千無一人。",
@@ -343,24 +388,29 @@
    "title": "雨中訪崔十八",
    "address": "崔十八",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "崔玄亮",
+    "confidence": "medium",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "詩題和全詩不足以確定這位崔十八的姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "外集卷上·3814",
-   "jianjiao": "",
+   "jianjiao": "（箋校未注受贈人）",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
+   "time": {
+    "raw": "829",
+    "from": 829,
+    "to": 829,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
    "post": "",
    "toAt": "",
    "poem": [
@@ -373,26 +423,31 @@
    "title": "廬山草堂夜雨獨宿寄牛二李七庾三十二員外",
    "address": "牛二",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "牛僧孺",
+    "confidence": "medium",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "牛僧孺",
+    "confidence": "medium",
+    "sources": "已有知識：牛僧孺行二；史料一、三均記他與白居易有交往。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十七·1111",
-   "jianjiao": "",
+   "jianjiao": "牛僧孺",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "818",
+    "from": 818,
+    "to": 818,
+    "circa": false
+   },
+   "baiAt": "江州",
+   "baiAtFrom": "sheet",
+   "post": "考功員外郎",
+   "toAt": "長安",
    "poem": [
     "丹霄攜手三君子，白髮垂頭一病翁。",
     "蘭省花時錦帳下，廬山雨夜草菴中。",
@@ -405,26 +460,31 @@
    "title": "廬山草堂夜雨獨宿寄牛二李七庾三十二員外",
    "address": "李七",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "李宗閔",
+    "confidence": "low",
+    "sources": "已有知識及詩題所示的員外郎身分可供推測；史料三記李宗閔與白居易有詩文往來。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十七·1112",
-   "jianjiao": "",
+   "jianjiao": "李宗閔",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "818",
+    "from": 818,
+    "to": 818,
+    "circa": false
+   },
+   "baiAt": "江州",
+   "baiAtFrom": "sheet",
+   "post": "員外郎（箋：或即吏部員外郎）",
+   "toAt": "長安",
    "poem": [
     "丹霄攜手三君子，白髮垂頭一病翁。",
     "蘭省花時錦帳下，廬山雨夜草菴中。",
@@ -437,26 +497,31 @@
    "title": "廬山草堂夜雨獨宿寄牛二李七庾三十二員外",
    "address": "庾三十二",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "庾承宣",
+    "confidence": "low",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "庾敬休",
+    "confidence": "low",
+    "sources": "史料三記庾敬休是白居易的朋友；據已有知識推測為詩題中的庾三十二。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十七·1113；卷十六·972",
-   "jianjiao": "",
+   "jianjiao": "庾敬休",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "818",
+    "from": 818,
+    "to": 818,
+    "circa": false
+   },
+   "baiAt": "江州",
+   "baiAtFrom": "sheet",
+   "post": "禮部員外郎",
+   "toAt": "長安",
    "poem": [
     "丹霄攜手三君子，白髮垂頭一病翁。",
     "蘭省花時錦帳下，廬山雨夜草菴中。",
@@ -469,26 +534,31 @@
    "title": "東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書",
    "address": "崔二十二",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "崔羣",
+    "confidence": "medium",
+    "sources": "已有知識：崔羣行二十二，曾任果州刺史；史料一記他與白居易同在翰林。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十六·971",
-   "jianjiao": "",
+   "jianjiao": "崔韶",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "817",
+    "from": 817,
+    "to": 817,
+    "circa": false
+   },
+   "baiAt": "江州",
+   "baiAtFrom": "sheet",
+   "post": "果州刺史",
+   "toAt": "果州",
    "poem": [
     "南去經三楚，東來過五湖。",
     "山頭看候館，水面問征途。",
@@ -597,26 +667,31 @@
    "title": "東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書",
    "address": "韋大",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "韋處厚",
+    "confidence": "medium",
+    "sources": "已有知識：韋處厚曾在開州任職；史料三記白居易為他作祭文，並有詩文往來。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十六·971",
-   "jianjiao": "",
+   "jianjiao": "韋處厚",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "817",
+    "from": 817,
+    "to": 817,
+    "circa": false
+   },
+   "baiAt": "江州",
+   "baiAtFrom": "sheet",
+   "post": "開州刺史",
+   "toAt": "開州",
    "poem": [
     "南去經三楚，東來過五湖。",
     "山頭看候館，水面問征途。",
@@ -725,26 +800,31 @@
    "title": "東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書",
    "address": "杜十四",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "杜元穎",
+    "confidence": "low",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "杜元穎",
+    "confidence": "medium",
+    "sources": "已有知識：杜元穎行十四；史料三記他是白居易的同年友。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十六·972",
-   "jianjiao": "",
+   "jianjiao": "杜元穎",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "817",
+    "from": 817,
+    "to": 817,
+    "circa": false
+   },
+   "baiAt": "江州",
+   "baiAtFrom": "sheet",
+   "post": "左拾遺",
+   "toAt": "長安",
    "poem": [
     "南去經三楚，東來過五湖。",
     "山頭看候館，水面問征途。",
@@ -853,25 +933,30 @@
    "title": "東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書",
    "address": "竇七",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "竇鞏",
+    "confidence": "medium",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "竇鞏",
+    "confidence": "medium",
+    "sources": "已有知識：竇鞏行七；史料一記他與元稹酬唱，史料三記他與白居易有詩文往來。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十六·973",
-   "jianjiao": "",
+   "jianjiao": "竇鞏",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "817",
+    "from": 817,
+    "to": 817,
+    "circa": false
+   },
+   "baiAt": "江州",
+   "baiAtFrom": "sheet",
+   "post": "校書郎（箋：是時或已為校書）",
    "toAt": "",
    "poem": [
     "南去經三楚，東來過五湖。",
@@ -981,25 +1066,30 @@
    "title": "東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書",
    "address": "李二十",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "李紳",
+    "confidence": "high",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "李紳",
+    "confidence": "high",
+    "sources": "已有知識：李紳行二十，曾任助教；史料一亦稱「李二十新歌行」。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十六·972",
-   "jianjiao": "",
+   "jianjiao": "李紳",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "817",
+    "from": 817,
+    "to": 817,
+    "circa": false
+   },
+   "baiAt": "江州",
+   "baiAtFrom": "sheet",
+   "post": "國子助教",
    "toAt": "",
    "poem": [
     "南去經三楚，東來過五湖。",
@@ -1109,25 +1199,30 @@
    "title": "翰林中送獨孤二十七起居罷職出院",
    "address": "獨孤二十七",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "獨孤郁",
+    "confidence": "medium",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "獨孤郁",
+    "confidence": "high",
+    "sources": "已有知識：獨孤郁行二十七，曾在翰林任職；史料三記其與白居易有詩文往來。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十四·805",
-   "jianjiao": "",
+   "jianjiao": "獨孤郁",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "810",
+    "from": 810,
+    "to": 810,
+    "circa": false
+   },
+   "baiAt": "長安",
+   "baiAtFrom": "sheet",
+   "post": "起居郎",
    "toAt": "",
    "poem": [
     "碧落留雲住，青冥放鶴還。",
@@ -1139,25 +1234,30 @@
    "title": "問劉十九",
    "address": "劉十九",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "劉禹銅",
+    "confidence": "medium",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "劉禹銅",
+    "confidence": "low",
+    "sources": "已有知識中有將詩題的劉十九認作劉禹銅的說法；僅憑詩文本身不能確定。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十七·1072",
-   "jianjiao": "",
+   "jianjiao": "嵩陽處士，名未詳（箋：非劉軻）",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "817",
+    "from": 817,
+    "to": 817,
+    "circa": false
+   },
+   "baiAt": "江州",
+   "baiAtFrom": "sheet",
+   "post": "處士",
    "toAt": "",
    "poem": [
     "綠螘新醅酒，紅泥小火壚。",
@@ -1169,25 +1269,30 @@
    "title": "酬舒三員外見贈長句",
    "address": "舒三",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "舒元輿",
+    "confidence": "medium",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "舒元輿",
+    "confidence": "medium",
+    "sources": "已有知識：舒元輿行三；史料三記其與白居易有詩文往來。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十一·2049",
-   "jianjiao": "",
+   "jianjiao": "舒元輿",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "833",
+    "from": 833,
+    "to": 833,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "員外郎（題稱）",
    "toAt": "",
    "poem": [
     "自請假來多少日，五旬光景似須臾。",
@@ -1201,26 +1306,31 @@
    "title": "嚴十八郎中在郡日改制東南樓因名清輝未立標牓徵歸郎署予既到郡性愛樓居宴遊其間頗有幽致聊成十韻兼戲寄嚴",
    "address": "嚴十八",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "嚴休復",
+    "confidence": "medium",
+    "sources": "已有知識：嚴休復曾在白居易之前任蘇州刺史；史料三記其與白居易有詩文往來。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷八·456",
-   "jianjiao": "",
+   "jianjiao": "嚴休復",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "824",
+    "from": 824,
+    "to": 824,
+    "circa": false
+   },
+   "baiAt": "杭州",
+   "baiAtFrom": "sheet",
+   "post": "郎中",
+   "toAt": "長安",
    "poem": [
     "嚴郎置茲樓，立名曰清輝。",
     "未及署花牓，遽徵還粉闈。",
@@ -1239,25 +1349,30 @@
    "title": "哭崔二十四常侍",
    "address": "崔二十四",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "崔玄亮",
+    "confidence": "high",
+    "sources": "已有知識：崔玄亮字晦叔，行二十四，曾任常侍；史料一亦記白居易與崔晦叔交往。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十二·2122",
-   "jianjiao": "",
+   "jianjiao": "崔咸",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "834",
+    "from": 834,
+    "to": 834,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "秘書監（右散騎常侍）",
    "toAt": "",
    "poem": [
     "貂冠初別九重門，馬鬣新封四尺墳。",
@@ -1271,25 +1386,30 @@
    "title": "贈皇甫六張十五李二十三賓客",
    "address": "皇甫六",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "皇甫曙",
+    "confidence": "medium",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "詩題及全詩不足以確定這位皇甫六的姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十一·2060",
-   "jianjiao": "",
+   "jianjiao": "皇甫鏞",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "833",
+    "from": 833,
+    "to": 833,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "太子賓客分司東都",
    "toAt": "",
    "poem": [
     "昨日三川新罷守，今年四皓盡分司。",
@@ -1303,25 +1423,30 @@
    "title": "贈皇甫六張十五李二十三賓客",
    "address": "張十五",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "張仲素",
+    "confidence": "low",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "張仲方",
+    "confidence": "medium",
+    "sources": "已有知識：張仲方行十五，曾為分司東都的賓客；史料三記他與白居易同僚並有詩文往來。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十一·2060",
-   "jianjiao": "",
+   "jianjiao": "張仲方",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "833",
+    "from": 833,
+    "to": 833,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "太子賓客分司東都",
    "toAt": "",
    "poem": [
     "昨日三川新罷守，今年四皓盡分司。",
@@ -1335,25 +1460,30 @@
    "title": "贈皇甫六張十五李二十三賓客",
    "address": "李二十三",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "詩題及全詩不足以確定這位李二十三的姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十一·2060",
-   "jianjiao": "",
+   "jianjiao": "李紳（箋作〔李二十賓客〕，題當讀「李二十／三賓客」）",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "833",
+    "from": 833,
+    "to": 833,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "太子賓客分司東都",
    "toAt": "",
    "poem": [
     "昨日三川新罷守，今年四皓盡分司。",
@@ -1367,24 +1497,29 @@
    "title": "寄皇甫七",
    "address": "皇甫七",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "詩題和全詩不足以確定這位皇甫七的姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷二十三·1580",
-   "jianjiao": "",
+   "jianjiao": "皇甫湜",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
+   "time": {
+    "raw": "825",
+    "from": 825,
+    "to": 825,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
    "post": "",
    "toAt": "",
    "poem": [
@@ -1399,24 +1534,29 @@
    "title": "酬吳七見寄",
    "address": "吳七",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "吳武陵",
+    "confidence": "medium",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "吳丹",
+    "confidence": "medium",
+    "sources": "已有知識：吳丹與白居易同年登進士第；全詩末句稱「進士有同年」，史料三亦記兩人交往。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷六·368",
-   "jianjiao": "",
+   "jianjiao": "吳丹",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
+   "time": {
+    "raw": "815",
+    "from": 815,
+    "to": 815,
+    "circa": false
+   },
+   "baiAt": "長安",
+   "baiAtFrom": "sheet",
    "post": "",
    "toAt": "",
    "poem": [
@@ -1443,25 +1583,30 @@
    "title": "晚春欲攜酒尋沈四著作先以六韻寄之",
    "address": "沈四",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "沈傳師",
+    "confidence": "low",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "沈述師",
+    "confidence": "low",
+    "sources": "據已有知識推測沈四著作為沈述師；史料三記他與白居易有詩文往來。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十三·2227",
-   "jianjiao": "",
+   "jianjiao": "沈述師（箋疑「四」為「十四」之奪文）",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "837",
+    "from": 837,
+    "to": 837,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "著作郎",
    "toAt": "",
    "poem": [
     "病容衰慘澹，芳景晚蹉跎。",
@@ -1477,26 +1622,31 @@
    "title": "送劉五司馬赴任硤州兼寄崔使君",
    "address": "劉五",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "詩題及全詩的官職、年齡線索不足以確定姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十一·2104",
-   "jianjiao": "",
+   "jianjiao": "名未詳",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "834",
+    "from": 834,
+    "to": 834,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "峽州司馬",
+   "toAt": "峽州",
    "poem": [
     "位下才高多怨天，劉兄道勝獨恬然。",
     "貧於揚子兩三倍，老過榮公六七年。",
@@ -1509,25 +1659,30 @@
    "title": "二月一日作贈韋七庶子",
    "address": "韋七",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "詩題及全詩不足以確定這位韋七的姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十·2010",
-   "jianjiao": "",
+   "jianjiao": "韋縝",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "835",
+    "from": 835,
+    "to": 835,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "太子庶子",
    "toAt": "",
    "poem": [
     "園杏紅萼坼，庭蘭紫芽出。",
@@ -1545,25 +1700,30 @@
    "title": "酬鄭二司錄與李六郎中寒食日相過同宴見贈",
    "address": "李六",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "全詩稱三人是同年，但不足以確定李六的姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十三·2187",
-   "jianjiao": "",
+   "jianjiao": "白居易同年，名未出（箋：與江州途中詩之李六郎中非一人）",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "836",
+    "from": 836,
+    "to": 836,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "郎中",
    "toAt": "",
    "poem": [
     "偶因冷節會嘉賓，況是平生心所親。",
@@ -1577,26 +1737,31 @@
    "title": "荅元八郎中楊十二博士",
    "address": "楊十二",
    "a": {
-    "answer": "",
-    "confidence": "",
+    "answer": "楊巨源",
+    "confidence": "medium",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
-    "confidence": "",
-    "sources": "",
+    "answer": "楊巨源",
+    "confidence": "medium",
+    "sources": "已有知識：楊巨源行十二，曾任國子博士；史料三記其收到白居易詩文。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十七·1102",
-   "jianjiao": "",
+   "jianjiao": "楊巨源",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "818",
+    "from": 818,
+    "to": 818,
+    "circa": false
+   },
+   "baiAt": "江州",
+   "baiAtFrom": "sheet",
+   "post": "太常博士",
+   "toAt": "長安",
    "poem": [
     "身覺浮雲無所著，心同止水有何情。",
     "但知瀟灑疎朝市，不要崎嶇隱姓名。",
@@ -1609,26 +1774,31 @@
    "title": "送蘄春李十九使君赴郡",
    "address": "李十九",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "詩題及全詩的蘄春任職和年齡線索不足以確定姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷三十四·2268",
-   "jianjiao": "",
+   "jianjiao": "李播",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
-   "toAt": "",
+   "time": {
+    "raw": "838",
+    "from": 838,
+    "to": 838,
+    "circa": false
+   },
+   "baiAt": "洛陽",
+   "baiAtFrom": "sheet",
+   "post": "蘄州刺史",
+   "toAt": "蘄州",
    "poem": [
     "可憐官職好文詞，五十專城未是遲。",
     "曉日鏡前無白髮，春風門外有紅旗。",
@@ -1641,25 +1811,30 @@
    "title": "酬王十八李大見招遊山",
    "address": "王十八",
    "a": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "b": {
-    "answer": "",
+    "answer": "不知",
     "confidence": "",
-    "sources": "",
+    "sources": "詩題和全詩不足以確定這位王十八的姓名。",
     "verdict": "untested",
     "verdictRaw": ""
    },
    "locate": "卷十三·759",
-   "jianjiao": "",
+   "jianjiao": "王質夫",
    "notes": "",
-   "time": null,
-   "baiAt": "",
-   "baiAtFrom": "",
-   "post": "",
+   "time": {
+    "raw": "806",
+    "from": 806,
+    "to": 806,
+    "circa": false
+   },
+   "baiAt": "盩厔",
+   "baiAtFrom": "sheet",
+   "post": "處士",
    "toAt": "",
    "poem": [
     "自憐幽會心期阻，復媿嘉招書信頻。",
@@ -1882,6 +2057,26 @@
    "en": "Lizhou",
    "lon": 111.76,
    "lat": 29.63
+  },
+  "果州": {
+   "en": "Guozhou (Sichuan)",
+   "lon": 106.08,
+   "lat": 30.8
+  },
+  "開州": {
+   "en": "Kaizhou",
+   "lon": 108.4,
+   "lat": 31.16
+  },
+  "峽州": {
+   "en": "Xiazhou",
+   "lon": 111.29,
+   "lat": 30.69
+  },
+  "蘄州": {
+   "en": "Qizhou",
+   "lon": 115.33,
+   "lat": 30.23
   }
  },
  "career": {
@@ -1983,15 +2178,15 @@
  },
  "method": {
   "run": {
-   "model": "",
-   "interface": "",
-   "roundADate": "",
-   "roundBDate": "",
-   "sourcesGiven": "",
-   "checkingDates": "",
-   "note": ""
+   "model": "GPT-6.1-terra (OpenAI)",
+   "interface": "Codex CLI 0.159.2 (codex exec), reasoning effort xhigh. Each round was one fresh session with no memory and no project files. The event logs show the model used no tools.",
+   "roundADate": "27 Oct 2026, 12:24 HKT",
+   "roundBDate": "27 Oct 2026, 12:24 HKT",
+   "sourcesGiven": "Each poem's full text (chinese-poetry 全唐詩, without Bai's own notes); 舊唐書 卷一百六十六 (元稹、白居易傳, Wikisource); CBDB: Bai Juyi's 27 postings and his full list of 389 social associations. No 箋校 content.",
+   "checkingDates": "27 Oct 2026 (箋校 entries read; verdicts not yet recorded)",
+   "note": "Both rounds were run, and 箋校 was read, by Claude Code (Anthropic) on the student's instruction. The answers are recorded exactly as the model gave them. An earlier run that day was discarded unused: its prompts gave 元稹, the answer to entry 1, as the example of an answer."
   },
-  "promptA": "",
-  "promptB": ""
+  "promptA": "以下是白居易詩題中出現的三十五處「姓＋行第」稱謂（例如「元九」）。請判斷每個稱謂在該詩題中所指的人物是誰。同一首詩可能出現幾個稱謂，各自作答。\n\n要求：\n1. 只根據詩題本身和你已有的知識作答。不要使用任何工具、檢索或外部資料。\n2. 答案寫人物的姓名。若無法確定是誰，答「不知」。\n3. 為每條答案標出信心：高、中、低。答「不知」的，信心留空。\n4. 只輸出一個 JSON 陣列，不要任何其他文字。格式：\n[{\"n\": \"1\", \"answer\": \"姓名或不知\", \"confidence\": \"高\"}]\n\n題目：\n1. 詩題：酬元九對新栽竹有懷見寄　稱謂：元九\n2. 詩題：夢劉二十八因詩問之　稱謂：劉二十八\n3. 詩題：酬李二十侍郎　稱謂：李二十\n4. 詩題：醉送李二十常侍赴鎮浙東　稱謂：李二十\n5. 詩題：酬張十八訪宿見贈　稱謂：張十八\n6. 詩題：荅皇甫十郎中秋深酒熟見憶　稱謂：皇甫十\n7. 詩題：寄楊六侍郎　稱謂：楊六\n8. 詩題：和楊六尚書喜兩弟漢公轉吳興魯士賜章服命賓開宴用慶恩榮賦長句見示　稱謂：楊六\n9. 詩題：送楊八給事赴常州　稱謂：楊八\n10. 詩題：雨中訪崔十八　稱謂：崔十八\n11. 詩題：廬山草堂夜雨獨宿寄牛二李七庾三十二員外　稱謂：牛二\n12. 詩題：廬山草堂夜雨獨宿寄牛二李七庾三十二員外　稱謂：李七\n13. 詩題：廬山草堂夜雨獨宿寄牛二李七庾三十二員外　稱謂：庾三十二\n14. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：崔二十二\n15. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：韋大\n16. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：杜十四\n17. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：竇七\n18. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：李二十\n19. 詩題：翰林中送獨孤二十七起居罷職出院　稱謂：獨孤二十七\n20. 詩題：問劉十九　稱謂：劉十九\n21. 詩題：酬舒三員外見贈長句　稱謂：舒三\n22. 詩題：嚴十八郎中在郡日改制東南樓因名清輝未立標牓徵歸郎署予既到郡性愛樓居宴遊其間頗有幽致聊成十韻兼戲寄嚴　稱謂：嚴十八\n23. 詩題：哭崔二十四常侍　稱謂：崔二十四\n24. 詩題：贈皇甫六張十五李二十三賓客　稱謂：皇甫六\n25. 詩題：贈皇甫六張十五李二十三賓客　稱謂：張十五\n26. 詩題：贈皇甫六張十五李二十三賓客　稱謂：李二十三\n27. 詩題：寄皇甫七　稱謂：皇甫七\n28. 詩題：酬吳七見寄　稱謂：吳七\n29. 詩題：晚春欲攜酒尋沈四著作先以六韻寄之　稱謂：沈四\n30. 詩題：送劉五司馬赴任硤州兼寄崔使君　稱謂：劉五\n31. 詩題：二月一日作贈韋七庶子　稱謂：韋七\n32. 詩題：酬鄭二司錄與李六郎中寒食日相過同宴見贈　稱謂：李六\n33. 詩題：荅元八郎中楊十二博士　稱謂：楊十二\n34. 詩題：送蘄春李十九使君赴郡　稱謂：李十九\n35. 詩題：酬王十八李大見招遊山　稱謂：王十八",
+  "promptB": "以下是白居易詩題中出現的三十五處「姓＋行第」稱謂（例如「元九」）。請判斷每個稱謂在該詩題中所指的人物是誰。同一首詩可能出現幾個稱謂，各自作答。\n\n這一次，每條除了詩題，還附上全詩（開源 chinese-poetry 全唐詩本，不含白居易自注），文末另附三份史料。\n\n要求：\n1. 根據詩題、全詩、所附史料和你已有的知識作答。不要使用任何工具、檢索或其他外部資料。\n2. 答案寫人物的姓名。若無法確定是誰，答「不知」。\n3. 為每條答案標出信心：高、中、低。答「不知」的，信心留空。\n4. 簡要寫出你的依據（例如「史料三某條」「全詩某句」「史料一某段」「已有知識」），一兩句即可。\n5. 只輸出一個 JSON 陣列，不要任何其他文字。格式：\n[{\"n\": \"1\", \"answer\": \"姓名或不知\", \"confidence\": \"高\", \"sources\": \"依據\"}]\n\n題目：\n1. 詩題：酬元九對新栽竹有懷見寄　稱謂：元九\n   全詩：昔我十年前，與君始相識。曾將秋竹竿，比君孤且直。中心一以合，外事紛無極。共保秋竹心，風霜侵不得。始嫌梧桐樹，秋至先改色。不愛楊柳枝，春來輭無力。憐君別我後，見竹長相憶。長欲在眼前，故栽庭戶側。分首今何處，君南我在北。吟我贈君詩，對之心惻惻。\n2. 詩題：夢劉二十八因詩問之　稱謂：劉二十八\n   全詩：昨夜夢夢得，初覺思踟躕。忽忘來汝郡，猶疑在吳都。吳都三千里，汝郡二百餘。非夢亦不見，近與遠何殊。尚能齊近遠，焉用論榮枯。但問寢與食，近日兩何如。病後能吟否，春來曾醉無。樓臺與風景，汝又何如蘇。相思一相報，勿復慵爲書。\n3. 詩題：酬李二十侍郎　稱謂：李二十\n   全詩：笋老蘭長花漸稀，衰翁相對惜芳菲。殘鶯著雨慵休囀，落絮無風凝不飛。行掇木芽供野食，坐牽蘿蔓挂朝衣。十年分手今同醉，醉未如泥莫道歸。\n……（共 35 條）\n\n史料一：《舊唐書》卷一百六十六（元稹、白居易傳），維基文庫本。\n元稹\n[編輯]\n\n……\n\n史料二：CBDB（中國歷代人物傳記資料庫）白居易（人物 ID 32227）任官記錄。格式：年份　官職　地點\n810–811　府戸曹参軍　京兆府\n830–833　府尹　河南府\n807–811　翰林學士　長安\n……\n\n史料三：CBDB 白居易社會關係記錄（共 389 條）。格式：對方姓名｜關係｜相關作品題目｜年份（缺者從略）\n楊虞卿｜友｜與楊虞卿書\n崔玄亮｜友\n元稹｜友\n……"
  }
 }

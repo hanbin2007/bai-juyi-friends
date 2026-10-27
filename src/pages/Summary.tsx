@@ -42,7 +42,7 @@ function StackChart() {
                 </span>
               ))}
             </div>
-            <div className="stack-total">{tested(k)}/{TOTAL} tested</div>
+            <div className="stack-total">{tested(k)}/{TOTAL} judged</div>
           </div>
         );
       })}
