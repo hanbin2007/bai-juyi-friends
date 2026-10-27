@@ -1,7 +1,7 @@
 /* The chrono-spatial stream (the home page). Depth is time, 800–846; across the screen, places sit where they lie
    on the map. Every year is a sheet of silk with the coast and rivers in ink, every reign era a stronger one.
-   Bai Juyi's postings are a gold thread that brightens around the present year; each dated name hangs in the
-   year of its poem, with a red thread (and a travelling spark) to where the addressee was. Characters from the
+   Bai Juyi's postings are an indigo thread (his blue robe, 青衫) that brightens around the present year; each dated name hangs in the
+   year of its poem, with a vermilion thread (and a travelling spark) to where the addressee was. Characters from the
    poems drift in the air. Text is HTML laid over the canvas, so it stays sharp.
    The camera orbits a target in the present year. By default the target follows Bai Juyi's thread; the wheel
    moves through time, a drag turns the view, a right-drag (or two fingers) moves it, and pinching zooms. Zooming
@@ -74,7 +74,7 @@ const threadVertex = /* glsl */ `
     #include <fog_vertex>
   }
 `;
-// gold that brightens around the year in view; the glow variant fades to nothing away from it.
+// indigo that brightens around the year in view; the glow variant fades to nothing away from it.
 // Both fade out just in front of the camera, where the tube would fill the screen.
 const threadFragment = /* glsl */ `
   uniform vec3 uColor, uHot;
@@ -131,6 +131,10 @@ export class Cancelled extends Error {}
  *  while the map loaded (nothing is created then), and with another error when WebGL is unavailable. */
 export async function mountTimeline(section: HTMLElement, host: HTMLElement, o: TimelineOptions, signal: { cancelled: boolean }): Promise<TimelineHandle> {
   const map: MapData = await fetch(import.meta.env.BASE_URL + "map/china.json").then((r) => r.json());
+  // the drifting characters are drawn once into a texture, so give the brush face a moment to load;
+  // past 1.5s the scene starts anyway and the characters fall back to the next face
+  const brush = document.fonts?.load('400 46px "LXGW WenKai TC"', o.rows.map((r) => (r.poem || []).join("")).join("").slice(0, 400));
+  await Promise.race([brush?.catch(() => {}), new Promise((done) => setTimeout(done, 1500))]);
   if (signal.cancelled) throw new Cancelled();
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
   try {
@@ -166,7 +170,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   let dark = false;
   const readColours = () => {
     const cs = getComputedStyle(document.documentElement);
-    ["bg", "surface", "ink", "ink-2", "muted", "accent", "gold", "rule-strong",
+    ["bg", "surface", "ink", "ink-2", "muted", "accent", "thread", "letter", "time", "seal", "rule-strong",
       "s-correct", "s-partly", "s-wrong", "s-declined", "s-unknown", "s-untested", "s-other"]
       .forEach((k) => { css[k] = cs.getPropertyValue("--" + k).trim() || "#888888"; });
     const c = new THREE.Color(css.bg);
@@ -276,7 +280,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   crossGeo.setAttribute("position", new THREE.Float32BufferAttribute(crossPts, 3));
   const crossMat = keep(new THREE.PointsMaterial({ size: 0.09, map: dotTex, transparent: true, depthWrite: false, opacity: 0.8 }));
   world.add(new THREE.Points(crossGeo, crossMat));
-  // a gold frame around the sheet of the present year, so the present stays findable from any angle
+  // an ochre frame around the sheet of the present year, so the present stays findable from any angle
   const nowMat = keep(new THREE.LineBasicMaterial({ transparent: true, depthWrite: false }));
   const nowGeo = keep(new THREE.BufferGeometry().setFromPoints([[-1, -1], [1, -1], [1, 1], [-1, 1]]
     .map(([sx, sy]) => new THREE.Vector3(SHEET.x + sx * (SHEET.w / 2 + 0.12), SHEET.y + sy * (SHEET.h / 2 + 0.12), 0))));
@@ -312,7 +316,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   }));
   world.add(new THREE.Mesh(keep(new THREE.TubeGeometry(threadCurve, segs, 0.022, 8)), threadMat));
   world.add(new THREE.Mesh(keep(new THREE.TubeGeometry(threadCurve, segs, 0.065, 10)), glowMat));
-  // a gold lozenge where each posting begins
+  // an indigo lozenge where each posting begins
   const lozGeo = keep(new THREE.OctahedronGeometry(0.075));
   const goldMat = keep(new THREE.MeshBasicMaterial());
   const stationMarks = stations.map((s) => {
@@ -415,7 +419,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     world.add(sprite);
     // the name, as a link laid over the canvas
     const label = document.createElement("a");
-    label.className = "tl-name";
+    label.className = "tl-name name-tag";
     label.href = base + "?n=" + r.n;
     label.tabIndex = -1;
     label.lang = "zh-Hant";
@@ -451,7 +455,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     const cv = document.createElement("canvas"); cv.width = 1024; cv.height = 512;
     const g = cv.getContext("2d")!;
     g.fillStyle = "#fff"; g.textAlign = "center"; g.textBaseline = "middle";
-    g.font = '600 46px "Noto Serif TC", "Songti TC", serif';
+    g.font = '400 46px "LXGW WenKai TC", "Kaiti TC", "Noto Serif TC", serif';
     atlasChars.forEach((ch, i) => g.fillText(ch, (i % 16) * 64 + 32, Math.floor(i / 16) * 64 + 34));
     return keep(new THREE.CanvasTexture(cv));
   })();
@@ -506,28 +510,28 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     faintMat.color = col("ink"); faintMat.opacity = dark ? 0.07 : 0.08;
     railMajorMat.color = col("ink-2"); railMinorMat.color = col("muted");
     crossMat.color = col("ink-2");
-    const gold = col("gold");
+    const thread = col("thread");
     [threadMat, glowMat].forEach((m) => {
-      m.uniforms.uColor.value = gold;
-      m.uniforms.uHot.value = dark ? new THREE.Color("#ffe3a3") : new THREE.Color("#7a4f00");
+      m.uniforms.uColor.value = thread;
+      m.uniforms.uHot.value = dark ? new THREE.Color("#d8e5ff") : new THREE.Color("#132a55");
     });
     glowMat.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
     glowMat.uniforms.uOpacity.value = dark ? 0.16 : 0.14;
-    goldMat.color = gold; nowMat.color = gold;
-    poemMat.color = col("ink"); stalkMat.color = col("accent");
+    goldMat.color = thread; nowMat.color = col("time");
+    poemMat.color = col("ink"); stalkMat.color = col("ink-2");
     nodes.forEach((n) => {
       const sm = n.sprite.material;
       sm.map?.dispose();
       sm.map = sealTexture(n.row.a.verdict, n.row.b.verdict);
       sm.needsUpdate = true;
-      if (n.letter) (n.letter.material as THREE.MeshBasicMaterial).color = col("accent");
+      if (n.letter) (n.letter.material as THREE.MeshBasicMaterial).color = col("letter");
       if (n.spark) {
-        n.spark.material.color = dark ? new THREE.Color("#ffb8a6") : col("accent");
+        n.spark.material.color = dark ? new THREE.Color("#ffc2b2") : col("letter");
         n.spark.material.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
       }
     });
     links.forEach((l) => {
-      (l.line.material as THREE.LineBasicMaterial).color = col(l.kind === "different" ? "accent" : l.kind === "same" ? "ink" : "muted");
+      (l.line.material as THREE.LineBasicMaterial).color = col(l.kind === "different" ? "letter" : l.kind === "same" ? "ink" : "muted");
     });
     charMat.uniforms.uColor.value = col("ink");
     charMat.uniforms.uOpacity.value = dark ? 0.2 : 0.15;
@@ -700,9 +704,9 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
       if (n.letter) (n.letter.material as THREE.MeshBasicMaterial).opacity = on ? 0.95 : 0.15;
       if (n.spark) n.spark.material.opacity = on ? 1 : 0.15;
       n.label.classList.toggle("dim", !on);
-      n.label.classList.toggle("focus", n === f);
-      n.label.classList.toggle("picked", n === pinned);
-      n.label.classList.toggle("kin", !!f && on && n !== f);
+      n.label.classList.toggle("is-focus", n === f);
+      n.label.classList.toggle("is-picked", n === pinned);
+      n.label.classList.toggle("is-kin", !!f && on && n !== f);
     });
     links.forEach((l) => { (l.line.material as THREE.LineBasicMaterial).opacity = f ? (l.nodes.some((n) => set.has(n)) ? 1 : 0.12) : 0.55; });
     kick();

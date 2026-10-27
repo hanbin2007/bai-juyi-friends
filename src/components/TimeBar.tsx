@@ -31,7 +31,7 @@ interface Props {
   getYear: () => number;
 }
 
-/** The time bar: Bai Juyi's postings in gold, each name above its year, the reign eras below.
+/** The time bar: Bai Juyi's postings in indigo, each name above its year, the reign eras below.
  *  The parent moves the thumb every frame through the forwarded ref (the track; see `.tb-thumb`). */
 export const TimeBar = forwardRef<HTMLDivElement, Props>(function TimeBar({ selected, playing, onPlay, onScrub, onPick, getYear }, ref) {
   const drag = useRef<{ id: number; x: number; moved: boolean; dot: string | null } | null>(null);
@@ -41,8 +41,8 @@ export const TimeBar = forwardRef<HTMLDivElement, Props>(function TimeBar({ sele
   };
 
   return (
-    <div className="tb">
-      <button type="button" className="tb-play" onClick={onPlay} aria-label={playing ? "Pause the journey" : "Play the journey"} aria-pressed={playing}
+    <div className="tb glass">
+      <button type="button" className="icon-btn icon-btn-play" onClick={onPlay} aria-label={playing ? "Pause the journey" : "Play the journey"} aria-pressed={playing}
         data-tip={playing ? "Pause (Space)" : "Travel through the years with Bai Juyi (Space)"}>
         {playing
           ? <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" /></svg>

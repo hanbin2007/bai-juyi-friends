@@ -12,7 +12,7 @@ const Place = ({ name }: { name: string }) => (
 
 function RoundCard({ k, zh, en, r }: { k: string; zh: string; en: string; r: Round }) {
   return (
-    <div className="ep-round">
+    <div className="card ep-round">
       <p className="ep-round-head"><b>{k}</b> <span lang="zh-Hant">{zh}</span><small>{en}</small></p>
       {r.answer
         ? <p className="ep-round-ans" lang="zh-Hant">{r.answer}</p>
@@ -28,7 +28,7 @@ function RoundCard({ k, zh, en, r }: { k: string; zh: string; en: string; r: Rou
 function Section({ title, zh, children }: { title: string; zh?: string; children: ReactNode }) {
   return (
     <section className="ep-sec">
-      <h3>{title}{zh && <> <span lang="zh-Hant">{zh}</span></>}</h3>
+      <h3 className="eyebrow">{title}{zh && <> <span lang="zh-Hant">{zh}</span></>}</h3>
       {children}
     </section>
   );
@@ -43,33 +43,33 @@ export const EntryPanel = forwardRef<HTMLElement, Props>(function EntryPanel({ r
   const away = row.toAt && row.toAt !== row.baiAt;
 
   return (
-    <aside className="ep" ref={ref} tabIndex={-1} aria-labelledby="ep-name">
+    <aside className="ep glass glass-strong" ref={ref} tabIndex={-1} aria-labelledby="ep-name">
       <header className="ep-head">
         <div className="ep-nav">
-          <button type="button" className="ep-step" disabled={!prev} onClick={() => prev && onPick(prev.n)}
+          <button type="button" className="icon-btn icon-btn-sm" disabled={!prev} onClick={() => prev && onPick(prev.n)}
             aria-label={prev ? `Earlier: ${prev.address}` : "No earlier name"} data-tip={prev ? `Earlier · ${prev.address} (${yearLabel(prev.time!)})` : undefined}>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5" /></svg>
           </button>
-          <button type="button" className="ep-step" disabled={!next} onClick={() => next && onPick(next.n)}
+          <button type="button" className="icon-btn icon-btn-sm" disabled={!next} onClick={() => next && onPick(next.n)}
             aria-label={next ? `Later: ${next.address}` : "No later name"} data-tip={next ? `Later · ${next.address} (${yearLabel(next.time!)})` : undefined}>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" /></svg>
           </button>
           <span className="ep-count">{i >= 0 ? <>{i + 1} <span>of {BY_TIME.length} in time</span></> : <>No. {row.n}</>}</span>
         </div>
-        <button type="button" className="ep-close" onClick={onClose} aria-label="Close the details">
+        <button type="button" className="icon-btn icon-btn-sm icon-btn-quiet" onClick={onClose} aria-label="Close the details">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
         </button>
       </header>
 
       <div className="ep-body" key={row.n}>
-        <p className="ep-when">
+        <p className="eyebrow eyebrow-time ep-when">
           <span>No. {row.n}</span>
           {row.time && <span>{yearLabel(row.time)}{eraYear(row.time.from) && <> · <span lang="zh-Hant">{eraYear(row.time.from)}</span></>}</span>}
         </p>
         <h2 className="ep-name" id="ep-name" lang="zh-Hant">{row.address}</h2>
         <p className="ep-title" lang="zh-Hant"><MarkedTitle title={row.title} name={row.address} /></p>
 
-        <ol className={"ep-route" + (away ? "" : " same")}>
+        <ol className={"card-inset ep-route" + (away ? "" : " same")}>
           <li className="bai">
             <i aria-hidden="true" />
             <div><Place name={row.baiAt} /><small>Bai Juyi{row.baiAtFrom === "career" ? ", from his postings that year" : ""}</small></div>
@@ -88,7 +88,7 @@ export const EntryPanel = forwardRef<HTMLElement, Props>(function EntryPanel({ r
         </ol>
 
         <Section title="Who it was, in 箋校">
-          <div className={"ep-id" + (row.jianjiao ? "" : " empty")}>
+          <div className={"card-mark ep-id" + (row.jianjiao ? "" : " empty")}>
             {row.jianjiao ? <p lang="zh-Hant">{row.jianjiao}</p> : <p>Not recorded yet</p>}
             {row.locate && <small lang="zh-Hant">白居易集箋校 {row.locate}</small>}
           </div>

@@ -75,7 +75,7 @@ export function About() {
               <span>Zhang, H. (2026). <i>Identifying Bai Juyi's friends with AI and historical sources</i> [Website]. {SITE_URL}</span>
               <CopyButton text={cite} />
             </div>
-            <p className="ui muted" style={{ marginTop: 12 }}>
+            <p className="ui muted cite-note">
               Each entry has its own address, e.g. <code>{SITE_URL}entry/9</code> for <Zh>楊八</Zh>.
             </p>
           </section>

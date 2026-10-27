@@ -125,24 +125,24 @@ export function Summary() {
           <p>All numbers on this page are counted from the record sheet each time the site is rebuilt; none are typed in by hand.</p>
         </div>
       </div>
-      <div className="wrap" style={{ paddingBottom: 72 }}>
+      <div className="wrap page-body">
         <div className={"notice " + cls} role="status">
           <span className="dot" aria-hidden="true" />
           <span>{msg}{check.status === "mismatch" ? check.detail + ". Check the verdict spellings and rebuild." : ""} <span className="muted">Data built {DATA.meta.built}.</span></span>
         </div>
 
-        <section className="section" style={{ paddingTop: 32 }}>
+        <section className="section section-tight">
           <div className="chart-card">
             <h3>Verdicts for all {TOTAL} forms of address</h3>
             <p className="sub">Each bar is one round; each segment is one verdict. Hover or focus a segment for its count.</p>
-            <div className="legend" style={{ margin: "0 0 14px" }}>
+            <div className="legend legend-tight">
               {ORDER.map((s) => <span key={s}><Swatch s={s} />{STATUS[s].en} <span lang="zh-Hant">{STATUS[s].zh}</span></span>)}
             </div>
             <StackChart />
           </div>
         </section>
 
-        <section className="section" style={{ paddingTop: 32 }}>
+        <section className="section section-tight">
           <div className="section-head"><div>
             <h2>The Summary tab <span className="zh" lang="zh-Hant">統計表</span></h2>
             <p>Same rows and labels as the <em>Summary</em> tab of the record sheet.</p>
@@ -160,7 +160,7 @@ export function Summary() {
           </div>
         </section>
 
-        <section className="section" style={{ paddingTop: 32 }}>
+        <section className="section section-tight">
           <div className="section-head"><div>
             <h2>From Round A to Round B <span className="zh" lang="zh-Hant">前後對照</span></h2>
             <p>How each name's verdict changed once the AI had sources. Rows are the Round A verdict, columns the Round B verdict; the outlined diagonal means no change.</p>
@@ -168,7 +168,7 @@ export function Summary() {
           <div className="table-scroll"><Matrix /></div>
         </section>
 
-        <section className="section" style={{ paddingTop: 32 }}>
+        <section className="section section-tight">
           <div className="section-head"><div>
             <h2>By the AI's stated confidence <span className="zh" lang="zh-Hant">信心與結果</span></h2>
             <p>Tested names only, grouped by the confidence the AI gave with each answer.</p>
@@ -176,7 +176,7 @@ export function Summary() {
           <div className="grid-2">
             {ROUNDS.map(([k, name, zh]) => (
               <div key={k}>
-                <h3 style={{ fontSize: "1.1rem", marginBottom: 10 }}>{name} <span className="muted" lang="zh-Hant" style={{ fontSize: ".85em" }}>{zh.split(" · ")[0]}</span></h3>
+                <h3 className="sub-head">{name} <span lang="zh-Hant">{zh.split(" · ")[0]}</span></h3>
                 <div className="table-scroll"><ConfidenceTable rnd={k} /></div>
               </div>
             ))}

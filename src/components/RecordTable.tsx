@@ -24,7 +24,7 @@ export function FilterBar({ f, set }: { f: Filters; set: (p: Partial<Filters>) =
   return (
     <div className="controls">
       <div className="controls-row">
-        <label className="search">
+        <label className="field search">
           <span className="sr-only">Search names, titles and answers</span>
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><circle cx="7" cy="7" r="4.5" /><path d="M10.5 10.5L14 14" /></svg>
           <input type="search" value={f.q} onChange={(e) => set({ q: e.target.value })} placeholder="Search a name, title or answer, e.g. 元九 or 劉" autoComplete="off" spellCheck={false} />

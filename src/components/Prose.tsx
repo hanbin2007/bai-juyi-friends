@@ -24,7 +24,7 @@ export function Toc({ items }: { items: [string, string][] }) {
 export function CopyButton({ text }: { text: string }) {
   const [done, setDone] = useState(false);
   return (
-    <button className="copy" type="button" onClick={() => {
+    <button className="btn btn-sm copy" type="button" onClick={() => {
       navigator.clipboard?.writeText(text).then(() => { setDone(true); setTimeout(() => setDone(false), 1400); }, () => {});
     }}>{done ? "Copied" : "Copy"}</button>
   );

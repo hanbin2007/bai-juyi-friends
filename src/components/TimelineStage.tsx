@@ -29,7 +29,7 @@ const ICONS = {
 
 function Tool({ label, tip, pressed, onClick, children }: { label: string; tip: string; pressed?: boolean; onClick: () => void; children: ReactNode }) {
   return (
-    <button type="button" className="tl-tool" aria-label={label} aria-pressed={pressed} data-tip={tip} onClick={onClick}>{children}</button>
+    <button type="button" className="icon-btn icon-btn-quiet" aria-label={label} aria-pressed={pressed} data-tip={tip} onClick={onClick}>{children}</button>
   );
 }
 
@@ -240,7 +240,7 @@ export function TimelineStage() {
           <span className="tl-hud-where" ref={whereRef}>Bai Juyi at {stations[0].place} {PLACES[stations[0].place]?.en}</span>
         </p>
 
-        <div className="tl-tools" role="toolbar" aria-label="View">
+        <div className="tl-tools glass glass-sm" role="toolbar" aria-label="View">
           <Tool label="Follow Bai Juyi" tip="Follow Bai Juyi's thread (F)" pressed={view.following && !far} onClick={() => { setWelcome(false); h()?.follow(); }}><Icon d={ICONS.follow} /></Tool>
           <Tool label="See the whole span" tip={far ? "Back into the years (O)" : "See all 47 years at once (O)"} pressed={far} onClick={toggleFar}><Icon d={ICONS.overview} /></Tool>
           <span className="tl-tools-sep" aria-hidden="true" />
@@ -251,20 +251,20 @@ export function TimelineStage() {
           <Tool label="How to explore" tip="How to explore (?)" pressed={welcome} onClick={() => setWelcome((v) => !v)}><Icon d={ICONS.help} /></Tool>
         </div>
 
-        <article className={"tl-welcome" + (welcome ? " on" : "")} aria-hidden={!welcome} ref={welcomeRef}>
-          <p className="tl-kicker">Through time and place <span lang="zh-Hant">時空長卷</span></p>
+        <article className={"tl-welcome glass" + (welcome ? " on" : "")} aria-hidden={!welcome} ref={welcomeRef}>
+          <p className="eyebrow eyebrow-time tl-kicker">Through time and place <span lang="zh-Hant">時空長卷</span></p>
           <h1>Identifying Bai Juyi's Friends with AI and Historical Sources</h1>
           <p className="tl-welcome-zh" lang="zh-Hant">以 AI 與史料考白居易詩題中的友人</p>
           <p className="tl-welcome-lede">
             Tang poets named friends by surname and sibling rank: <span lang="zh-Hant" className="pn">元九</span>, “Yuan the Ninth”, is Yuan Zhen.
-            Each of the {TOTAL} such names in Bai Juyi's poem titles hangs here in the year of its poem, with the gold thread of his postings running through 800–846.
+            Each of the {TOTAL} such names in Bai Juyi's poem titles hangs here in the year of its poem, with the indigo thread of his postings, the colour of his official's blue robe, running through 800–846.
             Can an AI tell who they were?
           </p>
           <div className="tl-welcome-go">
-            <button type="button" className="tl-btn primary" onClick={togglePlay}>
+            <button type="button" className="btn btn-primary" onClick={togglePlay}>
               <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l8 5-8 5z" /></svg> Play the journey
             </button>
-            <button type="button" className="tl-btn" onClick={() => setWelcome(false)}>Explore freely</button>
+            <button type="button" className="btn" onClick={() => setWelcome(false)}>Explore freely</button>
           </div>
           <dl className="tl-hints">
             <div><dt>Scroll</dt><dd>through time</dd></div>
@@ -282,8 +282,8 @@ export function TimelineStage() {
 
         <div className="tl-caps" aria-hidden="true" ref={capsRef}>
           {stations.map((s, i) => (
-            <article className="tl-cap" key={i} data-i={i}>
-              <p className="tl-cap-kicker">
+            <article className="tl-cap glass" key={i} data-i={i}>
+              <p className="eyebrow eyebrow-time tl-cap-kicker">
                 Posting {i + 1} of {stations.length} · {Math.floor(s.from)}–{Math.floor(s.to)}
                 <span className="tl-steps">{stations.map((_, j) => <i key={j} className={j === i ? "on" : j < i ? "past" : ""} />)}</span>
               </p>
@@ -292,8 +292,8 @@ export function TimelineStage() {
               <p className="tl-cap-en">{s.en}</p>
             </article>
           ))}
-          <article className="tl-cap" data-overview="1">
-            <p className="tl-cap-kicker">The whole span</p>
+          <article className="tl-cap glass" data-overview="1">
+            <p className="eyebrow eyebrow-time tl-cap-kicker">The whole span</p>
             <h2>800–846, earliest first</h2>
             <p className="tl-cap-en">Dashed red links join the same form of address in different titles when <span lang="zh-Hant">箋校</span> names different people; solid links mean the same person.</p>
           </article>

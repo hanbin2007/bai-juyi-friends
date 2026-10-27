@@ -129,7 +129,7 @@ export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string)
     ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
   };
   const depthAlpha = (z: number) => Math.max(0.16, Math.min(1, 0.58 + z * 0.24));
-  const SERIF = '"Noto Serif TC", "Songti TC", serif';
+  const SERIF = '"LXGW WenKai TC", "Kaiti TC", "Noto Serif TC", serif';
 
   const frame = (now: number) => {
     raf = 0;
@@ -198,10 +198,10 @@ export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string)
         roundRect(p.x - s / 2, p.y - s / 2, s, s, 4); ctx.fill();
         ctx.strokeStyle = C.surface; ctx.globalAlpha = 0.55; ctx.lineWidth = 1.5;
         roundRect(p.x - s / 2 + 4, p.y - s / 2 + 4, s - 8, s - 8, 3); ctx.stroke();
-        ctx.globalAlpha = 1; ctx.fillStyle = dark ? "#1a0f0b" : "#fffaf3";
+        ctx.globalAlpha = 1; ctx.fillStyle = dark ? "#0f1318" : "#ffffff";
         ctx.font = "900 " + Math.round(s * 0.36) + "px " + SERIF;
         ctx.fillText("樂", p.x, p.y - s * 0.19); ctx.fillText("天", p.x, p.y + s * 0.2);
-        ctx.fillStyle = C.ink; ctx.font = "600 " + Math.round(13 * Math.max(0.85, K)) + "px Inter, system-ui, sans-serif";
+        ctx.fillStyle = C.ink; ctx.font = "600 " + Math.round(13 * Math.max(0.85, K)) + "px 'IBM Plex Sans', system-ui, sans-serif";
         ctx.fillText("Bai Juyi 白居易", p.x, p.y + s / 2 + 14);
       } else if (n.kind === "poem") {
         ctx.fillStyle = C.ink;

@@ -27,7 +27,7 @@ export function Home() {
       <section className="section home-intro" id="project">
         <div className="wrap home-intro-grid">
           <div>
-            <p className="eyebrow">The project <span lang="zh-Hant">緣起</span></p>
+            <p className="eyebrow eyebrow-brand">The project <span lang="zh-Hant">緣起</span></p>
             <h2 className="home-intro-title">Who were the friends behind the names?</h2>
             <p className="lede">
               Tang poets often named friends by surname and sibling rank, or <span lang="zh-Hant">行第</span>. This site records whether an AI can identify {TOTAL} such names
@@ -44,7 +44,7 @@ export function Home() {
           </div>
           <nav className="doors" aria-label="More of the project">
             {DOORS.map((d) => (
-              <Link key={d.to} to={d.to} className="door">
+              <Link key={d.to} to={d.to} className="card card-link door">
                 <b>{d.en} <span lang="zh-Hant">{d.zh}</span></b>
                 <span>{d.text}</span>
                 <i aria-hidden="true">→</i>

@@ -56,7 +56,7 @@ The timeline (the home page) places each name in the year its poem was written. 
 | Q Addressee's place | where the addressee was or was going (empty if the same place as Bai) | `常州` |
 
 Place names must be in `content/places.json` (other names for the same place go in its `aka` list, e.g. 毗陵 for 常州); the build warns about any it does not know.
-`content/career.json` holds Bai Juyi's postings (the gold thread); set `"verified": true` once checked against 朱金城《白居易年譜》.
+`content/career.json` holds Bai Juyi's postings (the indigo thread); set `"verified": true` once checked against 朱金城《白居易年譜》.
 Columns N–Q now hold 箋校's dating, read entry by entry (log: `EWR-Draft2/test-runs/Jianjiao-Lookups.tsv`). The older `Timeline-Data-Draft.md` was an open-source AI draft and is superseded.
 
 ## Method page details
@@ -85,7 +85,7 @@ and keeps it in sync.
 
 | URL | Page |
 | --- | --- |
-| `/` | the 3D chrono-spatial timeline: time as depth, places on the map, Bai Juyi's postings as a gold thread. Explore freely (wheel = time, drag = turn, right-drag or two fingers = move, Ctrl+wheel or pinch = zoom; keys: ↑↓ time, ←→ turn, +/− zoom, Space play, O overview, [ ] step through names). Selecting a name opens its details in a side panel; `?n=9` opens at entry 9. Below: the project and the names that occur more than once |
+| `/` | the 3D chrono-spatial timeline: time as depth, places on the map, Bai Juyi's postings as an indigo thread. Explore freely (wheel = time, drag = turn, right-drag or two fingers = move, Ctrl+wheel or pinch = zoom; keys: ↑↓ time, ←→ turn, +/− zoom, Space play, O overview, [ ] step through names). Selecting a name opens its details in a side panel; `?n=9` opens at entry 9. Below: the project and the names that occur more than once |
 | `/record` | the 3D network, the Mount Lu flythrough, the 35 names and the record table (filters live in `?q=&status=&round=`) |
 | `/timeline` | old address of the timeline; redirects to `/`, keeping `?n=` |
 | `/entry/9` | one form of address, for linking from the essay |

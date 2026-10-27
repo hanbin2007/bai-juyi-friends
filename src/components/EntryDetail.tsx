@@ -25,14 +25,14 @@ export function EntryDetail({ row, permalink = true }: { row: Row; permalink?: b
           <KV k="Confidence" v={confLabel(row.a.confidence)} />
           <dt>Verdict</dt><dd><Badge s={row.a.verdict} raw={row.a.verdictRaw} /></dd>
         </dl>
-        <h4 style={{ marginTop: 20 }}>Round B <span>詩題＋史料</span> · title + sources</h4>
+        <h4>Round B <span>詩題＋史料</span> · title + sources</h4>
         <dl className="kv">
           <KV k="Answer" v={row.b.answer} />
           <KV k="Confidence" v={confLabel(row.b.confidence)} />
           <KV k="Sources the AI cited" v={row.b.sources} />
           <dt>Verdict</dt><dd><Badge s={row.b.verdict} raw={row.b.verdictRaw} /></dd>
         </dl>
-        <h4 style={{ marginTop: 20 }}>Checked against <span>白居易集箋校</span></h4>
+        <h4>Checked against <span>白居易集箋校</span></h4>
         <dl className="kv">
           <KV k="Identification" v={row.jianjiao} />
           <KV k="Where" zh="卷·頁" v={row.locate} />
@@ -43,7 +43,7 @@ export function EntryDetail({ row, permalink = true }: { row: Row; permalink?: b
           <KV k="Notes" v={row.notes} />
         </dl>
         {permalink && (
-          <p className="row-link" style={{ marginTop: 16 }}>
+          <p className="row-link">
             Page for this entry: <Link to={"/entry/" + row.n}>/entry/{row.n}</Link>
           </p>
         )}

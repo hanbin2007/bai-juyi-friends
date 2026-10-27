@@ -15,7 +15,7 @@ const loadImage = (src: string) =>
 
 // Colours as raw sRGB so the shader output matches the page's paper exactly.
 const rgb = (hex: number) => new THREE.Vector3(((hex >> 16) & 255) / 255, ((hex >> 8) & 255) / 255, (hex & 255) / 255);
-const PAPER = 0xefe7d6, INK = 0x1d2324, MIST = 0xf4eee2, WATER = 0xdfe0d6;
+const PAPER = 0xe6e9e3, INK = 0x18202a, MIST = 0xf1f2ee, WATER = 0xd6dedd;
 
 /* Places. Sources: Donglin Temple, DILA place authority PL000000018801; White Deer Grotto Academy,
    Guling and Nankang (Xingzi), Wikipedia; Wulao Peak snapped to the nearest high point of the data;
@@ -461,25 +461,25 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
     }
     bctx.stroke(); bctx.setLineDash([]);
     // places
-    bctx.fillStyle = "#1d2324";
+    bctx.fillStyle = "#18202a";
     places.forEach((pl) => {
       if (pl.kind === "region" || pl.kind === "water") return;
       const mx = (pl.p.x / W + 0.5) * bw, my = (pl.p.z / H + 0.5) * bh;
       bctx.beginPath(); bctx.arc(mx, my, 1.6 * ldpr, 0, Math.PI * 2); bctx.fill();
     });
     // north arrow and 10 km scale bar
-    bctx.fillStyle = "#1d2324"; bctx.strokeStyle = "#1d2324"; bctx.lineWidth = 1 * ldpr;
-    bctx.font = `600 ${10 * ldpr}px Inter, system-ui, sans-serif`; bctx.textAlign = "center";
+    bctx.fillStyle = "#18202a"; bctx.strokeStyle = "#18202a"; bctx.lineWidth = 1 * ldpr;
+    bctx.font = `600 ${10 * ldpr}px 'IBM Plex Sans', system-ui, sans-serif`; bctx.textAlign = "center";
     const ax = bw - 14 * ldpr, ay = 10 * ldpr;
     bctx.beginPath(); bctx.moveTo(ax, ay); bctx.lineTo(ax - 4 * ldpr, ay + 9 * ldpr); bctx.lineTo(ax + 4 * ldpr, ay + 9 * ldpr); bctx.closePath(); bctx.fill();
     bctx.fillText("N", ax, ay + 20 * ldpr);
     const kmPx = (bw / (meta.widthMetres / 1000)) * 10;
     const bx = 8 * ldpr, by = bh - 9 * ldpr;
     bctx.fillStyle = "rgba(239,231,214,0.85)"; bctx.fillRect(bx - 3 * ldpr, by - 13 * ldpr, kmPx + 6 * ldpr, 17 * ldpr);
-    bctx.fillStyle = "#1d2324";
+    bctx.fillStyle = "#18202a";
     bctx.fillRect(bx, by, kmPx, 2 * ldpr);
     bctx.fillRect(bx, by - 3 * ldpr, 1 * ldpr, 5 * ldpr); bctx.fillRect(bx + kmPx - ldpr, by - 3 * ldpr, 1 * ldpr, 5 * ldpr);
-    bctx.textAlign = "left"; bctx.font = `500 ${9 * ldpr}px Inter, system-ui, sans-serif`;
+    bctx.textAlign = "left"; bctx.font = `500 ${9 * ldpr}px 'IBM Plex Sans', system-ui, sans-serif`;
     bctx.fillText("10 km", bx, by - 4 * ldpr);
   }
   const drawLocator = (cam: THREE.Vector3, target: THREE.Vector3) => {
@@ -491,7 +491,7 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
     lctx.fillStyle = "rgba(176,58,41,0.18)";
     lctx.beginPath(); lctx.moveTo(mx, my);
     lctx.arc(mx, my, r, ang - Math.min(half, 1.2), ang + Math.min(half, 1.2)); lctx.closePath(); lctx.fill();
-    lctx.fillStyle = "#b03a29"; lctx.strokeStyle = "#fffaf3"; lctx.lineWidth = 1.5 * ldpr;
+    lctx.fillStyle = "#b23a2a"; lctx.strokeStyle = "#ffffff"; lctx.lineWidth = 1.5 * ldpr;
     lctx.beginPath(); lctx.arc(mx, my, 3.5 * ldpr, 0, Math.PI * 2); lctx.fill(); lctx.stroke();
   };
 
