@@ -46,6 +46,7 @@ export function TimelineStage() {
   const barRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLElement>(null);
   const welcomeRef = useRef<HTMLElement>(null);
+  const helpRef = useRef<HTMLElement>(null);
   const handle = useRef<TimelineHandle | null>(null);
   const yearNow = useRef<number>(T0);
 
@@ -56,6 +57,7 @@ export function TimelineStage() {
   const [view, setView] = useState<ViewState>({ following: true, playing: false });
   const [far, setFar] = useState(false);
   const [welcome, setWelcome] = useState(() => !params.get("n"));
+  const [help, setHelp] = useState(false);
   const [full, setFull] = useState(false);
 
   // the scene calls back into the page, which may have re-rendered since: keep the latest setters in refs
@@ -75,7 +77,7 @@ export function TimelineStage() {
     // three.js loads only on this page
     import("../three/timeline")
       .then((m) => m.mountTimeline(section, host, {
-        rows: DATED, places: PLACES, stations,
+        rows: DATED, places: PLACES, stations, intro: !params.get("n"),
         onSelect: (n) => choose.current(n),
         onInteract: () => setWelcome(false),
         onView: setView,
@@ -127,19 +129,20 @@ export function TimelineStage() {
       scrollTo({ top: top + scrollY - under, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }, [n, ready]);
 
-  // keep the scene centred in the part of the stage the welcome card, the panel and the time bar leave free
+  // keep the scene centred in the part of the stage the welcome text, the panel and the time bar leave free
   useLayoutEffect(() => {
     const stage = stageRef.current;
     if (!stage || !ready) return;
     const measure = () => {
       const p = panelRef.current, bar = barRef.current, wc = welcomeRef.current, w = stage.clientWidth, h = stage.clientHeight;
-      let l = 0, r = 0, b = h - (bar ? bar.offsetTop : h);
+      let l = 0, r = 0, b = h - (bar ? bar.offsetTop : h), t = 0;
       if (p) {
         if (p.offsetWidth > w * 0.7) b = Math.max(b, h - p.offsetTop);   // a sheet along the bottom
         else r = w - p.offsetLeft;
       }
-      if (welcome && wc && wc.offsetWidth < w * 0.6) l = wc.offsetLeft + wc.offsetWidth;
-      handle.current?.setInset(l, r, b);
+      // the welcome text stands beside the scene on a wide screen, above it on a phone
+      if (welcome && wc) { if (wc.offsetWidth < w * 0.6) l = wc.offsetLeft + wc.offsetWidth; else t = wc.offsetTop + wc.offsetHeight; }
+      handle.current?.setInset(l, r, b, t);
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -155,8 +158,9 @@ export function TimelineStage() {
     wasOpen.current = !!n;
   }, [n]);
 
-  // the hidden welcome card must not hold focus or catch clicks (React 18 has no `inert` prop)
+  // the hidden welcome text must not hold focus or catch clicks (React 18 has no `inert` prop)
   useEffect(() => { if (welcomeRef.current) welcomeRef.current.inert = !welcome; }, [welcome]);
+  useEffect(() => { if (helpRef.current) helpRef.current.inert = !help; }, [help]);
 
   useEffect(() => {
     const on = () => setFull(document.fullscreenElement === stageRef.current);
@@ -182,7 +186,7 @@ export function TimelineStage() {
 
   const onKey = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
-      if (selected) { e.preventDefault(); close(); } else if (welcome) setWelcome(false);
+      if (selected) { e.preventDefault(); close(); } else if (help) setHelp(false); else if (welcome) setWelcome(false);
       return;
     }
     // the rest only when the stage itself has focus, so buttons and links inside keep their keys
@@ -198,7 +202,7 @@ export function TimelineStage() {
       q: () => h()?.move({ pitch: 0.15 }), e: () => h()?.move({ pitch: -0.15 }),
       "+": () => h()?.move({ zoom: 0.8 }), "=": () => h()?.move({ zoom: 0.8 }), "-": () => h()?.move({ zoom: 1.25 }),
       " ": togglePlay, f: () => h()?.follow(), o: toggleFar,
-      "[": () => step(-1), "]": () => step(1), "?": () => setWelcome((v) => !v),
+      "[": () => step(-1), "]": () => step(1), "?": () => setHelp((v) => !v),
     };
     const fn = act[k];
     if (!fn) return;
@@ -248,24 +252,29 @@ export function TimelineStage() {
           <Tool label="Zoom out" tip="Zoom out (−)" onClick={() => h()?.move({ zoom: 1.38 })}><Icon d={ICONS.minus} /></Tool>
           <span className="tl-tools-sep" aria-hidden="true" />
           {document.fullscreenEnabled && <Tool label={full ? "Leave full screen" : "Full screen"} tip={full ? "Leave full screen" : "Full screen"} pressed={full} onClick={toggleFull}><Icon d={full ? ICONS.exit : ICONS.full} /></Tool>}
-          <Tool label="How to explore" tip="How to explore (?)" pressed={welcome} onClick={() => setWelcome((v) => !v)}><Icon d={ICONS.help} /></Tool>
+          <Tool label="How to explore" tip="How to explore (?)" pressed={help} onClick={() => setHelp((v) => !v)}><Icon d={ICONS.help} /></Tool>
         </div>
 
-        <article className={"tl-welcome glass" + (welcome ? " on" : "")} aria-hidden={!welcome} ref={welcomeRef}>
+        <div className="tl-veil" aria-hidden="true" />
+        <article className={"tl-welcome" + (welcome ? " on" : "")} aria-hidden={!welcome} ref={welcomeRef}>
           <p className="eyebrow eyebrow-time tl-kicker">Through time and place <span lang="zh-Hant">時空長卷</span></p>
           <h1>Identifying Bai Juyi's Friends with AI and Historical Sources</h1>
           <p className="tl-welcome-zh" lang="zh-Hant">以 AI 與史料考白居易詩題中的友人</p>
           <p className="tl-welcome-lede">
             Tang poets named friends by surname and sibling rank: <span lang="zh-Hant" className="pn">元九</span>, “Yuan the Ninth”, is Yuan Zhen.
-            Each of the {TOTAL} such names in Bai Juyi's poem titles hangs here in the year of its poem, with the indigo thread of his postings, the colour of his official's blue robe, running through 800–846.
+            Each of the {TOTAL} such names in Bai Juyi's poem titles hangs here in the year of its poem, along the indigo thread of his postings.
             Can an AI tell who they were?
           </p>
           <div className="tl-welcome-go">
             <button type="button" className="btn btn-primary" onClick={togglePlay}>
               <PlayGlyph /> Play the journey
             </button>
-            <button type="button" className="btn" onClick={() => setWelcome(false)}>Explore freely</button>
+            <button type="button" className="btn" onClick={() => { setWelcome(false); h()?.move({}); }}>Explore freely</button>
           </div>
+        </article>
+
+        <aside className={"tl-help glass" + (help ? " on" : "")} aria-hidden={!help} aria-label="How to explore" ref={helpRef}>
+          <p className="eyebrow">How to explore</p>
           <dl className="tl-hints">
             <div><dt>Scroll</dt><dd>through time</dd></div>
             <div><dt>Drag</dt><dd>turn the view</dd></div>
@@ -278,7 +287,7 @@ export function TimelineStage() {
             <li><i className="k-letter" />to where the friend was</li>
             <li><i className="k-name" />fill = Round A, ring = Round B</li>
           </ul>
-        </article>
+        </aside>
 
         <div className="tl-caps" aria-hidden="true" ref={capsRef}>
           {stations.map((s, i) => (

@@ -515,6 +515,8 @@ tr.detail .poem { background: var(--surface); }
 .tl { position: relative; }
 .tl-stage {
   --pad: var(--space-3); --bar-gap: 96px; --panel-w: min(440px, 40vw);
+  /* the welcome text's left edge (level with the header) and width */
+  --wl: max(var(--pad), calc((100% - var(--wrap)) / 2 + var(--gutter))); --ww: min(540px, 44%);
   position: relative; height: calc(100vh - var(--header-h)); height: calc(100svh - var(--header-h)); overflow: hidden; outline: none; isolation: isolate;
   background: radial-gradient(120% 90% at 50% 40%, var(--surface) 0%, var(--bg) 72%);
 }
@@ -570,7 +572,7 @@ tr.detail .poem { background: var(--surface); }
 .tl-list { padding: var(--space-8) 0; }
 
 /* instruments */
-.tl-hud, .tl-tools, .tl-bar, .tl-caps, .tl-welcome { z-index: var(--layer-instruments); }
+.tl-hud, .tl-tools, .tl-bar, .tl-caps, .tl-veil, .tl-welcome, .tl-help { z-index: var(--layer-instruments); }
 .ep { z-index: var(--layer-panel); }
 
 .tl-hud {
@@ -591,19 +593,41 @@ tr.detail .poem { background: var(--surface); }
 .has-panel .tl-tools { right: calc(var(--panel-w) + 2 * var(--pad)); }
 .tl-tools-sep { height: var(--border-1); margin: var(--space-1) var(--space-2); background: var(--rule); }
 
-/* the welcome card: the project's title and how to move */
+/* the welcome: the project's title set straight on the scene, in the Names page's hero type, aligned with the
+   header. A veil of the page tone runs under it and clears toward the scene, so the words read and the names
+   fill the rest. Drags and wheels pass through the words to the scene; only the buttons take the pointer. */
+.tl-veil {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: linear-gradient(90deg, var(--bg) 0, var(--bg) calc(var(--wl) + var(--ww) * .8),
+    color-mix(in oklab, var(--bg) 82%, transparent) calc(var(--wl) + var(--ww) + 48px), transparent calc(var(--wl) + var(--ww) + 280px));
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+.has-welcome .tl-veil { opacity: 1; }
 .tl-welcome {
-  position: absolute; left: var(--pad); top: var(--pad); width: min(520px, calc(100% - 2 * var(--pad) - 64px)); max-height: calc(100% - 2 * var(--pad) - var(--bar-gap));
-  overflow-y: auto; overscroll-behavior: contain; padding: var(--space-5);
+  position: absolute; top: 0; bottom: calc(var(--pad) + var(--bar-gap)); left: var(--wl); width: var(--ww);
+  display: flex; flex-direction: column; justify-content: center; pointer-events: none;
   opacity: 0; visibility: hidden; transform: translateY(12px);
   transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-slow) var(--ease-out), visibility 0s var(--duration-slow);
 }
 .tl-welcome.on { opacity: 1; visibility: visible; transform: none; transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-slow) var(--ease-out); }
-.tl-welcome .tl-kicker { margin-bottom: var(--space-3); }
-.tl-welcome h1 { font: var(--type-headline); font-weight: 300; letter-spacing: var(--ls-headline); }
-.tl-welcome-zh { margin: var(--space-2) 0 0; color: var(--ink-2); font: 400 17px/1.5 var(--font-kai); letter-spacing: .1em; }
-.tl-welcome-lede { margin: var(--space-4) 0 0; color: var(--ink-2); font: var(--type-prose); }
-.tl-welcome-go { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+.tl-welcome button, .tl-welcome a { pointer-events: auto; }
+.tl-welcome .tl-kicker { margin-bottom: var(--space-4); }
+.tl-welcome h1 { font: var(--type-display); font-size: 56px; letter-spacing: var(--ls-display); }
+.tl-welcome-zh { margin: var(--space-4) 0 0; color: var(--ink-2); font: 400 22px/1.4 var(--font-kai); letter-spacing: .14em; }
+.tl-welcome-lede { max-width: 32em; margin: var(--space-6) 0 0; color: var(--ink-2); font: var(--type-lead); }
+.tl-welcome-go { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+
+/* how to explore: behind the toolbar's "?", beside the toolbar */
+.tl-help {
+  position: absolute; top: var(--pad); right: calc(var(--pad) + var(--size-md) + 2 * var(--space-1) + var(--space-2)); width: min(320px, calc(100% - 2 * var(--pad) - 64px));
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  opacity: 0; visibility: hidden; transform: translateY(-4px);
+  transition: opacity var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out), right var(--duration-slow) var(--ease-out), visibility 0s var(--duration-fast);
+}
+.tl-help.on { opacity: 1; visibility: visible; transform: none; transition: opacity var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out), right var(--duration-slow) var(--ease-out); }
+.has-panel .tl-help { right: calc(var(--panel-w) + 2 * var(--pad) + var(--size-md) + 2 * var(--space-1) + var(--space-2)); }
+.tl-help .eyebrow { margin-bottom: var(--space-3); }
+.tl-help .tl-hints { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; }
 .tl-hints { display: grid; grid-template-columns: repeat(auto-fill, minmax(144px, 1fr)); gap: var(--space-3) var(--space-4); margin: var(--space-6) 0 0; }
 .tl-hints div { display: flex; flex-direction: column; gap: var(--space-1); }
 .tl-hints dt {
@@ -737,12 +761,16 @@ tr.detail .poem { background: var(--surface); }
   .tb-thumb::after { top: 26px; }
   .tl-hud-year { font-size: 40px; }
   .tl-hud-era { font-size: 16px; }
-  .tl-welcome { top: auto; bottom: calc(var(--pad) + var(--bar-gap)); width: calc(100% - 2 * var(--pad)); max-height: calc(100% - 2 * var(--pad) - var(--bar-gap)); padding: var(--space-4); }
+  .tl-veil { background: linear-gradient(180deg, var(--bg) 0, var(--bg) 34%, color-mix(in oklab, var(--bg) 70%, transparent) 50%, transparent 72%); }
+  .tl-welcome { bottom: auto; left: var(--pad); right: var(--pad); width: auto; padding-top: var(--space-4); justify-content: flex-start; }
   .has-welcome .tl-tools { opacity: 0; visibility: hidden; }
-  .tl-welcome h1 { font-size: 24px; }
-  .tl-welcome-zh, .tl-welcome-lede { font-size: 15px; }
-  .tl-hints { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin-top: var(--space-4); }
-  .tl-hints div { flex-direction: row; align-items: center; gap: var(--space-2); }
+  .tl-welcome .tl-kicker { margin-bottom: var(--space-2); }
+  .tl-welcome h1 { font-size: 30px; }
+  .tl-welcome-zh { margin-top: var(--space-2); font-size: 16px; }
+  .tl-welcome-lede { margin-top: var(--space-3); font: var(--type-small); }
+  .tl-welcome-go { margin-top: var(--space-4); }
+  .tl-help { left: var(--pad); right: calc(var(--pad) + var(--size-sm) + 2 * var(--space-1) + var(--space-2)); width: auto; }
+  .has-panel .tl-help { right: calc(var(--pad) + var(--size-sm) + 2 * var(--space-1) + var(--space-2)); }
   .tl-tools .icon-btn { width: var(--size-sm); height: var(--size-sm); }
   .tl-tools .icon-btn svg { width: 18px; height: 18px; }
   .ep { top: auto; left: var(--space-2); right: var(--space-2); bottom: var(--space-2); width: auto; height: min(68%, 600px); animation-name: ep-up; }
@@ -758,7 +786,7 @@ tr.detail .poem { background: var(--surface); }
 @media (max-height: 640px) and (min-width: 720px) { .tl-welcome-lede { display: none; } }
 @media (max-width: 380px) { .ep-rounds { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) {
-  .tl-cap, .tl-welcome, .tl-tools, .tl-bar, .tl-hud { transition: none; }
+  .tl-cap, .tl-veil, .tl-welcome, .tl-help, .tl-tools, .tl-bar, .tl-hud { transition: none; }
   .ep, .ep-body { animation: none; }
 }
 

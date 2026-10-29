@@ -46,6 +46,7 @@ export interface TimelineOptions {
   onFrame: (year: number, zoomOut: number) => void;   // every frame: the present year, and 0–1 how far out the view is
   onView: (v: ViewState) => void;       // when following or playing changes
   onInteract: () => void;               // the first touch of any control
+  intro?: boolean;                      // open on the busiest decade, swaying slowly until the first touch
 }
 export interface ViewState { following: boolean; playing: boolean }
 export interface TimelineHandle {
@@ -58,8 +59,9 @@ export interface TimelineHandle {
   play: (on: boolean) => void;
   follow: () => void;
   overview: () => void;
-  /** Pixels covered on the left (welcome card), right (side panel) and bottom (time bar, sheet): the view centres in the rest. */
-  setInset: (left: number, right: number, bottom: number) => void;
+  /** Pixels covered on the left (welcome text), right (side panel), bottom (time bar, sheet) and top (welcome text on a
+   *  phone): the view centres in the rest. */
+  setInset: (left: number, right: number, bottom: number, top?: number) => void;
 }
 
 /* ------------------------------------------------------------ shaders */
@@ -572,7 +574,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   // how quickly the camera catches its goal (ms): quick under a dragging hand, slower for a flight
   const TAU_DRAG = 70, TAU_WHEEL = 190, TAU_FLY = 480;
   let tau = TAU_FLY;
-  const inset = { l: 0, r: 0, b: 0 }, insetGoal = { l: 0, r: 0, b: 0 };
+  const inset = { l: 0, r: 0, b: 0, t: 0 }, insetGoal = { l: 0, r: 0, b: 0, t: 0 };
   const clampDist = (d: number) => clamp(d, 2.4, maxDist());
   const followXY = (year: number) => {
     // a little ahead of the year, so the view turns into a move before the thread does
@@ -581,6 +583,9 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   };
   const wrap = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
   const view = () => o.onView({ following, playing });
+  // the opening view sways around its angle (ms of swaying so far); any touch of a control ends it
+  let sway = false, swayT = 0;
+  const interact = () => { sway = false; o.onInteract(); };
   const fly = () => { tau = still.matches ? 1 : TAU_FLY; kick(); };
 
   // the target's place on the screen: square up the view to the part the panel and time bar leave free
@@ -596,8 +601,8 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     const fog = scene.fog as THREE.Fog;
     fog.near = cur.dist - 1.5 + zo * 400; fog.far = cur.dist * 1.2 + 20 + zo * 900;
     camera.near = clamp(cur.dist * 0.26, 0.08, 2.2) + zo * 6; camera.far = 600 + zo * 400;
-    const w = W(), h = H(), l = Math.round(inset.l), r = Math.round(inset.r), b = Math.round(inset.b);
-    if (l > 0 || r > 0 || b > 0) { camera.aspect = (w + l + r) / (h + b); camera.setViewOffset(w + l + r, h + b, r, b, w, h); }
+    const w = W(), h = H(), l = Math.round(inset.l), r = Math.round(inset.r), b = Math.round(inset.b), t = Math.round(inset.t);
+    if (l > 0 || r > 0 || b > 0 || t > 0) { camera.aspect = (w + l + r) / (h + b + t); camera.setViewOffset(w + l + r, h + b + t, r, b, w, h); }
     else { camera.aspect = w / h; camera.clearViewOffset(); }
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
@@ -617,9 +622,9 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
       for (const z of [wz(Y0), wz(Y1)]) corners.push(new THREE.Vector3(x, y, z));
     const saved = zs, { yaw, pitch } = overviewAngle();
     setSquash(overviewSquash());
-    const fw = Math.max(1, W() - insetGoal.l - insetGoal.r), fh = Math.max(1, H() - insetGoal.b), fov = camera.fov;
+    const fw = Math.max(1, W() - insetGoal.l - insetGoal.r), fh = Math.max(1, H() - insetGoal.b - insetGoal.t), fov = camera.fov;
     camera.clearViewOffset(); camera.aspect = fw / fh;
-    camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan((fh / (H() + insetGoal.b)) * Math.tan(THREE.MathUtils.degToRad(fov) / 2)));
+    camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan((fh / (H() + insetGoal.b + insetGoal.t)) * Math.tan(THREE.MathUtils.degToRad(fov) / 2)));
     camera.updateProjectionMatrix();
     const dir = new THREE.Vector3(Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch));
     let d = 60;
@@ -719,7 +724,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
       e.preventDefault();
       hover = null;
-      o.onInteract();
+      interact();
       o.onSelect(n.row.n);
     });
   });
@@ -757,7 +762,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     } else if (pointers.size === 2) startPinch();
     hover = null; placeTip(null);
     host.classList.add("dragging");
-    o.onInteract();
+    interact();
   };
   const onMove = (e: PointerEvent) => {
     const p = pointers.get(e.pointerId);
@@ -800,7 +805,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     if (e.ctrlKey || e.metaKey) {
       e.preventDefault();
       goal.dist = clampDist(goal.dist * Math.exp(dy * 0.01));
-      tau = still.matches ? 1 : TAU_WHEEL; o.onInteract(); kick();
+      tau = still.matches ? 1 : TAU_WHEEL; interact(); kick();
       return;
     }
     if (fresh) {
@@ -812,7 +817,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     stopPlaying();
     goal.year = clamp(goal.year + dy * 0.0075, T0, T1);
     if (Math.abs(dx) > Math.abs(dy)) goal.yaw -= dx * 0.003;
-    tau = still.matches ? 1 : TAU_WHEEL; o.onInteract(); kick();
+    tau = still.matches ? 1 : TAU_WHEEL; interact(); kick();
   };
 
   /* ------------------------------------------------------------ frame */
@@ -823,7 +828,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     boxes.some(([bx, by, bw, bh]) => Math.abs(bx - x) < (w + bw) / 2 && Math.abs(by - y) < (h + bh) / 2);
   const settled = () => Math.abs(goal.year - cur.year) < 1e-4 && Math.abs(goal.x - cur.x) < 1e-4 && Math.abs(goal.y - cur.y) < 1e-4
     && Math.abs(wrap(goal.yaw - cur.yaw)) < 1e-4 && Math.abs(goal.pitch - cur.pitch) < 1e-4 && Math.abs(goal.dist - cur.dist) < 1e-4
-    && Math.abs(insetGoal.l - inset.l) < 0.5 && Math.abs(insetGoal.r - inset.r) < 0.5 && Math.abs(insetGoal.b - inset.b) < 0.5;
+    && Math.abs(insetGoal.l - inset.l) < 0.5 && Math.abs(insetGoal.r - inset.r) < 0.5 && Math.abs(insetGoal.b - inset.b) < 0.5 && Math.abs(insetGoal.t - inset.t) < 0.5;
 
   const frame = (now: number) => {
     raf = 0;
@@ -836,6 +841,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
       if (goal.year >= T1) { playing = false; view(); }
     }
     if (following) [goal.x, goal.y] = followXY(goal.year);
+    if (sway && !still.matches) { swayT += dt; goal.yaw = introAngle().yaw + 0.42 * Math.sin(swayT / 9000); }
     const k = 1 - Math.exp(-dt / tau);
     cur.year += (goal.year - cur.year) * k;
     cur.x += (goal.x - cur.x) * k;
@@ -847,6 +853,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
     inset.l += (insetGoal.l - inset.l) * ki;
     inset.r += (insetGoal.r - inset.r) * ki;
     inset.b += (insetGoal.b - inset.b) * ki;
+    inset.t += (insetGoal.t - inset.t) * ki;
     if (settled()) { Object.assign(cur, goal); Object.assign(inset, insetGoal); }
     const zo = placeCamera();
     o.onFrame(cur.year, zo);
@@ -934,12 +941,32 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   };
   function kick() { if (!raf && visible() && alive) raf = requestAnimationFrame(frame); }
 
+  /* ------------------------------------------------------------ the opening view */
+  // raised and turned to the side over the ten years that hold the most names, far enough back that a long
+  // run of years recedes into the distance, centred on where those names are
+  const introAngle = () => (portrait() ? { yaw: 0.35, pitch: 0.62, dist: 24 } : { yaw: 0.72, pitch: 0.42, dist: 21 });
+  const intro = () => {
+    let year = T0 + 5, most = -1;
+    for (let y = T0 + 5; y <= T1 - 5; y++) {
+      const c = nodes.filter((n) => Math.abs(mid(n.row) - y) <= 5).length;
+      if (c > most) { most = c; year = y; }
+    }
+    const near = nodes.filter((n) => Math.abs(mid(n.row) - year) <= 5);
+    const a = introAngle();
+    following = false;
+    goal.year = year;
+    goal.x = near.reduce((t, n) => t + n.at.x, 0) / Math.max(1, near.length);
+    goal.y = near.reduce((t, n) => t + n.at.y, 0) / Math.max(1, near.length);
+    goal.yaw = a.yaw; goal.pitch = a.pitch; goal.dist = a.dist;
+    sway = true; swayT = 0;
+  };
+
   /* ------------------------------------------------------------ lifecycle: touch the page only once everything is built */
   host.append(canvas, labels, tip);
   paint();
   resize();
-  [goal.x, goal.y] = followXY(goal.year);
-  goal.dist = defDist();
+  if (o.intro) intro();
+  else { [goal.x, goal.y] = followXY(goal.year); goal.dist = defDist(); }
   Object.assign(cur, goal);
   placeCamera();
   renderer.compile(scene, camera);
@@ -964,6 +991,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
 
   return {
     select: (n, instant) => {
+      if (n) sway = false;
       pinned = nodes.find((m) => m.row.n === n) || null;
       hover = null;
       applyFocus();
@@ -979,10 +1007,12 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
       if (instant) { Object.assign(cur, goal); kick(); } else fly();
     },
     setYear: (year, instant) => {
+      sway = false;
       goal.year = clamp(year, T0, T1);
       if (instant) { tau = TAU_DRAG; kick(); } else fly();
     },
     move: (d) => {
+      sway = false;
       if (d.year) { stopPlaying(); goal.year = clamp(goal.year + d.year, T0, T1); }
       if (d.yaw) goal.yaw += d.yaw;
       if (d.pitch) goal.pitch = clamp(goal.pitch + d.pitch, PITCH_MIN, PITCH_MAX);
@@ -990,16 +1020,19 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
       tau = still.matches ? 1 : TAU_WHEEL; kick();
     },
     play: (on) => {
-      if (on && goal.year >= T1 - 0.05) goal.year = T0;   // from the start again
+      if (on && (goal.year >= T1 - 0.05 || sway)) goal.year = T0;   // from the start (again, or from the opening view)
+      sway = false;
       if (on && !following) { following = true; goal.yaw = 0; goal.pitch = DEF_PITCH; goal.dist = defDist(); }
       playing = on; view(); fly();
     },
     follow: () => {
+      sway = false;
       following = true;
       goal.yaw = 0; goal.pitch = DEF_PITCH; goal.dist = defDist();
       view(); fly();
     },
     overview: () => {
+      sway = false;
       stopPlaying();
       following = false; view();
       const a = overviewAngle();
@@ -1007,11 +1040,11 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
       goal.yaw = a.yaw; goal.pitch = a.pitch; goal.dist = overviewDist;
       fly();
     },
-    setInset: (l, r, b) => {
-      if (insetGoal.l === l && insetGoal.r === r && insetGoal.b === b) return;
+    setInset: (l, r, b, t = 0) => {
+      if (insetGoal.l === l && insetGoal.r === r && insetGoal.b === b && insetGoal.t === t) return;
       // the overview's distance depends on the free space; keep a view that is at the overview there
       const atOverview = Math.abs(goal.dist - overviewDist) < 1e-6;
-      Object.assign(insetGoal, { l, r, b });
+      Object.assign(insetGoal, { l, r, b, t });
       fitOverview();
       if (atOverview) goal.dist = overviewDist; else goal.dist = clampDist(goal.dist);
       kick();
