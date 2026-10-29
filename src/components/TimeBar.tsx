@@ -5,6 +5,11 @@ import { BY_TIME, midYear } from "../lib/groups";
 import { STATUS } from "../lib/status";
 import { barShare, barYear, T0, T1 } from "../lib/timelineScale";
 
+// on the icons' 20px grid; filled, with the same 1.5px rounded joins (set in CSS) so the corners match their strokes.
+// The triangle sits a little right of centre, where it looks centred.
+export const PlayGlyph = () => <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6.5 4.75v10.5L15.6 10z" /></svg>;
+const PauseGlyph = () => <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 4.75h2v10.5H6zM12 4.75h2v10.5h-2z" /></svg>;
+
 const pct = (year: number) => (barShare(year) * 100).toFixed(3) + "%";
 
 // eras that begin inside the bar, and the one already running at its start
@@ -44,9 +49,7 @@ export const TimeBar = forwardRef<HTMLDivElement, Props>(function TimeBar({ sele
     <div className="tb glass">
       <button type="button" className="icon-btn icon-btn-play" onClick={onPlay} aria-label={playing ? "Pause the journey" : "Play the journey"} aria-pressed={playing}
         data-tip={playing ? "Pause (Space)" : "Travel through the years with Bai Juyi (Space)"}>
-        {playing
-          ? <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" /></svg>
-          : <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l8 5-8 5z" /></svg>}
+        {playing ? <PauseGlyph /> : <PlayGlyph />}
       </button>
       <span className="tb-end" aria-hidden="true">{T0}</span>
       <div

@@ -6,7 +6,7 @@ import { BY_TIME } from "../lib/groups";
 import { barShare, T0, T1 } from "../lib/timelineScale";
 import type { TimelineHandle, ViewState } from "../three/timeline";
 import { EntryPanel } from "./EntryPanel";
-import { TimeBar } from "./TimeBar";
+import { PlayGlyph, TimeBar } from "./TimeBar";
 
 const stations = CAREER.stations;
 const stationAt = (year: number) => {
@@ -262,7 +262,7 @@ export function TimelineStage() {
           </p>
           <div className="tl-welcome-go">
             <button type="button" className="btn btn-primary" onClick={togglePlay}>
-              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l8 5-8 5z" /></svg> Play the journey
+              <PlayGlyph /> Play the journey
             </button>
             <button type="button" className="btn" onClick={() => setWelcome(false)}>Explore freely</button>
           </div>

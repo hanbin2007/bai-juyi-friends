@@ -1,5 +1,5 @@
 /* Identifying Bai Juyi's Friends: site styles on the design system 青衫, "the blue robe".
-   Rules: no outlines (surfaces separate by tone and elevation), radius by size and nesting, four elevation levels by layer,
+   Rules: no outlines (surfaces separate by tone and elevation), radius by size and nesting, height by tone with two small shadows,
    lines only where they mean something, a 4px spacing grid, fixed control heights, type only from the scale. Every value below
    comes from the generated token block; literal values appear only in map and scene lettering. */
 
@@ -270,7 +270,8 @@ code { padding: 0 var(--space-1); border-radius: var(--radius-1); background: va
 }
 .btn:hover { background: var(--control-hover); color: var(--ink); }
 .btn:active { transform: translateY(1px); }
-.btn svg { width: 16px; height: 16px; fill: currentColor; }
+.btn svg { width: 16px; height: 16px; fill: currentColor; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.btn svg:first-child { margin-left: calc(-1 * var(--space-1)); }
 .btn-primary { background: var(--accent); color: var(--on-accent); }
 .btn-primary:hover { background: var(--accent-hover); color: var(--on-accent); }
 .btn-quiet { background: none; color: var(--ink-2); }
@@ -293,11 +294,10 @@ code { padding: 0 var(--space-1); border-radius: var(--radius-1); background: va
 .icon-btn-sm svg { width: 16px; height: 16px; }
 .icon-btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .icon-btn[disabled] { opacity: var(--opacity-disabled); cursor: default; }
-.icon-btn-play { width: var(--size-lg); height: var(--size-lg); border-radius: var(--radius-full); background: var(--accent); color: var(--on-accent); }
+.icon-btn-play { width: var(--size-lg); height: var(--size-lg); background: var(--accent); color: var(--on-accent); }
 .icon-btn-play[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
 .icon-btn-play:hover { background: var(--accent-hover); color: var(--on-accent); }
-.icon-btn-play svg { width: 16px; height: 16px; fill: currentColor; stroke-width: 2; }
-.icon-btn-play[aria-pressed="true"] svg { fill: none; }
+.icon-btn-play svg { fill: currentColor; }
 
 /* Verdicts: each status is a colour, an icon and a word together */
 [data-s] { --sc: var(--s-untested); --sc-on: var(--on-verdict); }
