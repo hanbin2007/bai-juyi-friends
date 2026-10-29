@@ -76,9 +76,9 @@
   --layer-sticky: 20;
   --layer-header: 40;
   --layer-tooltip: 60;
-  --font-serif: "Spectral", "Noto Serif TC", Georgia, serif;
-  --font-sans: "IBM Plex Sans", "Noto Sans TC", "PingFang TC", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --font-serif: "Source Serif 4", "Noto Serif TC", Georgia, serif;
+  --font-sans: "Source Sans 3", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --font-mono: "Source Code Pro", ui-monospace, Menlo, Consolas, monospace;
   --font-cjk: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
   --font-kai: "LXGW WenKai TC", "Kaiti TC", "BiauKai", "DFKai-SB", "Noto Serif TC", serif;
   --fs-display: 48px;
@@ -96,8 +96,8 @@
   --fs-prose: 16px;
   --type-prose: 400 16px/1.55 var(--font-serif);
   --fs-numeral: 64px;
-  --type-numeral: 300 64px/1 var(--font-serif);
-  --ls-numeral: -0.03em;
+  --type-numeral: 400 64px/1 var(--font-serif);
+  --ls-numeral: -0.02em;
   --fs-body: 16px;
   --type-body: 400 16px/1.6 var(--font-sans);
   --fs-small: 14px;
@@ -204,6 +204,7 @@
 /* Layout constants (not design tokens) */
 :root {
   --wrap: 1200px;
+  --wrap-wide: 1600px;   /* pages that are mostly one wide table */
   --gutter: var(--space-4);
   --header-h: 64px;
   --ring-selected: 0 0 0 var(--border-2) var(--surface), 0 0 0 4px var(--accent);
@@ -229,6 +230,7 @@ p { margin: 0 0 1em; text-wrap: pretty; }
 b, strong { font-weight: 600; }
 [lang|="zh"], .zh { font-family: var(--font-cjk); letter-spacing: .02em; }
 .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter); }
+.wrap-wide { max-width: var(--wrap-wide); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip { position: absolute; left: var(--space-3); top: -64px; z-index: var(--layer-tooltip); display: inline-flex; align-items: center; height: var(--size-md); padding: 0 var(--space-4); border-radius: var(--radius-2); background: var(--ink); color: var(--bg); font: var(--type-control); }
 .skip:focus { top: var(--space-3); }
@@ -1088,6 +1090,7 @@ tr.row.flash { animation: flash 1.6s var(--ease-out); }
 .matrix td.diag { box-shadow: inset 0 0 0 var(--border-1) var(--ink-2); }
 .matrix thead th { text-align: center; }
 .matrix th.corner { font-weight: 500; text-align: left; }
+.table-page { padding-bottom: var(--space-18); }
 .grid-2 { display: grid; gap: var(--space-5); }
 @media (min-width: 900px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
 

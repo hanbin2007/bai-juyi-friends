@@ -5,7 +5,8 @@ import { TooltipLayer } from "./Tooltip";
 
 const NAV = [
   { to: "/", en: "Timeline", zh: "時空" },
-  { to: "/record", en: "Record", zh: "名錄" },
+  { to: "/record", en: "Names", zh: "稱謂" },
+  { to: "/table", en: "Table", zh: "總表" },
   { to: "/summary", en: "Summary", zh: "統計" },
   { to: "/method", en: "Method", zh: "方法" },
   { to: "/about", en: "About", zh: "關於" },
@@ -35,15 +36,19 @@ export function Layout() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  // pages built around one wide table widen the header and footer with them, so the edges line up
+  const wrap = "wrap" + (location.pathname === "/table" ? " wrap-wide" : "");
 
   useEffect(() => setOpen(false), [location.pathname]);
 
-  // Old links of the form #r12 now open /entry/12, and the record's sections moved from / to /record;
-  // other hashes scroll to their section.
+  // Old links of the form #r12 now open /entry/12; the names moved from / to /record, and the table and its
+  // filters (?q=&status=&round=, #record) to /table. Other hashes scroll to their section.
   useEffect(() => {
     const m = /^#r(\d+)$/.exec(location.hash);
     if (m) { navigate("/entry/" + m[1], { replace: true }); return; }
-    if (location.pathname === "/" && /^#(record|names|journey)$/.test(location.hash)) { navigate("/record" + location.search + location.hash, { replace: true }); return; }
+    const toTable = (location.pathname === "/" || location.pathname === "/record") && (location.hash === "#record" || /[?&](q|status|round)=/.test(location.search));
+    if (toTable) { navigate("/table" + location.search + "#record", { replace: true }); return; }
+    if (location.pathname === "/" && /^#(names|journey)$/.test(location.hash)) { navigate("/record" + location.hash, { replace: true }); return; }
     if (!location.hash) return;
     const t = setTimeout(() => document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView(), 30);
     return () => clearTimeout(t);
@@ -53,7 +58,7 @@ export function Layout() {
     <>
       <a className="skip" href="#main">Skip to content</a>
       <header className="site-header">
-        <div className="wrap">
+        <div className={wrap}>
           <Link className="brand" to="/">
             <span className="seal" aria-hidden="true">樂天</span>
             <span className="brand-text"><strong>Bai Juyi's Friends</strong><span>白居易的朋友</span></span>
@@ -77,7 +82,7 @@ export function Layout() {
       </main>
 
       <footer className="site-footer">
-        <div className="wrap">
+        <div className={wrap}>
           <div>
             <p><strong>Identifying Bai Juyi's Friends with AI and Historical Sources</strong> · ZHANG Hanbin · CHC1M51, The Hong Kong Polytechnic University</p>
             <p>Data updated {DATA.meta.built} from the record sheet. Built with AI coding help; see <Link to="/about#ai">About</Link>.</p>

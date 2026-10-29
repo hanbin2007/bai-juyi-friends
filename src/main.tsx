@@ -4,6 +4,7 @@ import { createBrowserRouter, Navigate, RouterProvider, useLocation } from "reac
 import { Layout } from "./components/Layout";
 import { Home } from "./pages/Home";
 import { Record } from "./pages/Record";
+import { Table } from "./pages/Table";
 import { Summary } from "./pages/Summary";
 import { Method } from "./pages/Method";
 import { About } from "./pages/About";
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       children: [
         { path: "/", element: <Home /> },
         { path: "/record", element: <Record /> },
+        { path: "/table", element: <Table /> },
         { path: "/timeline", element: <ToHome /> },
         { path: "/summary", element: <Summary /> },
         { path: "/method", element: <Method /> },

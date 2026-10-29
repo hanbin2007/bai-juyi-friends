@@ -86,7 +86,8 @@ and keeps it in sync.
 | URL | Page |
 | --- | --- |
 | `/` | the 3D chrono-spatial timeline: time as depth, places on the map, Bai Juyi's postings as an indigo thread. Explore freely (wheel = time, drag = turn, right-drag or two fingers = move, Ctrl+wheel or pinch = zoom; keys: ↑↓ time, ←→ turn, +/− zoom, Space play, O overview, [ ] step through names). Selecting a name opens its details in a side panel; `?n=9` opens at entry 9. Below: the project and the names that occur more than once |
-| `/record` | the 3D network, the Mount Lu flythrough, the 35 names and the record table (filters live in `?q=&status=&round=`) |
+| `/record` | Names: the 3D network, the Mount Lu flythrough and the 35 names on letter paper |
+| `/table` | Table: the record table on its own wide page (filters live in `?q=&status=&round=`; old `/record?q=` and `#record` links redirect here) |
 | `/timeline` | old address of the timeline; redirects to `/`, keeping `?n=` |
 | `/entry/9` | one form of address, for linking from the essay |
 | `/summary` | Round A vs Round B counts, the Summary tab, A→B changes, results by confidence |

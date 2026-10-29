@@ -19,7 +19,7 @@ export function Entry() {
     <>
       <div className="page-head">
         <div className="wrap">
-          <p className="crumbs"><Link to="/record">Record</Link> / Entry {row.n} of {TOTAL}</p>
+          <p className="crumbs"><Link to="/table">Table</Link> / Entry {row.n} of {TOTAL}</p>
           <h1 className="entry-name" lang="zh-Hant">{row.address}</h1>
           <p className="entry-title" lang="zh-Hant"><MarkedTitle title={row.title} name={row.address} /></p>
         </div>
@@ -30,7 +30,7 @@ export function Entry() {
           <EntryDetail row={row} permalink={false} />
           <nav className="pager" aria-label="Other entries">
             {prev ? <Link to={"/entry/" + prev.n} rel="prev">← No. {prev.n} <span lang="zh-Hant">{prev.address}</span></Link> : <span />}
-            <Link to={"/record?q=" + encodeURIComponent(row.address)}>All entries for <span lang="zh-Hant">{row.address}</span></Link>
+            <Link to={"/table?q=" + encodeURIComponent(row.address)}>All entries for <span lang="zh-Hant">{row.address}</span></Link>
             {next ? <Link to={"/entry/" + next.n} rel="next">No. {next.n} <span lang="zh-Hant">{next.address}</span> →</Link> : <span />}
           </nav>
         </div>

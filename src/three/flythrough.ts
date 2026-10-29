@@ -469,7 +469,7 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
     });
     // north arrow and 10 km scale bar
     bctx.fillStyle = "#18202a"; bctx.strokeStyle = "#18202a"; bctx.lineWidth = 1 * ldpr;
-    bctx.font = `600 ${10 * ldpr}px 'IBM Plex Sans', system-ui, sans-serif`; bctx.textAlign = "center";
+    bctx.font = `600 ${10 * ldpr}px 'Source Sans 3', system-ui, sans-serif`; bctx.textAlign = "center";
     const ax = bw - 14 * ldpr, ay = 10 * ldpr;
     bctx.beginPath(); bctx.moveTo(ax, ay); bctx.lineTo(ax - 4 * ldpr, ay + 9 * ldpr); bctx.lineTo(ax + 4 * ldpr, ay + 9 * ldpr); bctx.closePath(); bctx.fill();
     bctx.fillText("N", ax, ay + 20 * ldpr);
@@ -479,7 +479,7 @@ export async function mountFlythrough(section: HTMLElement, canvas: HTMLCanvasEl
     bctx.fillStyle = "#18202a";
     bctx.fillRect(bx, by, kmPx, 2 * ldpr);
     bctx.fillRect(bx, by - 3 * ldpr, 1 * ldpr, 5 * ldpr); bctx.fillRect(bx + kmPx - ldpr, by - 3 * ldpr, 1 * ldpr, 5 * ldpr);
-    bctx.textAlign = "left"; bctx.font = `500 ${9 * ldpr}px 'IBM Plex Sans', system-ui, sans-serif`;
+    bctx.textAlign = "left"; bctx.font = `500 ${9 * ldpr}px 'Source Sans 3', system-ui, sans-serif`;
     bctx.fillText("10 km", bx, by - 4 * ldpr);
   }
   const drawLocator = (cam: THREE.Vector3, target: THREE.Vector3) => {

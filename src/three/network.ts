@@ -201,7 +201,7 @@ export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string)
         ctx.globalAlpha = 1; ctx.fillStyle = dark ? "#0f1318" : "#ffffff";
         ctx.font = "900 " + Math.round(s * 0.36) + "px " + SERIF;
         ctx.fillText("樂", p.x, p.y - s * 0.19); ctx.fillText("天", p.x, p.y + s * 0.2);
-        ctx.fillStyle = C.ink; ctx.font = "600 " + Math.round(13 * Math.max(0.85, K)) + "px 'IBM Plex Sans', system-ui, sans-serif";
+        ctx.fillStyle = C.ink; ctx.font = "600 " + Math.round(13 * Math.max(0.85, K)) + "px 'Source Sans 3', system-ui, sans-serif";
         ctx.fillText("Bai Juyi 白居易", p.x, p.y + s / 2 + 14);
       } else if (n.kind === "poem") {
         ctx.fillStyle = C.ink;

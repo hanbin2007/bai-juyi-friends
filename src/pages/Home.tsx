@@ -11,7 +11,8 @@ import { useTitle } from "../lib/useTitle";
 const place = (name: string) => name ? <><Zh>{name}</Zh>{PLACES[name] && <span className="muted"> {PLACES[name].en}</span>}</> : null;
 
 const DOORS = [
-  { to: "/record", en: "The record", zh: "名錄", text: `All ${TOTAL} names in a searchable table, with the 3D network of poems and a flight over Mount Lu.` },
+  { to: "/table", en: "The table", zh: "總表", text: `All ${TOTAL} names in one searchable table: both rounds of answers and what 箋校 says.` },
+  { to: "/record", en: "The names", zh: "稱謂", text: "The 3D network of poems and names, a flight over Mount Lu, and every name on letter paper." },
   { to: "/summary", en: "Summary", zh: "統計", text: "Round A against Round B, and what changed when the AI was given sources." },
   { to: "/method", en: "Method", zh: "方法", text: "The two rounds, the model, the prompts and how each answer was checked." },
   { to: "/about", en: "About", zh: "關於", text: "Author, references, AI assistance and how to cite this site." },

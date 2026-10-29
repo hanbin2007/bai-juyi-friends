@@ -7,7 +7,7 @@ import { dirname, join } from "node:path";
 const dist = "dist";
 const rows = JSON.parse(readFileSync("src/data/records.json", "utf8")).rows;
 // "timeline" stays so old links still load the app, which sends them to the home page
-const routes = ["record", "timeline", "summary", "method", "about", ...rows.map((r) => `entry/${r.n}`)];
+const routes = ["record", "table", "timeline", "summary", "method", "about", ...rows.map((r) => `entry/${r.n}`)];
 
 for (const route of routes) {
   const out = join(dist, route, "index.html");

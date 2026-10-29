@@ -60,7 +60,7 @@ export function About() {
               <li><strong>Places on the map:</strong> Donglin Temple from the <a href="https://authority.dila.edu.tw/place/">DILA place authority</a>; White Deer Grotto Academy, Guling and Xingzi (Nankang) from Wikipedia; peak heights from the elevation data. Pipa Pavilion and Huajing (where the cottage was rebuilt) are marked “approx.”: they are placed from written descriptions, not surveyed points.</li>
               <li><strong>Timeline:</strong> each poem's year, place and the addressee's post come from the record sheet (dating in <Zh>箋校</Zh>). Bai Juyi's postings follow Zhu Jincheng's chronology (<Zh>白居易年譜</Zh>){DATA.career.verified ? "" : ", still being checked"}. Places are prefecture seats at approximate modern coordinates. Coastline, rivers and lakes: <a href="https://www.naturalearthdata.com">Natural Earth</a> 1:50m (public domain), modern courses shown for orientation only.</li>
               <li><strong>Software:</strong> <a href="https://threejs.org">three.js</a>, <a href="https://react.dev">React</a> and <a href="https://reactrouter.com">React Router</a> (MIT licence), built with <a href="https://vite.dev">Vite</a>.</li>
-              <li><strong>Fonts:</strong> Inter, Newsreader and Noto Serif TC, under the SIL Open Font License, served by Google Fonts.</li>
+              <li><strong>Fonts:</strong> Source Serif 4, Source Sans 3, Source Code Pro, LXGW WenKai TC and Noto Serif TC, under the SIL Open Font License, served by Google Fonts.</li>
             </ul>
           </section>
 
