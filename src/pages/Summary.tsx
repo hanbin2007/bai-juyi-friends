@@ -172,7 +172,7 @@ export function Summary() {
         <section className="section section-tight">
           <div className="section-head"><div>
             <h2>From Round A to Round B <span className="zh" lang="zh-Hant">前後對照</span></h2>
-            <p>How each name's verdict changed once the AI had sources. Rows are the Round A verdict, columns the Round B verdict; the outlined diagonal means no change.</p>
+            <p>How each name's verdict changed once the AI had the full poem and sources. These came together, so a change cannot be traced to any one of them (see <Link to="/method#limits">Limits</Link>). Rows are the Round A verdict, columns the Round B verdict; the outlined diagonal means no change.</p>
           </div></div>
           <div className="table-scroll"><Matrix /></div>
         </section>
