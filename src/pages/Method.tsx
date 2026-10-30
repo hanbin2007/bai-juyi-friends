@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { DATA, POEM_COUNT, TOTAL, type Verdict } from "../lib/data";
 import { Badge } from "../components/Badge";
 import { CopyButton, PageHead, Toc, Zh } from "../components/Prose";
@@ -39,6 +40,8 @@ function Prompt({ label, zh, text }: { label: string; zh: string; text: string }
 export function Method() {
   useTitle("Method");
   const run = DATA.method.run || {};
+  const roles = run.roles;
+  const checks = roles?.studentChecks || [];
   return (
     <>
       <PageHead title="How the names were tested" zh="測試方法">
@@ -106,6 +109,25 @@ export function Method() {
               <li><strong>Access:</strong> <Zh>箋校</Zh> was read in the <Zh>汇典·典籍整理文献数据库</Zh> database through the university's subscription, by Claude Code on the student's instruction: it searched for each poem, opened its entry and read the page on screen, one entry at a time. No files were downloaded and nothing was copied in bulk.</li>
               <li><strong>Quoting:</strong> the site quotes <Zh>箋校</Zh> only briefly, a name or a short phrase, always with volume and page (<Zh>卷·頁</Zh>).</li>
             </ul>
+            {checks.length > 0 && (
+              <>
+                <h3 id="student-checks">Checked again by the student <span className="zh" lang="zh-Hant">學生覆核</span></h3>
+                <p>{roles?.student}</p>
+                <div className="table-scroll">
+                  <table className="data-table text-table">
+                    <thead><tr><th scope="col">Entry</th><th scope="col"><Zh>箋校</Zh></th><th scope="col">What the student read</th><th scope="col">Result</th></tr></thead>
+                    <tbody>
+                      {checks.map((c) => (
+                        <tr key={c.n}>
+                          <th scope="row" style={{ whiteSpace: "nowrap" }}><Link to={`/entry/${c.n}`}>{c.n} <span lang="zh-Hant">{c.address}</span></Link></th>
+                          <td lang="zh-Hant" style={{ whiteSpace: "nowrap" }}>{c.locate}</td><td>{c.found}</td><td>{c.result}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
           </section>
 
           <section id="verdicts">
@@ -128,7 +150,7 @@ export function Method() {
               <li><strong>Round B adds several things at once.</strong> The full poem and three sources were given together, so a change between rounds cannot be traced to any one of them. The sources the AI says it used are its own account, not proof of how it reached the answer.</li>
               <li><strong>The reference is scholarship too.</strong> <Zh>箋校</Zh> leaves some names unidentified and sometimes disagrees with <Zh>唐人行第録</Zh>. Verdicts follow <Zh>箋校</Zh>. Mazanec (2018, p. 329) makes the same point about his own data on Tang exchange poems: addressees named only by surname and title have to be identified from annotated editions, so the data are only as good as that scholarship, and famous poets' friends are better identified than others'.</li>
               <li><strong>Poem text.</strong> The poems shown in each entry come from an open digital edition of <Zh>全唐詩</Zh> that leaves out Bai Juyi's own notes (<Zh>自注</Zh>). The same text was given to the AI in Round B. It was not used for the verdicts.</li>
-              <li><strong>Run and checked by an AI assistant.</strong> Claude Code ran both rounds, read <Zh>箋校</Zh> and gave the verdicts and evidence statuses. A misreading of <Zh>箋校</Zh> is possible, and would carry into the verdict for that entry.</li>
+              <li><strong>Run and checked by an AI assistant.</strong> Claude Code ran both rounds, read <Zh>箋校</Zh> and gave the verdicts and evidence statuses. A misreading of <Zh>箋校</Zh> is possible, and would carry into the verdict for that entry.{checks.length > 0 && <> The student checked {checks.length} entries again (<a href="#student-checks">above</a>): all the verdicts held, and one recorded reading was corrected. The other {TOTAL - checks.length} rest on Claude Code's reading.</>}</li>
             </ul>
           </section>
         </div>

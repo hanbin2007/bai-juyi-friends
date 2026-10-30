@@ -44,7 +44,14 @@ export interface SiteData {
   rows: Row[];
   places: Record<string, Place>;
   career: { verified: boolean; source: string; stations: Station[] };
-  method: { run: Record<string, string>; promptA: string; promptB: string };
+  method: { run: Record<string, string> & { roles?: Roles }; promptA: string; promptB: string };
+}
+
+/** Who did what (content/run-info.json), with the entries the student checked in 箋校. */
+export interface Roles {
+  student: string;
+  claudeCode: string;
+  studentChecks: { n: number; address: string; locate: string; found: string; result: string }[];
 }
 
 export const DATA = raw as unknown as SiteData;

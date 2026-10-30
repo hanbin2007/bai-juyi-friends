@@ -1,8 +1,8 @@
 {
  "meta": {
-  "built": "2026-10-30 12:36 HKT",
+  "built": "2026-10-30 16:26 HKT",
   "source": "Bai-Juyi-Experiment-Record-Sheet.xlsx",
-  "sha256": "937e03108e38acb32fc4565de340f2e04f7d7ce1c22f248bf50010454adc0de2",
+  "sha256": "0e34335594878f1ae69ab48a742cfebaf0309937dff196cc7815b34464dca85d",
   "summaryCheck": {
    "status": "match",
    "detail": "All counts match the Summary tab."
@@ -1526,7 +1526,7 @@
    },
    "locate": "卷三十一·2060",
    "jianjiao": "李紳（箋作〔李二十賓客〕，題當讀「李二十／三賓客」）",
-   "notes": "",
+   "notes": "Student check (30 Oct 2026): 箋校 reads the title as 李二十／三賓客, so the form of address given to the AI, 李二十三, was itself a misreading. The verdict follows the rule (箋校 names 李紳), but this miss is partly the test's fault.",
    "time": {
     "raw": "833",
     "from": 833,
@@ -1654,8 +1654,8 @@
     "evidence": "matches reference"
    },
    "locate": "卷三十三·2227",
-   "jianjiao": "沈述師（箋疑「四」為「十四」之奪文）",
-   "notes": "",
+   "jianjiao": "沈述師（箋引岑仲勉《唐人行第錄》，謂「四」係「十四」之奪文，從之）",
+   "notes": "Student check (30 Oct 2026): the 「十四」 reading is Cen Zhongmian's, which 箋校 accepts (其說是也); column J corrected.",
    "time": {
     "raw": "837",
     "from": 837,
@@ -2253,12 +2253,48 @@
    "roundADate": "27 Oct 2026, 12:24 HKT",
    "roundBDate": "27 Oct 2026, 12:24 HKT",
    "sourcesGiven": "Each poem's full text (chinese-poetry 全唐詩, without Bai's own notes); 舊唐書 卷一百六十六 (元稹、白居易傳, Wikisource); CBDB: Bai Juyi's 27 postings and his full list of 389 social associations. No 箋校 content.",
-   "checkingDates": "27 Oct 2026 (箋校 entries read and verdicts given)",
+   "checkingDates": "27 Oct 2026 (箋校 entries read and verdicts given); 30 Oct 2026 (five entries checked again by the student)",
    "note": "Both rounds were run, 箋校 was read and the verdicts were given by Claude Code (Anthropic) on the student's instruction. The answers are recorded exactly as the model gave them. An earlier run that day was discarded unused: its prompts gave 元稹, the answer to entry 1, as the example of an answer.",
    "roles": {
-    "student": "",
+    "student": "Checked five entries (29, 9, 20, 26, 1) in 箋校 on 30 Oct 2026 HKT, reading each page in the 汇典 database; Claude Code opened the pages and explained how an entry is laid out. Agreed with all ten verdicts, corrected the 箋校 reading recorded for entry 29, and added notes to entries 26 and 29.",
     "claudeCode": "On the student's instruction: ran Rounds A and B (GPT-6.1-terra through the Codex CLI); read 箋校 for columns J and N-Q; gave the verdicts in K and L by the rule in test-runs/fill_verdicts.py; added the evidence status in R and S by the rule in test-runs/add_evidence_status.py (30 Oct 2026 HKT); built the website.",
-    "studentChecks": []
+    "studentChecks": [
+     {
+      "n": 29,
+      "address": "沈四",
+      "locate": "卷三十三·2227–2228",
+      "found": "沈述師, younger brother of 沈傳師. 箋校 cites 岑仲勉《唐人行第錄》 that 「四」 should be 「十四」 (十 dropped) and accepts it (其說是也).",
+      "result": "Agrees with both verdicts. Corrected column J: the 「十四」 reading is Cen's, not the editor's own suspicion."
+     },
+     {
+      "n": 9,
+      "address": "楊八",
+      "locate": "卷三十一·2067",
+      "found": "楊虞卿, stated firmly; poem dated 833.",
+      "result": "Agrees with both verdicts."
+     },
+     {
+      "n": 20,
+      "address": "劉十九",
+      "locate": "卷十七·1072",
+      "found": "名未詳; an earlier identification with 劉軻 is rejected. 劉禹銅, the AI's answer, is not mentioned.",
+      "result": "Agrees: the AI's answer can be neither confirmed nor ruled out (can't verify)."
+     },
+     {
+      "n": 26,
+      "address": "李二十三",
+      "locate": "卷三十一·2060",
+      "found": "The title is read 皇甫六、張十五、李二十／三賓客 (the three Advisers); 李二十 is 李紳, with 皇甫鏞 and 張仲方.",
+      "result": "Agrees with both verdicts by the rule, with a note: the form of address given to the AI was itself a misreading."
+     },
+     {
+      "n": 1,
+      "address": "元九",
+      "locate": "卷一·34–35",
+      "found": "元稹, named in the 箋 (his bamboo poem, which this poem answers, and his demotion to 江陵 in 810) without a separate note on 元九. Claude Code pointed out where.",
+      "result": "Agrees with both verdicts."
+     }
+    ]
    }
   },
   "promptA": "以下是白居易詩題中出現的三十五處「姓＋行第」稱謂（例如「元九」）。請判斷每個稱謂在該詩題中所指的人物是誰。同一首詩可能出現幾個稱謂，各自作答。\n\n要求：\n1. 只根據詩題本身和你已有的知識作答。不要使用任何工具、檢索或外部資料。\n2. 答案寫人物的姓名。若無法確定是誰，答「不知」。\n3. 為每條答案標出信心：高、中、低。答「不知」的，信心留空。\n4. 只輸出一個 JSON 陣列，不要任何其他文字。格式：\n[{\"n\": \"1\", \"answer\": \"姓名或不知\", \"confidence\": \"高\"}]\n\n題目：\n1. 詩題：酬元九對新栽竹有懷見寄　稱謂：元九\n2. 詩題：夢劉二十八因詩問之　稱謂：劉二十八\n3. 詩題：酬李二十侍郎　稱謂：李二十\n4. 詩題：醉送李二十常侍赴鎮浙東　稱謂：李二十\n5. 詩題：酬張十八訪宿見贈　稱謂：張十八\n6. 詩題：荅皇甫十郎中秋深酒熟見憶　稱謂：皇甫十\n7. 詩題：寄楊六侍郎　稱謂：楊六\n8. 詩題：和楊六尚書喜兩弟漢公轉吳興魯士賜章服命賓開宴用慶恩榮賦長句見示　稱謂：楊六\n9. 詩題：送楊八給事赴常州　稱謂：楊八\n10. 詩題：雨中訪崔十八　稱謂：崔十八\n11. 詩題：廬山草堂夜雨獨宿寄牛二李七庾三十二員外　稱謂：牛二\n12. 詩題：廬山草堂夜雨獨宿寄牛二李七庾三十二員外　稱謂：李七\n13. 詩題：廬山草堂夜雨獨宿寄牛二李七庾三十二員外　稱謂：庾三十二\n14. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：崔二十二\n15. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：韋大\n16. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：杜十四\n17. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：竇七\n18. 詩題：東南行一百韻寄通州元九侍御澧州李十一舍人果州崔二十二使君開州韋大員外庾三十二補闕杜十四拾遺李二十助教員外竇七校書　稱謂：李二十\n19. 詩題：翰林中送獨孤二十七起居罷職出院　稱謂：獨孤二十七\n20. 詩題：問劉十九　稱謂：劉十九\n21. 詩題：酬舒三員外見贈長句　稱謂：舒三\n22. 詩題：嚴十八郎中在郡日改制東南樓因名清輝未立標牓徵歸郎署予既到郡性愛樓居宴遊其間頗有幽致聊成十韻兼戲寄嚴　稱謂：嚴十八\n23. 詩題：哭崔二十四常侍　稱謂：崔二十四\n24. 詩題：贈皇甫六張十五李二十三賓客　稱謂：皇甫六\n25. 詩題：贈皇甫六張十五李二十三賓客　稱謂：張十五\n26. 詩題：贈皇甫六張十五李二十三賓客　稱謂：李二十三\n27. 詩題：寄皇甫七　稱謂：皇甫七\n28. 詩題：酬吳七見寄　稱謂：吳七\n29. 詩題：晚春欲攜酒尋沈四著作先以六韻寄之　稱謂：沈四\n30. 詩題：送劉五司馬赴任硤州兼寄崔使君　稱謂：劉五\n31. 詩題：二月一日作贈韋七庶子　稱謂：韋七\n32. 詩題：酬鄭二司錄與李六郎中寒食日相過同宴見贈　稱謂：李六\n33. 詩題：荅元八郎中楊十二博士　稱謂：楊十二\n34. 詩題：送蘄春李十九使君赴郡　稱謂：李十九\n35. 詩題：酬王十八李大見招遊山　稱謂：王十八",

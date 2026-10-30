@@ -246,13 +246,15 @@ code { padding: 0 var(--space-1); border-radius: var(--radius-1); background: va
 /* Seal: 樂天, the one vermilion mark */
 .seal {
   flex: none; display: inline-grid; place-items: center; width: var(--size-md); height: var(--size-md); border-radius: var(--radius-1);
-  background: var(--seal); color: var(--on-seal); writing-mode: vertical-rl; font: 900 16px/1 var(--font-serif); letter-spacing: 0;
+  /* The CJK font comes first so its metrics, not Source Serif's, set the vertical line;
+     the bottom padding lifts the glyphs, which otherwise sit about .05em low. */
+  background: var(--seal); color: var(--on-seal); writing-mode: vertical-rl; font: 900 15px/1 "Noto Serif TC", var(--font-serif); letter-spacing: 0; padding-bottom: .1em;
   box-shadow: inset 0 0 0 var(--border-2) var(--seal), inset 0 0 0 3px color-mix(in oklab, var(--on-seal) 55%, transparent);
 }
 .seal-lg { width: 56px; height: 56px; font-size: 22px; }
 .seal-stamp, .letter .stamp {
   display: grid; place-items: center; width: 56px; height: 56px; border: var(--border-2) solid var(--seal); border-radius: var(--radius-1);
-  color: var(--seal); background: none; box-shadow: none; writing-mode: vertical-rl; font: 900 22px/1 var(--font-serif); letter-spacing: 0;
+  color: var(--seal); background: none; box-shadow: none; writing-mode: vertical-rl; font: 900 22px/1 "Noto Serif TC", var(--font-serif); letter-spacing: 0; padding-bottom: .1em;
   transform: rotate(-4deg); opacity: .9;
 }
 
@@ -424,6 +426,8 @@ tr.detail .poem { background: var(--surface); }
 .data-table { width: 100%; border-collapse: collapse; font: var(--type-small); font-variant-numeric: tabular-nums; }
 .data-table th, .data-table td { padding: var(--space-2) var(--space-3); border-bottom: var(--border-1) solid var(--rule); text-align: right; }
 .data-table th:first-child, .data-table td:first-child { text-align: left; }
+/* Tables of prose (e.g. the student's checks): every column reads left to right. */
+.data-table.text-table th, .data-table.text-table td { text-align: left; vertical-align: top; }
 .data-table thead th { background: var(--surface-2); color: var(--muted); font: 600 var(--fs-caption)/1.3 var(--font-sans); vertical-align: bottom; }
 .data-table tbody th { font-weight: 500; }
 .data-table tfoot td, .data-table tfoot th { border-top: var(--border-1) solid var(--ink-2); border-bottom: 0; font-weight: 600; }

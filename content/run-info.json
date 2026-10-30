@@ -4,11 +4,17 @@
   "roundADate": "27 Oct 2026, 12:24 HKT",
   "roundBDate": "27 Oct 2026, 12:24 HKT",
   "sourcesGiven": "Each poem's full text (chinese-poetry 全唐詩, without Bai's own notes); 舊唐書 卷一百六十六 (元稹、白居易傳, Wikisource); CBDB: Bai Juyi's 27 postings and his full list of 389 social associations. No 箋校 content.",
-  "checkingDates": "27 Oct 2026 (箋校 entries read and verdicts given)",
+  "checkingDates": "27 Oct 2026 (箋校 entries read and verdicts given); 30 Oct 2026 (five entries checked again by the student)",
   "note": "Both rounds were run, 箋校 was read and the verdicts were given by Claude Code (Anthropic) on the student's instruction. The answers are recorded exactly as the model gave them. An earlier run that day was discarded unused: its prompts gave 元稹, the answer to entry 1, as the example of an answer.",
   "roles": {
-    "student": "",
+    "student": "Checked five entries (29, 9, 20, 26, 1) in 箋校 on 30 Oct 2026 HKT, reading each page in the 汇典 database; Claude Code opened the pages and explained how an entry is laid out. Agreed with all ten verdicts, corrected the 箋校 reading recorded for entry 29, and added notes to entries 26 and 29.",
     "claudeCode": "On the student's instruction: ran Rounds A and B (GPT-6.1-terra through the Codex CLI); read 箋校 for columns J and N-Q; gave the verdicts in K and L by the rule in test-runs/fill_verdicts.py; added the evidence status in R and S by the rule in test-runs/add_evidence_status.py (30 Oct 2026 HKT); built the website.",
-    "studentChecks": []
+    "studentChecks": [
+      {"n": 29, "address": "沈四", "locate": "卷三十三·2227–2228", "found": "沈述師, younger brother of 沈傳師. 箋校 cites 岑仲勉《唐人行第錄》 that 「四」 should be 「十四」 (十 dropped) and accepts it (其說是也).", "result": "Agrees with both verdicts. Corrected column J: the 「十四」 reading is Cen's, not the editor's own suspicion."},
+      {"n": 9, "address": "楊八", "locate": "卷三十一·2067", "found": "楊虞卿, stated firmly; poem dated 833.", "result": "Agrees with both verdicts."},
+      {"n": 20, "address": "劉十九", "locate": "卷十七·1072", "found": "名未詳; an earlier identification with 劉軻 is rejected. 劉禹銅, the AI's answer, is not mentioned.", "result": "Agrees: the AI's answer can be neither confirmed nor ruled out (can't verify)."},
+      {"n": 26, "address": "李二十三", "locate": "卷三十一·2060", "found": "The title is read 皇甫六、張十五、李二十／三賓客 (the three Advisers); 李二十 is 李紳, with 皇甫鏞 and 張仲方.", "result": "Agrees with both verdicts by the rule, with a note: the form of address given to the AI was itself a misreading."},
+      {"n": 1, "address": "元九", "locate": "卷一·34–35", "found": "元稹, named in the 箋 (his bamboo poem, which this poem answers, and his demotion to 江陵 in 810) without a separate note on 元九. Claude Code pointed out where.", "result": "Agrees with both verdicts."}
+    ]
   }
 }
