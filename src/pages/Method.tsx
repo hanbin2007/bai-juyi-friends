@@ -20,7 +20,8 @@ const RUN: [string, string, string][] = [
 const VERDICTS: [Verdict, React.ReactNode, string | null][] = [
   ["correct", <>The AI names the person <Zh>箋校</Zh> identifies.</>, "correct"],
   ["partly", <>The answer is partly right; the entry's notes say how.</>, "partly"],
-  ["wrong", <>The AI names someone other than the person in <Zh>箋校</Zh>, or names someone where <Zh>箋校</Zh> says the name is unknown.</>, "wrong"],
+  ["wrong", <>The AI names someone other than the person in <Zh>箋校</Zh>.</>, "wrong"],
+  ["unverifiable", <>The AI names someone, but <Zh>箋校</Zh> gives no name: it does not annotate the addressee, or says the name is unknown. The answer is neither confirmed nor ruled out. The sheet's verdict is <code>wrong</code>; the evidence status says why.</>, "unverifiable: …"],
   ["declined", <>The AI gives no name, although <Zh>箋校</Zh> identifies the person.</>, "declined: answer exists"],
   ["unknown", <>The AI gives no name, and <Zh>箋校</Zh> does not identify the person either.</>, "declined: none exists"],
   ["untested", <>No verdict has been recorded yet (the cell is empty).</>, null],
@@ -109,6 +110,7 @@ export function Method() {
           <section id="verdicts">
             <h2>Verdicts <span className="zh" lang="zh-Hant">判定</span></h2>
             <p>Each answer gets one verdict per round, by comparing the name the AI gives with the person <Zh>箋校</Zh> names. Only an exact match counts as correct: a relative of the right person (such as <Zh>沈傳師</Zh>, the elder brother of <Zh>沈述師</Zh>) is wrong. The value at the end is what is typed in the record sheet.</p>
+            <p>The sheet's verdict follows one strict rule: any name other than the one <Zh>箋校</Zh> gives is <code>wrong</code>, even where <Zh>箋校</Zh> gives no name at all. Not matching this reference is not the same as being disproved, so a second column records each answer's evidence status, and the site shows those answers as <em>can't verify</em>. None of the AI's names is explicitly rejected by <Zh>箋校</Zh>. The Summary page gives the counts both ways.</p>
             <dl className="def-list">
               {VERDICTS.map(([s, text, sheet]) => (
                 <div key={s}><dt><Badge s={s} /></dt><dd>{text} {sheet && <code>{sheet}</code>}</dd></div>
@@ -124,7 +126,7 @@ export function Method() {
               <li><strong>One model, one run.</strong> Another model, or the same model on another day, may answer differently.</li>
               <li><strong>The reference is scholarship too.</strong> <Zh>箋校</Zh> leaves some names unidentified and sometimes disagrees with <Zh>唐人行第録</Zh>. Verdicts follow <Zh>箋校</Zh>.</li>
               <li><strong>Poem text.</strong> The poems shown in each entry come from an open digital edition of <Zh>全唐詩</Zh> that leaves out Bai Juyi's own notes (<Zh>自注</Zh>). The same text was given to the AI in Round B. It was not used for the verdicts.</li>
-              <li><strong>Run and checked by an AI assistant.</strong> Claude Code ran both rounds, read <Zh>箋校</Zh> and gave the verdicts. A misreading of <Zh>箋校</Zh> is possible, and would carry into the verdict for that entry.</li>
+              <li><strong>Run and checked by an AI assistant.</strong> Claude Code ran both rounds, read <Zh>箋校</Zh> and gave the verdicts and evidence statuses. A misreading of <Zh>箋校</Zh> is possible, and would carry into the verdict for that entry.</li>
             </ul>
           </section>
         </div>

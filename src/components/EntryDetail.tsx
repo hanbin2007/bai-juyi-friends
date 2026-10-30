@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { DATED, type Row } from "../lib/data";
+import { DATED, type Round, type Row } from "../lib/data";
 import { confLabel } from "../lib/status";
 import { eraYear, yearLabel } from "../lib/era";
 import { Badge, MarkedTitle } from "./Badge";
@@ -14,6 +14,12 @@ function KV({ k, zh, v }: { k: string; zh?: string; v: ReactNode }) {
   );
 }
 
+// The evidence status, where it says more than the verdict (record sheet col R/S).
+function Evidence({ round }: { round: Round }) {
+  if (!/^(differs|rejected|unverifiable)/.test(round.evidence)) return null;
+  return <><dt>Evidence</dt><dd>{round.evidence}</dd></>;
+}
+
 /** Both rounds, the 箋校 check and the poem for one form of address. */
 export function EntryDetail({ row, permalink = true }: { row: Row; permalink?: boolean }) {
   return (
@@ -24,6 +30,7 @@ export function EntryDetail({ row, permalink = true }: { row: Row; permalink?: b
           <KV k="Answer" v={row.a.answer} />
           <KV k="Confidence" v={confLabel(row.a.confidence)} />
           <dt>Verdict</dt><dd><Badge s={row.a.verdict} raw={row.a.verdictRaw} /></dd>
+          <Evidence round={row.a} />
         </dl>
         <h4>Round B <span>詩題＋史料</span> · title + sources</h4>
         <dl className="kv">
@@ -31,6 +38,7 @@ export function EntryDetail({ row, permalink = true }: { row: Row; permalink?: b
           <KV k="Confidence" v={confLabel(row.b.confidence)} />
           <KV k="Sources the AI cited" v={row.b.sources} />
           <dt>Verdict</dt><dd><Badge s={row.b.verdict} raw={row.b.verdictRaw} /></dd>
+          <Evidence round={row.b} />
         </dl>
         <h4>Checked against <span>白居易集箋校</span></h4>
         <dl className="kv">

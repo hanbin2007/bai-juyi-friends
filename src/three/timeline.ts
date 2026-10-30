@@ -173,7 +173,7 @@ function buildScene(renderer: THREE.WebGLRenderer, map: MapData, section: HTMLEl
   const readColours = () => {
     const cs = getComputedStyle(document.documentElement);
     ["bg", "surface", "ink", "ink-2", "muted", "accent", "thread", "letter", "time", "seal", "rule-strong",
-      "s-correct", "s-partly", "s-wrong", "s-declined", "s-unknown", "s-untested", "s-other"]
+      "s-correct", "s-partly", "s-wrong", "s-unverifiable", "s-declined", "s-unknown", "s-untested", "s-other"]
       .forEach((k) => { css[k] = cs.getPropertyValue("--" + k).trim() || "#888888"; });
     const c = new THREE.Color(css.bg);
     dark = c.r + c.g + c.b < 0.4;

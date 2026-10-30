@@ -47,8 +47,11 @@ COLUMNS = {
     "I": "locate", "J": "jianjiao", "K": "a_verdict", "L": "b_verdict", "M": "notes",
     # Timeline columns, filled from 箋校's dating (optional; empty = not on the timeline yet).
     "N": "year", "O": "bai_at", "P": "post", "Q": "to_at",
+    # Evidence status of each answer (test-runs/add_evidence_status.py; optional).
+    "R": "a_evidence", "S": "b_evidence",
 }
 TIMELINE_HEADERS = {"N": "Year", "O": "Bai's place", "P": "Addressee's post", "Q": "Addressee's place"}
+EVIDENCE_HEADERS = {"R": "A evidence status", "S": "B evidence status"}
 LIFE = (772, 846)  # Bai Juyi's lifetime; a poem's year must fall inside it
 
 # Sheet verdict text (exactly as in the drop-down list) -> site status key.
@@ -60,6 +63,17 @@ VERDICTS = {
     "declined: none exists": "unknown",
 }
 SHEET_TEXT = {v: k for k, v in VERDICTS.items()}
+
+# Evidence status (exactly as in the drop-down list) -> the verdict it must sit with.
+EVIDENCE = {
+    "matches reference": "correct",
+    "differs from reference": "wrong",
+    "rejected by reference": "wrong",
+    "unverifiable: not annotated": "wrong",
+    "unverifiable: name unknown": "wrong",
+    "declined: answer exists": "declined",
+    "declined: none exists": "unknown",
+}
 
 # Summary tab row label -> status key.
 SUMMARY_ROWS = {
@@ -188,6 +202,27 @@ def verdict(raw, where):
     return "other"
 
 
+def evidence(raw, status, where):
+    """Evidence status text, checked against the verdict. A wrong answer that 箋校 cannot check
+    (no name given there) is shown as "unverifiable"; the sheet's Summary counts still use the verdict."""
+    text = clean(raw)
+    if not text:
+        return text, status
+    if text not in EVIDENCE:
+        error("%s: unrecognised evidence status %r" % (where, text))
+        return text, status
+    if EVIDENCE[text] != status:
+        error("%s: evidence status %r does not fit the verdict %r" % (where, text, SHEET_TEXT.get(status, status)))
+        return text, status
+    return text, "unverifiable" if text.startswith("unverifiable") else status
+
+
+def round_data(raw, rnd, where, verdict_col, evidence_col):
+    status = verdict(raw[rnd + "_verdict"], where + " col " + verdict_col)
+    text, shown = evidence(raw[rnd + "_evidence"], status, where + " col " + evidence_col)
+    return {"verdict": shown, "verdictRaw": clean(raw[rnd + "_verdict"]), "evidence": text}
+
+
 def confidence(raw, where):
     text = clean(raw).lower()
     if not text:
@@ -301,6 +336,9 @@ def build(xlsx):
         if not clean(record.cells.get(col + "1")).startswith(start):
             warn("Record!%s1 should be the %r column for the timeline; found %r"
                  % (col, start, record.cells.get(col + "1")))
+    for col, start in EVIDENCE_HEADERS.items():
+        if not clean(record.cells.get(col + "1")).startswith(start):
+            warn("Record!%s1 should be the %r column; found %r" % (col, start, record.cells.get(col + "1")))
 
     gazetteer = {k: v for k, v in read_json(CONTENT / "places.json").items() if not k.startswith("_")}
     aliases = {}
@@ -358,15 +396,13 @@ def build(xlsx):
             "a": {
                 "answer": clean(raw["a_answer"]),
                 "confidence": confidence(raw["a_confidence"], where + " col E"),
-                "verdict": verdict(raw["a_verdict"], where + " col K"),
-                "verdictRaw": clean(raw["a_verdict"]),
+                **round_data(raw, "a", where, "K", "R"),
             },
             "b": {
                 "answer": clean(raw["b_answer"]),
                 "confidence": confidence(raw["b_confidence"], where + " col G"),
                 "sources": clean(raw["b_sources"]),
-                "verdict": verdict(raw["b_verdict"], where + " col L"),
-                "verdictRaw": clean(raw["b_verdict"]),
+                **round_data(raw, "b", where, "L", "S"),
             },
             "locate": clean(raw["locate"]),
             "jianjiao": clean(raw["jianjiao"]),

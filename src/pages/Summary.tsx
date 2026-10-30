@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { DATA, ROWS, TOTAL, countBy, tested, type RoundKey, type Verdict } from "../lib/data";
 import { CONF, ORDER, STATUS } from "../lib/status";
 import { Swatch } from "../components/Badge";
+import { Zh } from "../components/Prose";
 import { useTitle } from "../lib/useTitle";
 
 const CHECK: Record<string, [string, string]> = {
@@ -88,7 +90,7 @@ function Matrix() {
 }
 
 function ConfidenceTable({ rnd }: { rnd: RoundKey }) {
-  const cols: Verdict[] = ["correct", "partly", "wrong", "declined", "unknown"];
+  const cols: Verdict[] = ["correct", "partly", "wrong", "unverifiable", "declined", "unknown"];
   const levels = ["high", "medium", "low", ""];
   return (
     <table className="data-table">
@@ -115,6 +117,7 @@ export function Summary() {
   const check = DATA.meta.summaryCheck;
   const [cls, msg] = CHECK[check.status] || ["wait", "No comparison with the Summary tab was made."];
   const ca = DATA.counts.a, cb = DATA.counts.b;
+  const ua = countBy("a").unverifiable || 0, ub = countBy("b").unverifiable || 0;
   const sheetRows: [Verdict, string][] = [["correct", "correct"], ["wrong", "wrong"], ["declined", "declined (answer exists)"], ["unknown", "declined (no answer exists)"], ["partly", "partly"]];
 
   return (
@@ -158,6 +161,12 @@ export function Summary() {
               <tfoot><tr><th scope="row">total checked</th><td>{ca.total || 0}</td><td>{cb.total || 0}</td></tr></tfoot>
             </table>
           </div>
+          {(ua > 0 || ub > 0) && (
+            <p className="table-note">
+              The sheet's <code>wrong</code> follows the strict rule and includes answers <Zh>箋校</Zh> cannot check, shown elsewhere on this site
+              as <em>can't verify</em>: {ua} of {ca.wrong || 0} in Round A, {ub} of {cb.wrong || 0} in Round B. See <Link to="/method#verdicts">Method</Link>.
+            </p>
+          )}
         </section>
 
         <section className="section section-tight">

@@ -3,7 +3,8 @@ import type { Verdict } from "./data";
 export const STATUS: Record<Verdict, { en: string; zh: string; short: string; tip: string }> = {
   correct: { en: "Correct", zh: "正確", short: "Correct", tip: "The AI named the person 箋校 identifies." },
   partly: { en: "Partly correct", zh: "部分正確", short: "Partly", tip: "The answer is partly right (see notes)." },
-  wrong: { en: "Wrong", zh: "錯誤", short: "Wrong", tip: "The AI named someone else, or named someone where 箋校 says the name is unknown." },
+  wrong: { en: "Wrong", zh: "錯誤", short: "Wrong", tip: "The AI named someone other than the person 箋校 identifies." },
+  unverifiable: { en: "Can't verify", zh: "無從核實", short: "Can't verify", tip: "The AI named someone, but 箋校 gives no name to check it against. Not confirmed, not ruled out; the sheet's strict rule counts it as wrong." },
   declined: { en: "Declined", zh: "未作答", short: "Declined", tip: "The AI gave no name, but 箋校 identifies the person." },
   unknown: { en: "Name unknown in 箋校", zh: "名未詳", short: "Name unknown", tip: "The AI gave no name, and 箋校 does not identify the person either." },
   untested: { en: "No verdict yet", zh: "未判定", short: "No verdict", tip: "No verdict recorded yet." },
@@ -11,7 +12,7 @@ export const STATUS: Record<Verdict, { en: string; zh: string; short: string; ti
 };
 
 // Display order everywhere: chips, legends, stacked bars, matrix.
-export const ORDER: Verdict[] = ["correct", "partly", "wrong", "declined", "unknown", "untested"];
+export const ORDER: Verdict[] = ["correct", "partly", "wrong", "unverifiable", "declined", "unknown", "untested"];
 
 export const CONF: Record<string, string> = { high: "High 高", medium: "Medium 中", low: "Low 低" };
 export const confLabel = (c: string) => CONF[c] || c;

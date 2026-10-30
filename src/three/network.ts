@@ -73,7 +73,7 @@ export function mountNetwork(host: HTMLElement, rows: Row[], onOpen: (n: string)
   let dark = false;
   const readColours = () => {
     const cs = getComputedStyle(document.documentElement);
-    ["ink", "muted", "accent", "surface", "bg", "rule-strong", "s-correct", "s-partly", "s-wrong", "s-declined", "s-unknown", "s-untested", "s-other"]
+    ["ink", "muted", "accent", "surface", "bg", "rule-strong", "s-correct", "s-partly", "s-wrong", "s-unverifiable", "s-declined", "s-unknown", "s-untested", "s-other"]
       .forEach((k) => { C[k] = cs.getPropertyValue("--" + k).trim() || "#888"; });
     const bg = C.bg.replace("#", "");
     dark = bg.length === 6 && parseInt(bg.slice(0, 2), 16) + parseInt(bg.slice(2, 4), 16) + parseInt(bg.slice(4, 6), 16) < 200;
